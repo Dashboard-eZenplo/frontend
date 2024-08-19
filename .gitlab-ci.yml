@@ -1,26 +1,29 @@
+image: node:18-alpine
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
 stages:
   - build
   - lint
   - test
 
-build-job:
+before_script:
+  - npm ci
+
+build:
   stage: build
   script:
-    - npm install
     - npm run build
-  tags:
-    - ezenplo
 
-lint-test-job:
+lint:
   stage: lint
   script:
     - npm run lint
-  tags:
-    - ezenplo
 
-unit-test-job:
+unit-test:
   stage: test
   script:
     - npm run test
-  tags:
-    - ezenplo
