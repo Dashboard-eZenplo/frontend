@@ -17,13 +17,19 @@ build:
   stage: build
   script:
     - npm run build
+  tags:
+    - ezenplo
 
 lint:
   stage: lint
   script:
     - npm run lint
+  tags:
+    - ezenplo
 
 unit-test:
   stage: test
   script:
     - npm run test
+  tags:
+    - ezenplo
