@@ -52,7 +52,7 @@ Before installing and running this project, ensure you have the following prereq
 
    ```bash
    docker build -t dashboard-ezenplo-dev .
-   docker run -p 5173:5173 dashboard-ezenplo-dev
+   docker compose up
    ```
 
    This will run the application in development mode. Open [http://localhost:5173](http://localhost:5173) in your browser to view it.
