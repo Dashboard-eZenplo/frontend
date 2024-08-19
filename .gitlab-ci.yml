@@ -8,13 +8,19 @@ build-job:
   script:
     - npm install
     - npm run build
+  tags:
+    - ezenplo
 
 lint-test-job:
   stage: lint
   script:
     - npm run lint
+  tags:
+    - ezenplo
 
 unit-test-job:
   stage: test
   script:
     - npm run test
+  tags:
+    - ezenplo
