@@ -18,18 +18,18 @@ build:
   script:
     - npm run build
   tags:
-    - ezenplo
+    - ezenplo-frontend
 
 lint:
   stage: lint
   script:
     - npm run lint
   tags:
-    - ezenplo
+    - ezenplo-frontend
 
 unit-test:
   stage: test
   script:
     - npm run test
   tags:
-    - ezenplo
+    - ezenplo-frontend
