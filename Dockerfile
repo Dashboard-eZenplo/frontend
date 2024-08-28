@@ -8,6 +8,7 @@ COPY . .
 
 # Dev
 FROM base AS development
+RUN chmod +x .husky/*
 EXPOSE 5173
 CMD ["npm", "run", "dev"]
 

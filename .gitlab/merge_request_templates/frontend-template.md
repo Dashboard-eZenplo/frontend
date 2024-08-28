@@ -1,17 +1,17 @@
-## Descrição
+## Description
 
-[Descreva brevemente o propósito e as principais mudanças e adições que foram feitas nesta solicitação de Merge]
+[Briefly describe the purpose and the main changes and additions made in this Merge Request]
 
-## Link da Tarefa
+## Task Link
 
-[Inserir link da tarefa]
+[Insert task link]
 
-## Screenshots da tela/componente
+## Screenshots of the Screen/Component
 
-[Adicione capturas de tela ou imagens relevantes, se necessário.]
+[Add relevant screenshots or images, if necessary.]
 
-## Checklist (para os AGES III)
+## Checklist (for AGES III)
 
-- [ ] Não deixou string literais no código.
-- [ ] Utilizou as variáveis padronizadas do design system (cor, títulos/fontes).
-- [ ] Não deixou código comentado.
+- [ ] No literal strings left in the code.
+- [ ] Used the standardized variables from the design system (color, titles/fonts).
+- [ ] No commented-out code left.
