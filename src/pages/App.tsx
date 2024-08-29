@@ -1,11 +1,8 @@
 import '../styles/App.css';
+import Registration from './Registration';
 
 function App() {
-  return (
-    <>
-      <h1>Vite + React + TS</h1>
-    </>
-  );
+  return <Registration />;
 }
 
 export default App;
