@@ -49,19 +49,37 @@ export default {
         giant: '200px'
       },
       colors: {
-        primary: {
-          darkest: '',
-          dark: '',
-          medium: '',
-          light: '',
-          lightest: ''
+        primary: '#004BF9',
+        secondary: '#007FFA',
+        background: {
+          primary: '#F5F5F5F5',
+          secondary: '#FFF5EA'
         },
-        secondary: {
-          darkest: '',
-          dark: '',
-          medium: '',
-          light: '',
-          lightest: ''
+        complementary: {
+          primary: '#00296D',
+          secondary: '#9CAFAA',
+          tertiary: '#FFC107'
+        },
+        state: {
+          info: '#94C3FB',
+          success: '#7ED298',
+          warning: '#F3D58D',
+          error: '#F3858C'
+        },
+        dark: {
+          primary: '#000000',
+          secondary: '#1D1D1D',
+          tertiary: '#282828'
+        },
+        light: {
+          primary: '#FFFFFF'
+        },
+        gray: {
+          100: '#333333',
+          200: '#4F4F4F',
+          300: '#828282',
+          400: '#BDBDBD',
+          500: '#E0E0E0'
         }
       },
       fontWeight: {
