@@ -5,7 +5,6 @@
 ## Task Link
 
 [Insert task link with format #number]
-![alt text](image.png)
 
 ## Screenshots of the Screen/Component
 
