@@ -5,7 +5,7 @@ import { KeyboardReturn } from '@mui/icons-material';
 export default function RegistrationPage() {
   return (
     <div className="w-full h-full flex">
-      <section className="hidden xl:flex w-1/2 items-center justify-center bg-[#004bf9]">
+      <section className="hidden xl:flex w-1/2 items-center justify-center bg-primary">
         <img
           src={Logo}
           className="max-w-96 xxl:max-w-[480px] w-full"
