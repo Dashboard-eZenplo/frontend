@@ -1,8 +1,8 @@
 import { Button, TextField } from '@mui/material';
-import Logo from '../assets/logo-ezenplo.png';
+import Logo from '../../assets/logo-ezenplo.png';
 import { KeyboardReturn } from '@mui/icons-material';
 
-export default function Registration() {
+export default function RegistrationPage() {
   return (
     <div className="w-full h-full flex">
       <section className="hidden xl:flex w-1/2 items-center justify-center bg-[#004bf9]">
@@ -29,7 +29,13 @@ export default function Registration() {
 
             <Button
               variant="contained"
-              style={{ marginTop: '40px', padding: '10px' }}
+              style={{
+                marginTop: '40px',
+                padding: '9px',
+                fontFamily: 'inherit',
+                textTransform: 'none',
+                fontSize: '1rem'
+              }}
               className="w-full"
             >
               Cadastrar
