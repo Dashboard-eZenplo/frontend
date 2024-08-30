@@ -10,10 +10,10 @@ describe('Token Utility Functions', () => {
     'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMTIzIiwibmFtZSI6IkpvaG4gRG9lIiwiUk9MRVMiOlsiYWRtaW4iLCJ1c2VyIl0sIlVTRVJfSUQiOjEsImlhdCI6MTY5NTAwMDAwMCwiZXhwIjoyNTI0NjA4MDAwfQ.F2ExNudIFwmr0OJTDiFiie60RH4sFUHDAmVAxgwG3lA';
   const decodedToken = {
     sub: 'user123',
+    name: 'John Doe',
     ROLES: ['admin', 'user'],
-    USER_ID: 1,
-    iat: 1620000000,
-    exp: 1620003600
+    iat: 1695000000,
+    exp: 2524608000
   };
 
   beforeAll(() => {
