@@ -4,7 +4,7 @@
 
 ## Task Link
 
-[Insert task link]
+[Insert ClickUp task link with format #number]
 
 ## Screenshots of the Screen/Component
 
