@@ -50,7 +50,7 @@ export default function RegistrationPage() {
               required
             />
             <TextField
-              label="Repita sua senha"
+              label="Repita a senha"
               variant="standard"
               className="w-full"
               placeholder="repita a senha a ser cadastrada"
