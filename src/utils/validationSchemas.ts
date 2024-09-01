@@ -6,7 +6,10 @@ export const hrManagerValidation: ZodType<IHRManager> = z
     cnpj: z
       .string()
       .nonempty('Campo obrigatório.')
-      .length(14, 'O CNPJ deve ter exatamente 14 digitos.'),
+      .transform((value) => value.replace(/[^\d]/g, ''))
+      .refine((value) => value.length === 14, {
+        message: 'O CNPJ deve ter exatamente 14 dígitos.'
+      }),
     name: z.string().nonempty('Campo obrigatório.'),
     email: z
       .string()

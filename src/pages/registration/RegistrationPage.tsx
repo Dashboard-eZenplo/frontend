@@ -5,18 +5,37 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { hrManagerValidation } from '../../utils/validationSchemas';
 import { IHRManager } from '../../types/HRManager';
+import { useState } from 'react';
 
 export default function RegistrationPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setValue
   } = useForm<IHRManager>({
     resolver: zodResolver(hrManagerValidation)
   });
+  const [cnpjValue, setCnpjValue] = useState('');
 
   const createHRManager = (data: IHRManager) => {
     console.log(data);
+  };
+
+  const formatCNPJ = (value: string) => {
+    return value
+      .replace(/\D/g, '')
+      .replace(/^(\d{2})(\d)/, '$1.$2')
+      .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+      .replace(/\.(\d{3})(\d)/, '.$1/$2')
+      .replace(/(\d{4})(\d)/, '$1-$2')
+      .replace(/(-\d{2})\d+?$/, '$1');
+  };
+
+  const handleCNPJChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedCNPJ = formatCNPJ(event.target.value);
+    setCnpjValue(formattedCNPJ);
+    setValue('cnpj', formattedCNPJ);
   };
 
   return (
@@ -47,7 +66,8 @@ export default function RegistrationPage() {
                 className="w-full"
                 placeholder="digite o CNPJ a ser cadastrado"
                 error={!!errors.cnpj}
-                {...register('cnpj')}
+                value={cnpjValue}
+                onChange={handleCNPJChange}
               />
               {errors.cnpj && (
                 <span className="text-red-500 mt-[0.2rem] block">{errors.cnpj.message}</span>
