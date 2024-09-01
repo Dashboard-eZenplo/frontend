@@ -1,5 +1,3 @@
-.root {
-  align-self: start;
-  display: flex;
-  flex-direction: column;
+#root {
+  height: 100vh;
 }
