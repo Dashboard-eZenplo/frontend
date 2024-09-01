@@ -109,6 +109,7 @@ export default function RegistrationPage() {
                 className="w-full"
                 placeholder="digite a senha a ser cadastrada"
                 error={!!errors.password}
+                type="password"
                 {...register('password')}
               />
               {errors.password && (
@@ -123,6 +124,7 @@ export default function RegistrationPage() {
                 className="w-full"
                 placeholder="repita a senha a ser cadastrada"
                 error={!!errors.repeatPassword}
+                type="password"
                 {...register('repeatPassword')}
               />
               {errors.repeatPassword && (
