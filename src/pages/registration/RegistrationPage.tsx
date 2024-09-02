@@ -136,6 +136,7 @@ export default function RegistrationPage() {
 
             <Button
               variant="contained"
+              fullWidth
               style={{
                 marginTop: '2.5rem',
                 padding: '0.6rem',
@@ -143,7 +144,6 @@ export default function RegistrationPage() {
                 textTransform: 'none',
                 fontSize: '1rem'
               }}
-              className="w-full"
               type="submit"
             >
               Cadastrar
