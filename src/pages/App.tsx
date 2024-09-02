@@ -3,7 +3,7 @@ import '../styles/App.css';
 function App() {
   return (
     <>
-      <h1>Vite + React + TS</h1>
+      <h1>eZenplo</h1>
     </>
   );
 }
