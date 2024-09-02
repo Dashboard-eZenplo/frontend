@@ -48,15 +48,6 @@ Before installing and running this project, ensure you have the following prereq
 
    This will create a dist directory with the production build.
 
-3. To run as a Docker container in development mode, follow these steps:
-
-   ```bash
-   docker build -t dashboard-ezenplo-dev .
-   docker compose up
-   ```
-
-   This will run the application in development mode. Open [http://localhost:5173](http://localhost:5173) in your browser to view it.
-
 ## Additional Notes
 
 1. **Environment Variables**: If you need to configure environment-specific variables, ensure they are properly set up in the respective environment files or through a .env file.
