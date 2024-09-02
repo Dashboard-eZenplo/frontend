@@ -46,7 +46,8 @@ export default {
         xxl: '80px',
         xxxl: '120px',
         huge: '160px',
-        giant: '200px'
+        giant: '200px',
+        '4.5': '4.5rem'
       },
       colors: {
         primary: {
