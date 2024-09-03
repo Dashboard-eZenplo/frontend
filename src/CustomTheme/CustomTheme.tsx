@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material";
+import { colors, createTheme } from "@mui/material";
 
 const CustomTheme = createTheme({
 
@@ -27,7 +27,7 @@ const CustomTheme = createTheme({
                 //estilização padrão para todos botões
                 root: {
                   textTransform: 'none',
-                  fontSize: '1 rem', 
+                  fontSize: '1rem', 
                   paddingTop: '0.6rem', 
                   paddingBottom: '0.6rem', 
                   boxShadow: 'none',
@@ -86,6 +86,16 @@ const CustomTheme = createTheme({
                     }
                 }
             ]
+        },
+        MuiTextField: {
+            styleOverrides: {
+
+                root: {
+                    variant: 'standard',
+                    fontSize: '1rem',
+                }
+            },
+           
         }
     }
 })
