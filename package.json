@@ -7,7 +7,7 @@
     "dev": "vite --host",
     "build": "tsc -b && vite build",
     "test": "jest --passWithNoTests",
-    "lint": "eslint 'src/**/*.{ts,tsx,js,jsx}'",
+    "lint": "eslint --fix 'src/**/*.{ts,tsx,js,jsx}'",
     "preview": "vite preview",
     "prepare": "husky install",
     "postinstall": "chmod +x .husky/*"
