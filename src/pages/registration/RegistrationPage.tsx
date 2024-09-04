@@ -44,7 +44,7 @@ export default function RegistrationPage() {
         <img
           src={LogotipoEzenplo}
           className="max-w-96 2xl:max-w-[30rem] w-full"
-          alt="logo branca da ezenplo"
+          alt="Logotipo eZenplo"
         />
       </section>
       <section className="w-full lg:w-1/2 p-10 lg:py-16 text-zinc-700 flex flex-col items-center justify-center">
