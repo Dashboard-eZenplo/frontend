@@ -36,7 +36,7 @@ function LoginPage() {
 
             {/* Coluna da direita */}
             <div className='w-1/2 h-screen flex flex-col items-center justify-center p-10'>
-                <h1 className='font-bold mb-20'>Faça Login</h1>
+                <h1 className='font-bold mb-20'>Faça login</h1>
                 <div className='w-full max-w-sm'>
                     <form className='space-y-6  '>
                         <div className='relative'>
