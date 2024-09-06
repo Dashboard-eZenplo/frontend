@@ -11,28 +11,6 @@ type HeaderProps = {
   headerOptions: HeaderOptionsType[];
 };
 
-// Exemplos de uso
-// Escolha um dos exemplos e cole no arquivo que deseja utilizar o componente Header
-
-// const headerOptions = [ /*Only Logout button*/
-//   { title: '', onclick: () => { }, icon: <Logout /> }
-// ];
-
-// const headerOptions = [ /*User management and logout buttons*/
-//   { title: 'Gerenciamento Usuários', onclick: () => { }, icon: <SupervisorAccountOutlined /> },
-//   { title: '', onclick: () => { }, icon: <Logout /> }
-// ];
-
-// const headerOptions = [
-//   { title: 'Download Modelo', onclick: () => { }, icon: <FileDownloadOutlined /> },
-//   { title: 'Upload Modelo', onclick: () => { }, icon: <FileUploadOutlined /> },
-//   { title: '', onclick: () => { }, icon: <Logout /> }
-// ];
-
-// Com as opções de headerOptions acima, você pode utilizar o componente Header da seguinte forma:
-
-// <Header headerOptions={headerOptions} />
-
 const Header: React.FC<HeaderProps> = (props) => {
   return (
     <header className="bg-white p-4 flex justify-between items-center border-b border-black">
