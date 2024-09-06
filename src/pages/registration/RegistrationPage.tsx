@@ -1,5 +1,5 @@
 import { Button, TextField } from '@mui/material';
-import LogotipoEzenplo from '../../assets/logo-ezenplo.png';
+import LogotipoEzenplo from '../../assets/logo.svg';  
 import { KeyboardReturn } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -40,13 +40,37 @@ export default function RegistrationPage() {
 
   return (
     <div className="w-full min-h-screen flex">
-      <section className="hidden lg:flex w-1/2 items-center justify-center bg-primary">
+      <div className="hidden md:flex w-full md:w-1/2 bg-primary items-center justify-center flex-col relative p-4">
+        <div
+          className="absolute inset-0 flex items-center justify-center ml-4.5 mt-4.5"
+          style={{
+            background:
+              'radial-gradient(circle, rgba(255, 255, 255, 0.20) 0%, transparent 60%)',
+            borderRadius: '50%',
+            width: '80%',
+            height: '80%',
+          }}
+        ></div>
         <img
           src={LogotipoEzenplo}
-          className="max-w-96 2xl:max-w-[30rem] w-full"
-          alt="Logotipo eZenplo"
+          className="max-w-xs md:max-w-sm lg:max-h-60 relative "
         />
-      </section>
+        <h1
+          className="text-2xl md:text-6xl lg:text-7xl font-bold mt-6 mb-5 relative"
+          style={{
+            background:
+              'linear-gradient(90deg, #D6D2E1 0%, #FFFFFF 23%, #D5D2E5 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}
+        >
+          eZenplo
+        </h1>
+        <p className="text-white text-xl md:text-2xl lg:text-sm relative font-semibold">
+          Você no comando do seu bem-estar.
+        </p>
+      </div>
       <section className="w-full lg:w-1/2 p-10 lg:py-16 text-zinc-700 flex flex-col items-center justify-center">
         <div className="max-w-[34rem] xl:max-w-[30rem] 2xl:max-w-[34rem] w-full flex flex-col items-center">
           <div className="w-full flex justify-end mb-4">
