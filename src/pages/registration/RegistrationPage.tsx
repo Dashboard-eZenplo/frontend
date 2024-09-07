@@ -1,41 +1,66 @@
-import { Button, TextField } from '@mui/material';
+import { Alert, Button, Snackbar, SnackbarCloseReason, TextField } from '@mui/material';
 import LogotipoEzenplo from '../../assets/logo-ezenplo.png';
 import { KeyboardReturn } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { hrManagerValidation } from '../../utils/validationSchemas';
 import { IHRManager } from '../../types/HRManager';
+import { formatCNPJ, formatPhone } from '../../utils/formatters';
+import { apiBaseUrl } from '../../utils/api';
+import { useState } from 'react';
 
 export default function RegistrationPage() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue
+    setValue,
+    reset
   } = useForm<IHRManager>({
     resolver: zodResolver(hrManagerValidation)
   });
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+  const [showSnackbar, setShowSnackbar] = useState(false);
 
-  const createHRManager = (data: IHRManager) => {
-    console.log(data);
+  const handleShowSnackbar = (message: string, severity: 'success' | 'error') => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setShowSnackbar(true);
   };
 
-  const formatCNPJ = (value: string) => {
-    return value
-      .replace(/\D/g, '')
-      .replace(/^(\d{2})(\d)/, '$1.$2')
-      .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
-      .replace(/\.(\d{3})(\d)/, '.$1/$2')
-      .replace(/(\d{4})(\d)/, '$1-$2')
-      .replace(/(-\d{2})\d+?$/, '$1');
+  const handleCloseSnackbar = (
+    _event?: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setShowSnackbar(false);
   };
 
-  const formatPhone = (value: string) => {
-    return value
-      .replace(/\D/g, '')
-      .replace(/^(\d{2})(\d)/, '($1) $2')
-      .replace(/(\d{5})(\d)/, '$1-$2')
-      .replace(/(-\d{4})\d+?$/, '$1');
+  const registerUser = async (userData: IHRManager) => {
+    try {
+      const response = await fetch(`${apiBaseUrl}/user/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'Application/json'
+        },
+        body: JSON.stringify(userData)
+      });
+
+      if (!response.ok) {
+        handleShowSnackbar('Erro ao cadastrar usuário.', 'error');
+        const data = await response.json();
+        const { message } = data;
+        throw new Error(message);
+      }
+
+      handleShowSnackbar('Usuário cadastrado com sucesso!', 'success');
+      reset();
+    } catch (error) {
+      console.error('Error while registering user: ' + error);
+    }
   };
 
   const handleCNPJChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +91,7 @@ export default function RegistrationPage() {
           <h1 className="font-bold text-[2.2rem] md:text-[2.6rem] mb-8 2xl:mb-12">Cadastro</h1>
 
           <form
-            onSubmit={handleSubmit(createHRManager)}
+            onSubmit={handleSubmit(registerUser)}
             className="w-full flex flex-col items-center gap-6"
           >
             <div className="w-full">
@@ -156,6 +181,12 @@ export default function RegistrationPage() {
             >
               Cadastrar
             </Button>
+
+            <Snackbar open={showSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+              <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
+                {snackbarMessage}
+              </Alert>
+            </Snackbar>
           </form>
         </div>
       </section>
