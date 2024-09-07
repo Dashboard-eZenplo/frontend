@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { hrManagerValidation } from '../../utils/validationSchemas';
 import { IHRManager } from '../../types/HRManager';
-import { useState } from 'react';
 
 export default function RegistrationPage() {
   const {
@@ -16,7 +15,6 @@ export default function RegistrationPage() {
   } = useForm<IHRManager>({
     resolver: zodResolver(hrManagerValidation)
   });
-  const [cnpjValue, setCnpjValue] = useState('');
 
   const createHRManager = (data: IHRManager) => {
     console.log(data);
@@ -32,28 +30,40 @@ export default function RegistrationPage() {
       .replace(/(-\d{2})\d+?$/, '$1');
   };
 
+  const formatPhone = (value: string) => {
+    return value
+      .replace(/\D/g, '')
+      .replace(/^(\d{2})(\d)/, '($1) $2')
+      .replace(/(\d{5})(\d)/, '$1-$2')
+      .replace(/(-\d{4})\d+?$/, '$1');
+  };
+
   const handleCNPJChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const formattedCNPJ = formatCNPJ(event.target.value);
-    setCnpjValue(formattedCNPJ);
     setValue('cnpj', formattedCNPJ);
+  };
+
+  const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedPhone = formatPhone(event.target.value);
+    setValue('phone', formattedPhone);
   };
 
   return (
     <div className="w-full min-h-screen flex">
-      <section className="hidden lg:flex w-1/2 items-center justify-center bg-primary">
+      <section className="hidden lg:flex w-1/2 max-h-screen sticky top-0 items-center justify-center bg-primary">
         <img
           src={LogotipoEzenplo}
           className="max-w-96 2xl:max-w-[30rem] w-full"
           alt="Logotipo eZenplo"
         />
       </section>
-      <section className="w-full lg:w-1/2 p-10 lg:py-16 text-zinc-700 flex flex-col items-center justify-center">
-        <div className="max-w-[34rem] xl:max-w-[30rem] 2xl:max-w-[34rem] w-full flex flex-col items-center">
+      <section className="w-full lg:w-1/2 p-10 overflow-y-scroll lg:py-16 text-zinc-700 flex justify-center">
+        <div className="max-w-[34rem] xl:max-w-[30rem] 2xl:max-w-[34rem] w-full flex flex-col items-center justify-center">
           <div className="w-full flex justify-end mb-4">
             <KeyboardReturn className="cursor-pointer" />
           </div>
 
-          <h1 className="font-bold text-[2.2rem] md:text-[2.6rem] mb-4 2xl:mb-12">Cadastro</h1>
+          <h1 className="font-bold text-[2.2rem] md:text-[2.6rem] mb-8 2xl:mb-12">Cadastro</h1>
 
           <form
             onSubmit={handleSubmit(createHRManager)}
@@ -66,7 +76,7 @@ export default function RegistrationPage() {
                 className="w-full"
                 placeholder="digite o CNPJ a ser cadastrado"
                 error={!!errors.cnpj}
-                value={cnpjValue}
+                {...register('cnpj')}
                 onChange={handleCNPJChange}
               />
               {errors.cnpj && (
@@ -85,6 +95,21 @@ export default function RegistrationPage() {
               />
               {errors.name && (
                 <span className="text-red-500 mt-[0.2rem] block">{errors.name.message}</span>
+              )}
+            </div>
+
+            <div className="w-full">
+              <TextField
+                label="Telefone"
+                variant="standard"
+                className="w-full"
+                placeholder="digite o telefone a ser cadastrado"
+                error={!!errors.phone}
+                {...register('phone')}
+                onChange={handlePhoneChange}
+              />
+              {errors.phone && (
+                <span className="text-red-500 mt-[0.2rem] block">{errors.phone.message}</span>
               )}
             </div>
 
@@ -114,23 +139,6 @@ export default function RegistrationPage() {
               />
               {errors.password && (
                 <span className="text-red-500 mt-[0.2rem] block">{errors.password.message}</span>
-              )}
-            </div>
-
-            <div className="w-full">
-              <TextField
-                label="Repita a senha"
-                variant="standard"
-                className="w-full"
-                placeholder="repita a senha a ser cadastrada"
-                error={!!errors.repeatPassword}
-                type="password"
-                {...register('repeatPassword')}
-              />
-              {errors.repeatPassword && (
-                <span className="text-red-500 mt-[0.2rem] block">
-                  {errors.repeatPassword.message}
-                </span>
               )}
             </div>
 
