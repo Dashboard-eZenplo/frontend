@@ -41,7 +41,7 @@ export default function RegistrationPage() {
 
   const registerUser = async (userData: IHRManager) => {
     try {
-      const response = await fetch(`${apiBaseUrl}/user/register`, {
+      const response = await fetch(`${apiBaseUrl}/user/register/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'Application/json'
@@ -50,7 +50,6 @@ export default function RegistrationPage() {
       });
 
       if (!response.ok) {
-        handleShowSnackbar('Erro ao cadastrar usuário.', 'error');
         const data = await response.json();
         const { message } = data;
         throw new Error(message);
@@ -60,6 +59,7 @@ export default function RegistrationPage() {
       reset();
     } catch (error) {
       console.error('Error while registering user: ' + error);
+      handleShowSnackbar('Erro ao cadastrar usuário.', 'error');
     }
   };
 
