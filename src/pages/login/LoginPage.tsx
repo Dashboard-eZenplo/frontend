@@ -5,30 +5,24 @@ import { TextField } from '@mui/material';
 function LoginPage() {
   return (
     <div className="h-screen flex w-screen flex-col md:flex-row">
-
       <div className="hidden md:flex w-full md:w-1/2 bg-primary items-center justify-center flex-col relative p-4">
         <div
           className="absolute inset-0 flex items-center justify-center ml-4.5 mt-4.5"
           style={{
-            background:
-              'radial-gradient(circle, rgba(255, 255, 255, 0.20) 0%, transparent 60%)',
+            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.20) 0%, transparent 60%)',
             borderRadius: '50%',
             width: '80%',
-            height: '80%',
+            height: '80%'
           }}
         ></div>
-        <img
-          src={LogotipoEzenplo}
-          className="max-w-xs md:max-w-sm lg:max-h-60 relative "
-        />
+        <img src={LogotipoEzenplo} className="max-w-xs md:max-w-sm lg:max-h-60 relative " />
         <h1
           className="text-2xl md:text-6xl lg:text-7xl font-bold mt-6 mb-5 relative"
           style={{
-            background:
-              'linear-gradient(90deg, #D6D2E1 0%, #FFFFFF 23%, #D5D2E5 100%)',
+            background: 'linear-gradient(90deg, #D6D2E1 0%, #FFFFFF 23%, #D5D2E5 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
+            backgroundClip: 'text'
           }}
         >
           eZenplo
@@ -63,10 +57,7 @@ function LoginPage() {
               />
             </div>
             <div>
-              <button
-                type="submit"
-                className="w-full mt-10 bg-blue-600 text-white rounded"
-              >
+              <button type="submit" className="w-full mt-10 bg-blue-600 text-white rounded">
                 Entrar
               </button>
             </div>
