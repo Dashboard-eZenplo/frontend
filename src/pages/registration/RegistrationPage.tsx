@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Button, TextField } from '@mui/material';
 import LogotipoEzenplo from '../../assets/logo-ezenplo.png';
 import { KeyboardReturn } from '@mui/icons-material';
@@ -5,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { hrManagerValidation } from '../../utils/validationSchemas';
 import { IHRManager } from '../../types/HRManager';
-import { useState } from 'react';
+import Header from '../../components/Header';
 
 export default function RegistrationPage() {
   const {
@@ -16,7 +17,9 @@ export default function RegistrationPage() {
   } = useForm<IHRManager>({
     resolver: zodResolver(hrManagerValidation)
   });
+
   const [cnpjValue, setCnpjValue] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const createHRManager = (data: IHRManager) => {
     console.log(data);
@@ -38,8 +41,23 @@ export default function RegistrationPage() {
     setValue('cnpj', formattedCNPJ);
   };
 
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
+  const headerOptions = [
+    { title: 'Sair', onclick: handleOpenModal, icon: <span>🚪</span> }
+  ];
+
   return (
     <div className="w-full min-h-screen flex flex-col">
+      {/* Componente Header */}
+      <Header
+        headerOptions={headerOptions}
+        isModalOpen={isModalOpen}
+        onOpenModal={handleOpenModal}
+        onCloseModal={handleCloseModal}
+      />
+
       <div className="flex w-full flex-1">
         <section className="hidden lg:flex w-1/2 items-center justify-center bg-primary">
           <img

@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import LogotipoEzenplo from '../assets/logo-header.png';
 import ModalLogout from './ModalLogout';
 
@@ -10,19 +9,12 @@ type HeaderOptionsType = {
 
 type HeaderProps = {
   headerOptions: HeaderOptionsType[];
+  isModalOpen: boolean;
+  onOpenModal: () => void;
+  onCloseModal: () => void;
 };
 
 const Header: React.FC<HeaderProps> = (props) => {
-  const [open, setOpen] = useState(false);
-
-  const handleOpenModal = () => {
-    setOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpen(false);
-  };
-
   return (
     <header className="bg-white p-4 flex justify-between items-center border-b border-black">
       <img src={LogotipoEzenplo} className="w-auto h-9 ml-40" alt="Logo" />
@@ -39,7 +31,7 @@ const Header: React.FC<HeaderProps> = (props) => {
                 onClick={(e) => {
                   e.preventDefault();
                   if (option.title === 'Sair') {
-                    handleOpenModal();
+                    props.onOpenModal();
                   } else {
                     option.onclick();
                   }
@@ -53,8 +45,7 @@ const Header: React.FC<HeaderProps> = (props) => {
         </ul>
       </nav>
 
-      {/* Modal de Logout */}
-      <ModalLogout open={open} onClose={handleCloseModal} />
+      <ModalLogout open={props.isModalOpen} onClose={props.onCloseModal} />
     </header>
   );
 };

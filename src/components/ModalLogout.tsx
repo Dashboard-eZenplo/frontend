@@ -1,4 +1,3 @@
-import React from 'react';
 import { Dialog, DialogTitle, Typography, Box, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,10 +6,10 @@ interface ModalProps {
     onClose: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ open, onClose }) => {
+const LogoutModal = ({ open, onClose }: ModalProps) => {
     const navigate = useNavigate();
 
-    const handleLogout = async () => {
+    const handleLogout = () => {
         try {
             localStorage.removeItem('authToken');
             navigate('/login');
@@ -67,8 +66,8 @@ const Modal: React.FC<ModalProps> = ({ open, onClose }) => {
                 }}
             >
                 <Button
-                    onClick={async () => {
-                        await handleLogout();
+                    onClick={() => {
+                        handleLogout();
                         onClose();
                     }}
                     sx={{
@@ -105,4 +104,4 @@ const Modal: React.FC<ModalProps> = ({ open, onClose }) => {
     );
 };
 
-export default Modal;
+export default LogoutModal;
