@@ -136,6 +136,7 @@ export default function RegistrationPage() {
 
             <Button
               variant="contained"
+              fullWidth
               style={{
                 marginTop: '2.5rem',
                 padding: '0.6rem',
