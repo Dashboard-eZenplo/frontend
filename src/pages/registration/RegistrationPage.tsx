@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { hrManagerValidation } from '../../utils/validationSchemas';
 import { IHRManager } from '../../types/HRManager';
-import Header from '../../components/Header'; // Importando o Header
 
 export default function RegistrationPage() {
   const {
@@ -19,7 +18,6 @@ export default function RegistrationPage() {
   });
 
   const [cnpjValue, setCnpjValue] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const createHRManager = (data: IHRManager) => {
     console.log(data);
@@ -41,27 +39,8 @@ export default function RegistrationPage() {
     setValue('cnpj', formattedCNPJ);
   };
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const headerOptions = [
-    { title: 'Sair', onclick: () => console.log('Logout'), icon: <span>🚪</span> }
-  ];
-
   return (
     <div className="w-full min-h-screen flex flex-col">
-      <Header
-        headerOptions={headerOptions}
-        isModalOpen={isModalOpen}
-        onOpenModal={handleOpenModal}
-        onCloseModal={handleCloseModal}
-      />
-
       <div className="flex w-full flex-1">
         <section className="hidden lg:flex w-1/2 items-center justify-center bg-primary">
           <img
