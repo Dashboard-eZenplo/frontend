@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { hrManagerValidation } from '../../utils/validationSchemas';
 import { IHRManager } from '../../types/HRManager';
-import Header from '../../components/Header';
+import Header from '../../components/Header'; // Importando o Header
 
 export default function RegistrationPage() {
   const {
@@ -41,16 +41,20 @@ export default function RegistrationPage() {
     setValue('cnpj', formattedCNPJ);
   };
 
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   const headerOptions = [
-    { title: 'Sair', onclick: handleOpenModal, icon: <span>🚪</span> }
+    { title: 'Sair', onclick: () => console.log('Logout'), icon: <span>🚪</span> }
   ];
 
   return (
     <div className="w-full min-h-screen flex flex-col">
-      {/* Componente Header */}
       <Header
         headerOptions={headerOptions}
         isModalOpen={isModalOpen}
