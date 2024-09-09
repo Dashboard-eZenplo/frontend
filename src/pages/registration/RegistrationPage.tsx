@@ -6,8 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { hrManagerValidation } from '../../utils/validationSchemas';
 import { IHRManager } from '../../types/HRManager';
 import { formatCNPJ, formatPhone } from '../../utils/formatters';
-import { apiBaseUrl } from '../../utils/api';
 import { useState } from 'react';
+import { registerUser } from '../../services/registerService';
 
 export default function RegistrationPage() {
   const {
@@ -39,26 +39,12 @@ export default function RegistrationPage() {
     setShowSnackbar(false);
   };
 
-  const registerUser = async (userData: IHRManager) => {
+  const handleFormSubmit = async (userData: IHRManager) => {
     try {
-      const response = await fetch(`${apiBaseUrl}/user/register/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'Application/json'
-        },
-        body: JSON.stringify(userData)
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        const { message } = data;
-        throw new Error(message);
-      }
-
+      await registerUser(userData);
       handleShowSnackbar('Usuário cadastrado com sucesso!', 'success');
       reset();
     } catch (error) {
-      console.error('Error while registering user: ' + error);
       handleShowSnackbar('Erro ao cadastrar usuário.', 'error');
     }
   };
@@ -91,7 +77,7 @@ export default function RegistrationPage() {
           <h1 className="font-bold text-[2.2rem] md:text-[2.6rem] mb-8 2xl:mb-12">Cadastro</h1>
 
           <form
-            onSubmit={handleSubmit(registerUser)}
+            onSubmit={handleSubmit(handleFormSubmit)}
             className="w-full flex flex-col items-center gap-6"
           >
             <div className="w-full">
