@@ -7,7 +7,7 @@ import { hrManagerValidation } from '../../utils/validationSchemas';
 import { IHRManager } from '../../types/HRManager';
 import { formatCNPJ, formatPhone } from '../../utils/formatters';
 import { useState } from 'react';
-import { registerUser } from '../../services/registerService';
+import { registerUser } from '../../services/userService';
 
 export default function RegistrationPage() {
   const {
