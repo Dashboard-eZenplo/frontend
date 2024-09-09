@@ -22,47 +22,64 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
         <Dialog
             open={open}
             onClose={onClose}
-            maxWidth={false}
+            maxWidth="xs"
+            fullWidth
             sx={{
                 '& .MuiDialog-paper': {
-                    width: '850px',
-                    height: '500px',
+                    width: '100%',
+                    maxWidth: '400px',
+                    maxHeight: '90vh',
                     border: '4px solid blue',
                     borderRadius: '20px',
-                    overflow: 'hidden',
+                    overflow: 'auto',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                }
+                    padding: '20px',
+                    margin: {
+                        xs: '0 auto', // Centraliza horizontalmente em telas menores
+                        sm: '0 auto', // Centraliza horizontalmente em telas maiores
+                    },
+                },
             }}
         >
             <DialogTitle
                 sx={{
                     textAlign: 'center',
-                    marginBottom: '16px',
-                    fontWeight: 'normal',
-                    fontSize: '65px',
+                    fontWeight: 'bold',
+                    fontSize: '30px', // Tamanho ajustado
                 }}
             >
                 CONFIRMAR SAÍDA
             </DialogTitle>
 
-            <Typography align="center" sx={{
-                fontWeight: 'normal',
-                fontSize: '40px',
-                marginBottom: '24px',
-            }}>
-                Você tem certeza que deseja <span style={{ color: 'blue' }}>sair</span> de sua conta?
+            <Typography
+                sx={{
+                    textAlign: 'center',
+                    fontSize: {
+                        xs: '16px',
+                        sm: '18px',
+                        md: '20px',
+                    },
+                    marginBottom: '24px',
+                }}
+            >
+                Você tem certeza que deseja <strong><span style={{ color: 'blue' }}>sair</span></strong> de sua conta?
             </Typography>
 
             <Box
                 sx={{
                     display: 'flex',
-                    gap: 4,
-                    justifyContent: 'center',
+                    flexDirection: {
+                        xs: 'column',
+                        sm: 'row',
+                    },
+                    gap: 2,
+                    justifyContent: 'center', // Centraliza os botões horizontalmente
                     width: '100%',
-                    maxWidth: '500px',
+                    mt: '24px',
+                    px: 2, // Adiciona padding horizontal para melhor alinhamento
                 }}
             >
                 <Button
@@ -71,14 +88,17 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
                         onClose();
                     }}
                     sx={{
-                        width: '500px',
-                        height: '69px',
+                        minWidth: '120px',
+                        height: '40px',
                         borderRadius: '10px',
                         border: '2px solid blue',
                         backgroundColor: '#ffffff',
                         textTransform: 'none',
-                        fontSize: '28px',
-                        fontWeight: 'normal',
+                        fontSize: {
+                            xs: '14px',
+                            sm: '16px',
+                            md: '18px',
+                        },
                     }}
                 >
                     Sair
@@ -86,15 +106,18 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
                 <Button
                     onClick={onClose}
                     sx={{
-                        width: '500px',
-                        height: '69px',
+                        minWidth: '120px',
+                        height: '40px',
                         borderRadius: '10px',
                         border: '2px solid black',
                         backgroundColor: '#ffffff',
                         color: '#000000',
                         textTransform: 'none',
-                        fontSize: '28px',
-                        fontWeight: 'normal',
+                        fontSize: {
+                            xs: '14px',
+                            sm: '16px',
+                            md: '18px',
+                        },
                     }}
                 >
                     Cancelar
