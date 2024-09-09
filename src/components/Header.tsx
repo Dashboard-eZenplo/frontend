@@ -23,7 +23,7 @@ function Header({ headerOptions }: HeaderProps) {
               key={index}
               className={`flex items-center ${index !== headerOptions.length - 1 ? 'mr-12' : 'ml-32'}`}
             >
-              <Link to={to} className="text-black flex items-center space-x-2">
+              <Link to={to.startsWith('/') ? to : `/${to}`} className="text-black flex items-center space-x-2">
                 <span>{icon}</span>
                 <span>{title}</span>
               </Link>
