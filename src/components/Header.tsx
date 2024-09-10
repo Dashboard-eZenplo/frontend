@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import LogotipoEzenplo from '../assets/logo-header.png';
-import ModalLogout from './ModalLogout';
 
 type HeaderOptionsType = {
   title: string;
@@ -35,8 +34,6 @@ function Header({ headerOptions }: HeaderProps) {
           ))}
         </ul>
       </nav>
-
-      <ModalLogout open={props.isModalOpen} onClose={props.onCloseModal} />
     </header>
   );
 }
