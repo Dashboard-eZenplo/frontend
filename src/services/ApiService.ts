@@ -10,15 +10,15 @@ class ApiService {
 		});
 
 		// Interceptor de respostas para tratar erros globalmente
-		 this.api.interceptors.response.use(
-		 	(response) => response,
-		 	(error) => {
-		 		console.error('Código Erro:', error);
-		 		console.error('Erro na requisição:', error.response?.data);
-		 		return Promise.reject(error);
-		 	}
-		 );
-        
+		this.api.interceptors.response.use(
+			(response) => response,
+			(error) => {
+				console.error('Código Erro:', error);
+				console.error('Erro na requisição:', error.response?.data);
+				return Promise.reject(error);
+			}
+		);
+
 	}
 
 	public get(url: string, params?: object) {
