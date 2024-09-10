@@ -27,10 +27,13 @@ function LoginPage() {
     try {
       const response = await api.post('user/login/', authData);
       console.log(response)
+      console.log(response.data.success)
+      console.log(response.data.token)
       if (response.data.success) {
         localStorage.setItem('token', response.data.token);
         signIn(response.data.user);
-        navigate('/register/');
+        console.log('oi')
+        navigate('/cadastro');
       } else {
         setError('Login falhou, email ou senha incorretos.');
       }
