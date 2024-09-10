@@ -68,7 +68,7 @@ export default function RegistrationPage() {
           alt="Logotipo eZenplo"
         />
       </section>
-      <section className="w-full lg:w-1/2 p-10 overflow-y-scroll lg:py-16 text-zinc-700 flex justify-center">
+      <section className="w-full lg:w-1/2 p-10 lg:py-16 text-zinc-700 flex justify-center">
         <div className="max-w-[34rem] xl:max-w-[30rem] 2xl:max-w-[34rem] w-full flex flex-col items-center justify-center">
           <div className="w-full flex justify-end mb-4">
             <KeyboardReturn className="cursor-pointer" />
@@ -155,7 +155,7 @@ export default function RegistrationPage() {
 
             <Button
               variant="contained"
-              style={{
+              sx={{
                 marginTop: '2.5rem',
                 padding: '0.6rem',
                 fontFamily: 'inherit',
@@ -169,7 +169,14 @@ export default function RegistrationPage() {
             </Button>
 
             <Snackbar open={showSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
-              <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
+              <Alert
+                sx={{
+                  backgroundColor: `${snackbarSeverity === 'success' ? '#7ED298' : '#F3858C'}`
+                }}
+                onClose={handleCloseSnackbar}
+                severity={snackbarSeverity}
+                variant="filled"
+              >
                 {snackbarMessage}
               </Alert>
             </Snackbar>
