@@ -1,9 +1,11 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
 import LogotipoEzenplo from '../assets/logo-header.png';
 import ModalLogout from './ModalLogout';
 
 type HeaderOptionsType = {
   title: string;
-  onclick: () => void;
+  to: string;
   icon: React.ReactNode;
 };
 
@@ -14,32 +16,21 @@ type HeaderProps = {
   onCloseModal: () => void;
 };
 
-const Header: React.FC<HeaderProps> = (props) => {
+function Header({ headerOptions }: HeaderProps) {
   return (
     <header className="bg-white p-4 flex justify-between items-center border-b border-black">
-      <img src={LogotipoEzenplo} className="w-auto h-9 ml-40" alt="Logo" />
+      <img src={LogotipoEzenplo} className="w-auto h-9 ml-40" alt="LogotipoEzenplo" />
       <nav className="flex mr-24">
         <ul className="flex">
-          {props.headerOptions.map((option, index) => (
+          {headerOptions.map(({ title, to, icon }, index) => (
             <li
               key={index}
-              className={`flex items-center ${index !== props.headerOptions.length - 1 ? 'mr-12' : 'ml-32'}`}
+              className={`flex items-center ${index !== headerOptions.length - 1 ? 'mr-12' : 'ml-32'}`}
             >
-              <a
-                href="#"
-                className="text-black flex items-center space-x-2"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (option.title === 'Sair') {
-                    props.onOpenModal();
-                  } else {
-                    option.onclick();
-                  }
-                }}
-              >
-                <span>{option.icon}</span>
-                <span>{option.title}</span>
-              </a>
+              <Link to={to.startsWith('/') ? to : `/${to}`} className="text-black flex items-center space-x-2">
+                <span>{icon}</span>
+                <span>{title}</span>
+              </Link>
             </li>
           ))}
         </ul>
@@ -48,6 +39,6 @@ const Header: React.FC<HeaderProps> = (props) => {
       <ModalLogout open={props.isModalOpen} onClose={props.onCloseModal} />
     </header>
   );
-};
+}
 
 export default Header;
