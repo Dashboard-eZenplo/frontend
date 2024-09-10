@@ -26,16 +26,12 @@ function LoginPage() {
 
     try {
       const response = await api.post('user/login/', authData);
-      console.log(response)
-      console.log(response.data.success)
-      console.log(response.data.token)
-      if (response.data.success) {
-        localStorage.setItem('token', response.data.token);
-        signIn(response.data.user);
-        console.log('oi')
+      // Se o backend não retornar o token, você pode exibir uma mensagem ou fazer outra ação
+      if (response.status === 200) {
+        // Aqui você pode redirecionar, mas sem um token de autenticação
         navigate('/cadastro');
       } else {
-        setError('Login falhou, email ou senha incorretos.');
+        setError('Login falhou.');
       }
     } catch (err) {
       console.error('Erro durante o login:', err);
