@@ -3,7 +3,6 @@ import '../../styles/App.css';
 import LogotipoEzenplo from '../../assets/logo.svg';
 import { TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../controllers/AuthContext';
 import { AuthDTO } from '../../dtos/AuthDTO';
 import api from '../../services/ApiService';
 
@@ -11,7 +10,6 @@ function LoginPage() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-  const { signIn } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -26,9 +24,7 @@ function LoginPage() {
 
     try {
       const response = await api.post('user/login/', authData);
-      // Se o backend não retornar o token, você pode exibir uma mensagem ou fazer outra ação
       if (response.status === 200) {
-        // Aqui você pode redirecionar, mas sem um token de autenticação
         navigate('/cadastro');
       } else {
         setError('Login falhou.');
