@@ -22,33 +22,27 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
         <Dialog
             open={open}
             onClose={onClose}
-            maxWidth="xs"
-            fullWidth
+            maxWidth={false}
             sx={{
                 '& .MuiDialog-paper': {
-                    width: '100%',
-                    maxWidth: '400px',
-                    maxHeight: '90vh',
+                    width: '850px',
+                    height: '500px',
                     border: '4px solid blue',
                     borderRadius: '20px',
-                    overflow: 'auto',
+                    overflow: 'hidden',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '20px',
-                    margin: {
-                        xs: '0 auto', // Centraliza horizontalmente em telas menores
-                        sm: '0 auto', // Centraliza horizontalmente em telas maiores
-                    },
-                },
+                    justifyContent: 'center'
+                }
             }}
         >
             <DialogTitle
                 sx={{
                     textAlign: 'center',
-                    fontWeight: 'bold',
-                    fontSize: '30px', // Tamanho ajustado
+                    marginBottom: '16px',
+                    fontWeight: 'normal',
+                    fontSize: '65px'
                 }}
             >
                 CONFIRMAR SAÍDA
@@ -67,19 +61,24 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
             >
                 Você tem certeza que deseja <strong><span style={{ color: 'blue' }}>sair</span></strong> de sua conta?
             </Typography>
+            <Typography
+                align="center"
+                sx={{
+                    fontWeight: 'normal',
+                    fontSize: '40px',
+                    marginBottom: '24px'
+                }}
+            >
+                Você tem certeza que deseja <span style={{ color: 'blue' }}>sair</span> de sua conta?
+            </Typography>
 
             <Box
                 sx={{
                     display: 'flex',
-                    flexDirection: {
-                        xs: 'column',
-                        sm: 'row',
-                    },
-                    gap: 2,
-                    justifyContent: 'center', // Centraliza os botões horizontalmente
+                    gap: 4,
+                    justifyContent: 'center',
                     width: '100%',
-                    mt: '24px',
-                    px: 2, // Adiciona padding horizontal para melhor alinhamento
+                    maxWidth: '500px'
                 }}
             >
                 <Button
@@ -88,17 +87,14 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
                         onClose();
                     }}
                     sx={{
-                        minWidth: '120px',
-                        height: '40px',
+                        width: '500px',
+                        height: '69px',
                         borderRadius: '10px',
                         border: '2px solid blue',
                         backgroundColor: '#ffffff',
                         textTransform: 'none',
-                        fontSize: {
-                            xs: '14px',
-                            sm: '16px',
-                            md: '18px',
-                        },
+                        fontSize: '28px',
+                        fontWeight: 'normal'
                     }}
                 >
                     Sair
@@ -106,18 +102,15 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
                 <Button
                     onClick={onClose}
                     sx={{
-                        minWidth: '120px',
-                        height: '40px',
+                        width: '500px',
+                        height: '69px',
                         borderRadius: '10px',
                         border: '2px solid black',
                         backgroundColor: '#ffffff',
                         color: '#000000',
                         textTransform: 'none',
-                        fontSize: {
-                            xs: '14px',
-                            sm: '16px',
-                            md: '18px',
-                        },
+                        fontSize: '28px',
+                        fontWeight: 'normal'
                     }}
                 >
                     Cancelar

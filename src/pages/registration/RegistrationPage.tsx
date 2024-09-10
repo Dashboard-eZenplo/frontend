@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Button, TextField } from '@mui/material';
 import LogotipoEzenplo from '../../assets/logo.svg';
 import { KeyboardReturn } from '@mui/icons-material';
@@ -6,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { hrManagerValidation } from '../../utils/validationSchemas';
 import { IHRManager } from '../../types/HRManager';
+import { useState } from 'react';
 
 export default function RegistrationPage() {
   const {
@@ -16,7 +16,6 @@ export default function RegistrationPage() {
   } = useForm<IHRManager>({
     resolver: zodResolver(hrManagerValidation)
   });
-
   const [cnpjValue, setCnpjValue] = useState('');
 
   const createHRManager = (data: IHRManager) => {
@@ -104,9 +103,7 @@ export default function RegistrationPage() {
                 {...register('name')}
               />
               {errors.name && (
-                <span className="text-red-500 mt-[0.2rem] block">
-                  {errors.name.message}
-                </span>
+                <span className="text-red-500 mt-[0.2rem] block">{errors.name.message}</span>
               )}
             </div>
 
@@ -120,9 +117,7 @@ export default function RegistrationPage() {
                 {...register('email')}
               />
               {errors.email && (
-                <span className="text-red-500 mt-[0.2rem] block">
-                  {errors.email.message}
-                </span>
+                <span className="text-red-500 mt-[0.2rem] block">{errors.email.message}</span>
               )}
             </div>
 
@@ -137,9 +132,7 @@ export default function RegistrationPage() {
                 {...register('password')}
               />
               {errors.password && (
-                <span className="text-red-500 mt-[0.2rem] block">
-                  {errors.password.message}
-                </span>
+                <span className="text-red-500 mt-[0.2rem] block">{errors.password.message}</span>
               )}
             </div>
 
@@ -162,6 +155,7 @@ export default function RegistrationPage() {
 
             <Button
               variant="contained"
+              fullWidth
               style={{
                 marginTop: '2.5rem',
                 padding: '0.6rem',
