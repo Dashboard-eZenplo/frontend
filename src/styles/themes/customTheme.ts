@@ -42,6 +42,16 @@ const customTheme = createTheme({
           }
         },
         {
+          props: { variant: 'contained', color: 'secondary' },
+          style: {
+            backgroundColor: '#FFFFFF',
+            color: '#282828',
+            '&:hover': {
+              backgroundColor: '#FAFAFA'
+            }
+          }
+        },
+        {
           props: { variant: 'outlined', color: 'secondary' },
           style: {
             backgroundColor: '#FFFFFF',
@@ -53,6 +63,7 @@ const customTheme = createTheme({
             }
           }
         },
+
         {
           props: { fullWidth: true },
           style: {
