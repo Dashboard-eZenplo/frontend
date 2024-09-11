@@ -44,8 +44,9 @@ export default function RegistrationPage() {
       await registerUser(userData);
       handleShowSnackbar('Usuário cadastrado com sucesso!', 'success');
       reset();
-    } catch (error) {
+    } catch (e) {
       handleShowSnackbar('Erro ao cadastrar usuário.', 'error');
+      console.log(e);
     }
   };
 
