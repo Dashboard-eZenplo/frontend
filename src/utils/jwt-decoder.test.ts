@@ -1,17 +1,12 @@
-import {
-  getRolesFromToken,
-  getUsernameFromToken,
-  getUserIdFromToken,
-  isTokenExpired
-} from './jwt-decoder';
+import { isAdmin, getUserEMailFromToken, getUserIdFromToken, isTokenExpired } from './jwt-decoder';
 
 describe('Token Utility Functions', () => {
   const mockToken =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMTIzIiwibmFtZSI6IkpvaG4gRG9lIiwiUk9MRVMiOlsiYWRtaW4iLCJ1c2VyIl0sIlVTRVJfSUQiOjEsImlhdCI6MTY5NTAwMDAwMCwiZXhwIjoyNTI0NjA4MDAwfQ.F2ExNudIFwmr0OJTDiFiie60RH4sFUHDAmVAxgwG3lA';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyMTIzQGVtYWlsLmNvbSIsImFkbWluIjoxLCJ1c2VyX2lkIjoxLCJpYXQiOjE2OTUwMDAwMDAsImV4cCI6MjUyNDYwODAwMH0.Ke2bV9ysy4HBb0_F6bsCEP2DoLtY3QLJ895KmplhEmA';
   const decodedToken = {
-    sub: 'user123',
-    name: 'John Doe',
-    ROLES: ['admin', 'user'],
+    sub: 'user123@email.com',
+    admin: 1,
+    user_id: 1,
     iat: 1695000000,
     exp: 2524608000
   };
@@ -20,14 +15,14 @@ describe('Token Utility Functions', () => {
     jest.mock('jwt-decode', () => () => decodedToken);
   });
 
-  test('should return roles from token', () => {
-    const roles = getRolesFromToken(mockToken);
-    expect(roles).toEqual(['admin', 'user']);
+  test('should return if user is admin from token', () => {
+    const isUserAdmin = isAdmin(mockToken);
+    expect(isUserAdmin).toEqual(1);
   });
 
-  test('should return username from token', () => {
-    const username = getUsernameFromToken(mockToken);
-    expect(username).toBe('user123');
+  test('should return user email from token', () => {
+    const userEmail = getUserEMailFromToken(mockToken);
+    expect(userEmail).toBe('user123@email.com');
   });
 
   test('should return user ID from token', () => {
