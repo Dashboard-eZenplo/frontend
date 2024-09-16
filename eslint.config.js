@@ -20,12 +20,13 @@ export default [
   {
     plugins: { prettier: prettierPlugin },
     rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
       'prettier/prettier': 'error',
-      'react/react-in-jsx-scope': 'off' // Desativa a regra para importar React ao usar JSX (React 17+)
+      'react/react-in-jsx-scope': 'off'
     },
     settings: {
       react: {
-        version: 'detect' // Detecção automática da versão do React
+        version: 'detect'
       }
     }
   }
