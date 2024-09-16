@@ -1,24 +1,16 @@
-import { apiBaseUrl } from '../utils/api';
 import { IHRManager } from '../types/HRManager';
+import api from '../utils/api';
 
 export const registerUser = async (userData: IHRManager) => {
   try {
-    const response = await fetch(`${apiBaseUrl}/user/register/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userData)
-    });
+    const response = await api.post(`/user/register/`, userData);
 
-    if (!response.ok) {
-      const data = await response.json();
-      const { message } = data;
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      const { message } = error.response.data;
       throw new Error(message);
     }
-
-    return response;
-  } catch (error) {
     console.error('Error while registering user:', error);
     throw error;
   }

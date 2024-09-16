@@ -1,8 +1,28 @@
 import '../../styles/App.css';
 import LogotipoEzenplo from '../../assets/logo.svg';
 import { TextField } from '@mui/material';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../../services/auth/authService';
 
 function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      await login(email, password);
+
+      navigate('/dashboard');
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+
   return (
     <div className="h-screen flex w-screen flex-col md:flex-row">
       <div className="hidden md:flex w-full md:w-1/2 bg-primary items-center justify-center flex-col relative p-4">
@@ -15,7 +35,11 @@ function LoginPage() {
             height: '80%'
           }}
         ></div>
-        <img src={LogotipoEzenplo} className="max-w-xs md:max-w-sm lg:max-h-60 relative " />
+        <img
+          src={LogotipoEzenplo}
+          className="max-w-xs md:max-w-sm lg:max-h-60 relative "
+          alt="Logotipo da eZenplo"
+        />
         <h1
           className="text-2xl md:text-6xl lg:text-7xl font-bold mt-6 mb-5 relative"
           style={{
@@ -35,7 +59,7 @@ function LoginPage() {
       <div className="w-full md:w-1/2 h-screen flex flex-col items-center justify-center p-10">
         <h1 className="font-bold text-black mb-20">Faça login</h1>
         <div className="w-full max-w-sm">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="relative">
               <TextField
                 type="email"
@@ -44,6 +68,8 @@ function LoginPage() {
                 className="w-full"
                 placeholder="Digite seu e-mail"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="relative">
@@ -54,8 +80,12 @@ function LoginPage() {
                 className="w-full"
                 placeholder="Digite sua senha"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            {error && <p className="text-red-500">Usuário ou senha inválidos</p>}
+
             <div>
               <button type="submit" className="w-full mt-10 bg-blue-600 text-white rounded">
                 Entrar
