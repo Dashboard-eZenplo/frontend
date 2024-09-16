@@ -2,23 +2,23 @@ import { jwtDecode } from 'jwt-decode';
 
 export interface JwtPayload {
   sub: string;
-  ROLES: string[];
-  USER_ID: number;
+  admin: boolean;
+  user_id: number;
   iat: number;
   exp: number;
 }
 
-export function getRolesFromToken(token: string): string[] {
+export function isAdmin(token: string): boolean {
   try {
     const decoded: JwtPayload = jwtDecode<JwtPayload>(token);
-    return decoded.ROLES || [];
+    return decoded.admin;
   } catch (error) {
     console.error('Failed to decode JWT token:', error);
-    return [];
+    return false;
   }
 }
 
-export function getUsernameFromToken(token: string): string {
+export function getUserEMailFromToken(token: string): string {
   try {
     const decoded: JwtPayload = jwtDecode<JwtPayload>(token);
     return decoded.sub || '';
@@ -31,7 +31,7 @@ export function getUsernameFromToken(token: string): string {
 export function getUserIdFromToken(token: string): number | null {
   try {
     const decoded: JwtPayload = jwtDecode<JwtPayload>(token);
-    return decoded.USER_ID || null;
+    return decoded.user_id || null;
   } catch (error) {
     console.error('Failed to decode JWT token:', error);
     return null;
