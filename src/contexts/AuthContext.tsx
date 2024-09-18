@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, ReactNode } from 'react';
-import { UserDTO } from '../models/UserDTO';
+import { UserDTO } from '../models/User';
 
 interface AuthContextData {
 	user: UserDTO | null;
