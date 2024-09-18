@@ -3,7 +3,6 @@ import '../../styles/App.css';
 import LogotipoEzenplo from '../../assets/logo.svg';
 import { TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { AuthDTO } from '../../dtos/AuthDTO';
 import api from '../../services/ApiService';
 
 function LoginPage() {
@@ -19,8 +18,6 @@ function LoginPage() {
       setError('Por favor, preencha todos os campos.');
       return;
     }
-
-    const authData = new AuthDTO(email, password);
 
     try {
       const response = await api.post('user/login/', authData);
