@@ -2,6 +2,7 @@ import { createContext, useState, useContext, ReactNode, useEffect } from 'react
 import { User } from '../models/User';
 import { login, logout, isAuthenticated, getToken } from '../services/auth/authService';
 import { getUserIdFromToken, getUserEMailFromToken, isAdmin } from '../utils/jwt-decoder';
+import { useNavigate } from 'react-router-dom';
 
 interface AuthContextData {
   user: User | null;
@@ -15,6 +16,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isUserAuthenticated, setIsUserAuthenticated] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const signIn = async (email: string, password: string) => {
     try {
@@ -29,9 +31,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       setUser(loggedInUser);
       setIsUserAuthenticated(true);
+
+      navigate(loggedInUser.admin ? '/admin-dashboard' : '/dashboard');
     } catch (error) {
       throw error;
     }
+    
   };
 
   const signOut = () => {

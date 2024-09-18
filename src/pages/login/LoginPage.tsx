@@ -20,7 +20,6 @@ function LoginPage() {
       
       await signIn(email, password);
 
-      navigate('/dashboard');
     } catch (error: any) {
       setError(error.message);
     }
