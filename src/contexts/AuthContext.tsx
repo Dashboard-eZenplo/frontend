@@ -1,9 +1,9 @@
 import { createContext, useState, useContext, ReactNode } from 'react';
-import { UserDTO } from '../models/User';
+import { User } from '../models/User';
 
 interface AuthContextData {
-	user: UserDTO | null;
-	signIn: (userData: UserDTO) => void;
+	user: User | null;
+	signIn: (userData: User) => void;
 	signOut: () => void;
 }
 
@@ -12,9 +12,9 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 	children,
 }) => {
-	const [user, setUser] = useState<UserDTO | null>(null);
+	const [user, setUser] = useState<User | null>(null);
 
-	const signIn = (userData: UserDTO) => {
+	const signIn = (userData: User) => {
 		setUser(userData);
 	};
 
