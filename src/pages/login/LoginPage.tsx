@@ -17,7 +17,7 @@ function LoginPage() {
 
     try {
       
-      await login(email, password, isAdmin);
+      await login(email, password);
 
       navigate(isAdmin ? '/admin-dashboard' : '/dashboard');
 

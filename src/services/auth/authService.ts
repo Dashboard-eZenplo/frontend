@@ -1,21 +1,23 @@
 import axios from 'axios';
+import {getUserIdFromToken, getUserEMailFromToken, isAdmin} from '../../utils/jwt-decoder';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const login = async (email: string, password: string, isAdmin: boolean) => {
+export const login = async (email: string, password: string) => {
   try {
     const response = await axios.post(`${API_URL}/auth/login`, {
       email,
       password,
-      isAdmin
     });
 
     const { access_token, refresh_token } = response.data;
 
     localStorage.setItem('accessToken', access_token);
     localStorage.setItem('refreshToken', refresh_token);
-    
-    localStorage.setItem('isAdmin', isAdmin.toString());
+
+    const admin = isAdmin(access_token);
+    const userId = getUserIdFromToken(access_token);
+    const userEmail = getUserEMailFromToken(access_token);
 
     return response.data;
   } catch (error: any) {
