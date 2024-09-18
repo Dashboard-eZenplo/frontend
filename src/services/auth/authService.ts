@@ -2,17 +2,20 @@ import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const login = async (email: string, password: string) => {
+export const login = async (email: string, password: string, isAdmin: boolean) => {
   try {
     const response = await axios.post(`${API_URL}/auth/login`, {
       email,
-      password
+      password,
+      isAdmin
     });
 
     const { access_token, refresh_token } = response.data;
 
     localStorage.setItem('accessToken', access_token);
     localStorage.setItem('refreshToken', refresh_token);
+    
+    localStorage.setItem('isAdmin', isAdmin.toString());
 
     return response.data;
   } catch (error: any) {

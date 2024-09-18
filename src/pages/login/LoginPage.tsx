@@ -8,6 +8,7 @@ import { login } from '../../services/auth/authService';
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -15,9 +16,11 @@ function LoginPage() {
     event.preventDefault();
 
     try {
-      await login(email, password);
+      
+      await login(email, password, isAdmin);
 
-      navigate('/dashboard');
+      navigate(isAdmin ? '/admin-dashboard' : '/dashboard');
+
     } catch (error: any) {
       setError(error.message);
     }
