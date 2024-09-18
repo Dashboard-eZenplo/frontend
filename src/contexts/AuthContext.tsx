@@ -1,32 +1,65 @@
-import { createContext, useState, useContext, ReactNode } from 'react';
+import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { User } from '../models/User';
+import { login, logout, isAuthenticated, getToken } from '../services/auth/authService';
+import { getUserIdFromToken, getUserEMailFromToken, isAdmin } from '../utils/jwt-decoder';
 
 interface AuthContextData {
-	user: User | null;
-	signIn: (userData: User) => void;
-	signOut: () => void;
+  user: User | null;
+  signIn: (email: string, password: string) => Promise<void>;
+  signOut: () => void;
+  isUserAuthenticated: boolean;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({
-	children,
-}) => {
-	const [user, setUser] = useState<User | null>(null);
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState<boolean>(false);
 
-	const signIn = (userData: User) => {
-		setUser(userData);
-	};
+  const signIn = async (email: string, password: string) => {
+    try {
+      const response = await login(email, password);
+      const accessToken = response.access_token;
+      
+      const loggedInUser: User = {
+        id: String(getUserIdFromToken(accessToken)) || '',
+        email: getUserEMailFromToken(accessToken),
+        admin: isAdmin(accessToken),
+      };
 
-	const signOut = () => {
-		setUser(null);
-	};
+      setUser(loggedInUser);
+      setIsUserAuthenticated(true);
+    } catch (error) {
+      throw error;
+    }
+  };
 
-	return (
-		<AuthContext.Provider value={{ user, signIn, signOut }}>
-			{children}
-		</AuthContext.Provider>
-	);
+  const signOut = () => {
+    logout();
+    setUser(null);
+    setIsUserAuthenticated(false);
+  };
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      const token = getToken();
+      if (token) {
+        const currentUser: User = {
+          id: String(getUserIdFromToken(token)) || '',
+          email: getUserEMailFromToken(token),
+          admin: isAdmin(token),
+        };
+        setUser(currentUser);
+        setIsUserAuthenticated(true);
+      }
+    }
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ user, signIn, signOut, isUserAuthenticated }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => useContext(AuthContext);
