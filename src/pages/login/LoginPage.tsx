@@ -4,12 +4,13 @@ import { TextField } from '@mui/material';
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 
-const { signIn } = useAuth();
-
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const { signIn } = useAuth();
+
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
