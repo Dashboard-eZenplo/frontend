@@ -23,12 +23,12 @@ const companies: Company[] = [
     adicionais: 'Adicionais empresa 1'
   },
   {
-    empresa: 'Empresa Fictícia 1',
-    email: 'emailempresa1@email.com',
+    empresa: 'Empresa Fictícia 2',
+    email: 'emailempresa2@email.com',
     contratos: 4536,
     telefone: '55 99988-7766',
     cnpj: '00013271432432',
-    adicionais: 'Adicionais empresa 1'
+    adicionais: 'Adicionais empresa 2'
   },
   {
     empresa: 'Empresa Fictícia 1',
