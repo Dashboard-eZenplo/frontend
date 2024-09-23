@@ -5,7 +5,7 @@
 @layer utilities {
   .scrollbar::-webkit-scrollbar {
     width: 0.2rem;
-    height: 0.2rem;
+    height: 0.1rem;
   }
 
   .scrollbar::-webkit-scrollbar-thumb {

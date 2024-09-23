@@ -8,6 +8,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import StackedBarChart from '../../components/stackedBarChart/StackedBarChart';
 
 const statistics = [
   {
@@ -67,15 +68,6 @@ export default function Dashboard() {
                     slotProps={{
                       textField: {
                         size: 'small'
-                        // sx: {
-                        // maxWidth: '8rem',
-                        //'& .MuiInputBase-input': {
-                        // fontSize: '0.9rem'
-                        //},
-                        //'& .MuiInputLabel-root': {
-                        // fontSize: '0.9rem'
-                        //}
-                        //}
                       }
                     }}
                   />
@@ -91,15 +83,6 @@ export default function Dashboard() {
                     slotProps={{
                       textField: {
                         size: 'small'
-                        // sx: {
-                        // maxWidth: '8rem',
-                        //'& .MuiInputBase-input': {
-                        // fontSize: '0.9rem'
-                        //},
-                        //'& .MuiInputLabel-root': {
-                        // fontSize: '0.9rem'
-                        //}
-                        //}
                       }
                     }}
                   />
@@ -115,15 +98,6 @@ export default function Dashboard() {
                     slotProps={{
                       textField: {
                         size: 'small'
-                        // sx: {
-                        // maxWidth: '8rem',
-                        //'& .MuiInputBase-input': {
-                        // fontSize: '0.9rem'
-                        //},
-                        //'& .MuiInputLabel-root': {
-                        // fontSize: '0.9rem'
-                        //}
-                        //}
                       }
                     }}
                   />
@@ -139,15 +113,6 @@ export default function Dashboard() {
                     slotProps={{
                       textField: {
                         size: 'small'
-                        // sx: {
-                        // maxWidth: '8rem',
-                        //'& .MuiInputBase-input': {
-                        // fontSize: '0.9rem'
-                        //},
-                        //'& .MuiInputLabel-root': {
-                        // fontSize: '0.9rem'
-                        //}
-                        //}
                       }
                     }}
                   />
@@ -163,15 +128,6 @@ export default function Dashboard() {
                     slotProps={{
                       textField: {
                         size: 'small'
-                        // sx: {
-                        // maxWidth: '8rem',
-                        //'& .MuiInputBase-input': {
-                        // fontSize: '0.9rem'
-                        //},
-                        //'& .MuiInputLabel-root': {
-                        // fontSize: '0.9rem'
-                        //}
-                        //}
                       }
                     }}
                   />
@@ -187,19 +143,16 @@ export default function Dashboard() {
                     slotProps={{
                       textField: {
                         size: 'small'
-                        // sx: {
-                        // maxWidth: '8rem',
-                        //'& .MuiInputBase-input': {
-                        // fontSize: '0.9rem'
-                        //},
-                        //'& .MuiInputLabel-root': {
-                        // fontSize: '0.9rem'
-                        //}
-                        //}
                       }
                     }}
                   />
                 </DemoContainer>
+              </div>
+            </div>
+
+            <div className="w-full flex-1 flex items-end justify-center">
+              <div className="w-[70%] h-[70%]">
+                <StackedBarChart />
               </div>
             </div>
           </div>
