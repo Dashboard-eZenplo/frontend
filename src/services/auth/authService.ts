@@ -6,7 +6,7 @@ export const login = async (email: string, password: string) => {
   try {
     const response = await axios.post(`${API_URL}/auth/login`, {
       email,
-      password,
+      password
     });
 
     const { access_token, refresh_token } = response.data;
