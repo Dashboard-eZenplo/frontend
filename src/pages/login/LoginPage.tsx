@@ -11,14 +11,11 @@ function LoginPage() {
 
   const { signIn } = useAuth();
 
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      
       await signIn(email, password);
-
     } catch (error: any) {
       setError(error.message);
     }

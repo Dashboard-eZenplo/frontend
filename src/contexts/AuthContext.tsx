@@ -22,11 +22,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       const response = await login(email, password);
       const accessToken = response.access_token;
-      
+
       const loggedInUser: User = {
         id: String(getUserIdFromToken(accessToken)) || '',
         email: getUserEMailFromToken(accessToken),
-        admin: isAdmin(accessToken),
+        admin: isAdmin(accessToken)
       };
 
       setUser(loggedInUser);
@@ -34,9 +34,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       navigate(loggedInUser.admin ? '/admin-dashboard' : '/dashboard');
     } catch (error) {
-      throw error;
+      console.error('Error while signing in: ', error);
     }
-    
   };
 
   const signOut = () => {
@@ -52,7 +51,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const currentUser: User = {
           id: String(getUserIdFromToken(token)) || '',
           email: getUserEMailFromToken(token),
-          admin: isAdmin(token),
+          admin: isAdmin(token)
         };
         setUser(currentUser);
         setIsUserAuthenticated(true);

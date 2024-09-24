@@ -19,18 +19,18 @@ build:
   script:
     - npm run build
   tags:
-    - ezenplo-frontend
+    - aws-frontend
 
 lint:
   stage: lint
   script:
     - npm run lint
   tags:
-    - ezenplo-frontend
+    - aws-frontend
 
 unit-test:
   stage: test
   script:
     - npm run test
   tags:
-    - ezenplo-frontend
+    - aws-frontend
