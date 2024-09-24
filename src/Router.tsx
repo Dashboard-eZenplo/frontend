@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import RegistrationPage from './pages/registration/RegistrationPage';
 import LoginPage from './pages/login/LoginPage';
 import HomePage from './pages/home/HomePage';
-import ManagersList from './pages/managers-list/ManagersList';
+import ManagersPage from './pages/managers/ManagersPage';
 
 export default function Router() {
   return (
@@ -11,7 +11,7 @@ export default function Router() {
         <Route path="/" element={<HomePage />} />
         <Route path="/cadastro" element={<RegistrationPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/admin" element={<ManagersList />} />
+        <Route path="/admin" element={<ManagersPage />} />
       </Routes>
     </BrowserRouter>
   );
