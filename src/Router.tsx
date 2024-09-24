@@ -11,7 +11,7 @@ export default function Router() {
         <Route path="/" element={<HomePage />} />
         <Route path="/cadastro" element={<RegistrationPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/tabela" element={<ManagersList />} />
+        <Route path="/admin" element={<ManagersList />} />
       </Routes>
     </BrowserRouter>
   );
