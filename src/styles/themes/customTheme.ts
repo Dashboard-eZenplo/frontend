@@ -1,4 +1,19 @@
-import { createTheme } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+
+declare module '@mui/material/styles' {
+  interface Components {
+    MuiDataGrid?: {
+      styleOverrides?: {
+        root?: React.CSSProperties;
+        columnHeaders?: React.CSSProperties;
+        columnHeader?: React.CSSProperties;
+        toolbarContainer?: React.CSSProperties;
+        filterPanel?: React.CSSProperties;
+        checkbox?: React.CSSProperties;
+      };
+    };
+  }
+}
 
 const customTheme = createTheme({
   typography: {
@@ -29,50 +44,8 @@ const customTheme = createTheme({
             boxShadow: 'none'
           }
         }
-      },
-      variants: [
-        {
-          props: { variant: 'outlined' },
-          style: {
-            backgroundColor: '#FFFFFF',
-            color: '#004BF9',
-            '&:hover': {
-              backgroundColor: '#FAFAFA'
-            }
-          }
-        },
-        {
-          props: { variant: 'contained', color: 'secondary' },
-          style: {
-            backgroundColor: '#FFFFFF',
-            color: '#282828',
-            '&:hover': {
-              backgroundColor: '#FAFAFA'
-            }
-          }
-        },
-        {
-          props: { variant: 'outlined', color: 'secondary' },
-          style: {
-            backgroundColor: '#FFFFFF',
-            color: '#282828',
-            borderColor: '#282828',
-            '&:hover': {
-              backgroundColor: '#FAFAFA',
-              borderColor: '#282828'
-            }
-          }
-        },
-
-        {
-          props: { fullWidth: true },
-          style: {
-            width: '100%'
-          }
-        }
-      ]
+      }
     },
-
     MuiTextField: {
       styleOverrides: {
         root: {
@@ -80,7 +53,45 @@ const customTheme = createTheme({
           fontSize: '1rem'
         }
       }
-    }
+    },
+    MuiDataGrid: {
+      styleOverrides: {
+        root: {
+          //border: 'none',
+          borderRadius: '20px',
+        },
+        columnHeaders: {
+          backgroundColor: '#004BF9',
+          color: '#FFFFFF',
+        },
+        columnHeader: {
+          backgroundColor: '#004BF9',
+          color: '#FFFFFF'
+        },
+        toolbarContainer: {
+          border: 'none',
+        },
+        filterPanel: {
+          backgroundColor: '#004BF9',
+          color: '#8C8C8C'
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: '#8C8C8C',
+          '&:hover': {
+            backgroundColor: '#FAFAFA',
+            border: 'none'
+          },
+          '&:focus': {
+            outline: 'none',
+            border: 'none'
+          },
+        }
+      }
+    },
   }
 });
 
