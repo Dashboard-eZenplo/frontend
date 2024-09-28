@@ -46,50 +46,16 @@ const customTheme = createTheme({
         }
       }
     },
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          variant: 'standard',
-          fontSize: '1rem'
-        }
-      }
-    },
     MuiDataGrid: {
       styleOverrides: {
         root: {
           borderRadius: '20px',
         },
-        columnHeaders: {
-          backgroundColor: '#004BF9',
-          color: '#FFFFFF',
-        },
         columnHeader: {
           backgroundColor: '#004BF9',
           color: '#FFFFFF'
         },
-        toolbarContainer: {
-          border: 'none',
-        },
-        filterPanel: {
-          backgroundColor: '#004BF9',
-          color: '#8C8C8C'
-        },
       },
-    },
-    MuiIconButton: {
-      styleOverrides: {
-        root: {
-          color: '#8C8C8C',
-          '&:hover': {
-            backgroundColor: '#FAFAFA',
-            border: 'none'
-          },
-          '&:focus': {
-            outline: 'none',
-            border: 'none'
-          },
-        }
-      }
     },
   }
 });
