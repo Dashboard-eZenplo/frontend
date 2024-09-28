@@ -20,7 +20,7 @@ const columns: GridColDef<Row>[] = [
     headerName: 'ID',
     width: 90,
     headerAlign: 'center',
-    align: 'center',
+    align: 'center'
   },
   {
     field: 'nome',
@@ -67,13 +67,10 @@ const columns: GridColDef<Row>[] = [
     headerAlign: 'right',
     align: 'right',
     renderCell: (params) => (
-      <IconButton
-        onClick={() => handleDelete(params.row.id)}
-
-      >
+      <IconButton onClick={() => handleDelete(params.row.id)}>
         <DeleteOutlinedIcon />
       </IconButton>
-    ),
+    )
   }
 ];
 
@@ -90,20 +87,12 @@ export default function ManagersTable({ rows }: ManagersTableProps) {
 
   return (
     <Box sx={{ height: 680, width: '90%' }}>
-      <input type='text'
-        style={{
-          width: '100%',
-          height: '40px',
-          padding: '0 10px',
-          marginBottom: '10px',
-          borderRadius: '5px',
-          border: '1px solid #ccc',
-          fontSize: '16px'
-        }}
-        placeholder='Procurar'
+      <div className="border-b w-[300px] mb-4">
+        <SearchOutlinedIcon className='text-[#BDBDBD]'/>
+        <input type='text' placeholder='Pesquisa' className='bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-[#282828]'
         value={quickFilterValue}
-        onChange={(e) => setQuickFilterValue(e.target.value)}
-      />
+        onChange={(e) => setQuickFilterValue(e.target.value)}></input>
+      </div>
       <DataGrid
         localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
         rows={rows}
@@ -117,7 +106,7 @@ export default function ManagersTable({ rows }: ManagersTableProps) {
         }}
         filterModel={{
           items: [],
-          quickFilterValues: [quickFilterValue],
+          quickFilterValues: [quickFilterValue]
         }}
         autoHeight
         style={{ height: '100%' }}
