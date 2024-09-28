@@ -1,10 +1,11 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box, IconButton } from '@mui/material';
+import { Alert, Box, IconButton, InputAdornment, TextField } from '@mui/material';
 import { Link } from 'react-router-dom';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { ptBR } from '@mui/x-data-grid/locales';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { deleteManager, getManagers } from '../services/managers/managerService';
 
 interface Row {
   id: number;
@@ -14,85 +15,111 @@ interface Row {
   telefone: string;
 }
 
-const columns: GridColDef<Row>[] = [
-  {
-    field: 'id',
-    headerName: 'ID',
-    width: 90,
-    headerAlign: 'center',
-    align: 'center'
-  },
-  {
-    field: 'nome',
-    headerName: 'Nome',
-    renderCell: (params) => (
-      <Link to={`/manager/${params.row.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-        {params.value}
-      </Link>
-    ),
-    width: 150,
-    headerAlign: 'center',
-    align: 'center',
-    editable: true
-  },
-  {
-    field: 'email',
-    headerName: 'Email',
-    width: 200,
-    headerAlign: 'center',
-    align: 'center',
-    editable: true
-  },
-  {
-    field: 'cnpj',
-    headerName: 'CNPJ',
-    width: 150,
-    headerAlign: 'center',
-    align: 'center',
-    editable: true
-  },
-  {
-    field: 'telefone',
-    headerName: 'Telefone',
-    width: 150,
-    headerAlign: 'center',
-    align: 'center',
-    editable: true
-  },
-  {
-    field: 'delete',
-    headerName: '',
-    flex: 1,
-    width: 1,
-    headerAlign: 'right',
-    align: 'right',
-    renderCell: (params) => (
-      <IconButton onClick={() => handleDelete(params.row.id)}>
-        <DeleteOutlinedIcon />
-      </IconButton>
-    )
-  }
-];
-
-const handleDelete = (id: number) => {
-  console.log(`Delete row with id: ${id}`);
-};
-
-interface ManagersTableProps {
-  rows: Row[];
-}
-
-export default function ManagersTable({ rows }: ManagersTableProps) {
+export default function ManagersTable() {
+  const [rows, setRows] = useState<Row[]>([]);
   const [quickFilterValue, setQuickFilterValue] = useState('');
+  const [error, setError] = useState<string | null>(null);
+
+  const columns: GridColDef<Row>[] = [
+    {
+      field: 'id',
+      headerName: 'ID',
+      width: 90,
+      headerAlign: 'center',
+      align: 'center'
+    },
+    {
+      field: 'nome',
+      headerName: 'Nome',
+      renderCell: (params) => (
+        <Link to={`/manager/${params.row.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          {params.value}
+        </Link>
+      ),
+      width: 150,
+      headerAlign: 'center',
+      align: 'center',
+      editable: false
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      width: 200,
+      headerAlign: 'center',
+      align: 'center',
+      editable: false
+    },
+    {
+      field: 'cnpj',
+      headerName: 'CNPJ',
+      width: 150,
+      headerAlign: 'center',
+      align: 'center',
+      editable: false
+    },
+    {
+      field: 'telefone',
+      headerName: 'Telefone',
+      width: 150,
+      headerAlign: 'center',
+      align: 'center',
+      editable: false
+    },
+    {
+      field: 'delete',
+      headerName: '',
+      flex: 1,
+      width: 1,
+      headerAlign: 'right',
+      align: 'right',
+      renderCell: (params) => (
+        <IconButton onClick={() => handleDelete(params.row.id)}>
+          <DeleteOutlinedIcon />
+        </IconButton>
+      )
+    }
+  ];
+
+  useEffect(() => {
+    const fetchManagers = async () => {
+      try {
+        const data = await getManagers();
+        setRows(data || []);
+      } catch (error: any) {
+        console.error('Error fetching managers:', error);
+        setRows([]);
+      }
+    };
+
+    fetchManagers();
+  }, []);
+
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteManager(id);
+      setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
 
   return (
-    <Box sx={{ height: 680, width: '90%' }}>
-      <div className="border-b w-[300px] mb-4">
-        <SearchOutlinedIcon className='text-[#BDBDBD]'/>
-        <input type='text' placeholder='Pesquisa' className='bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-[#282828]'
+    <Box sx={{ height: 631, width: '90%' }}>
+      {error && <Alert severity="error">{error}</Alert>}
+      <TextField
+        label="Procurar"
+        variant="standard"
         value={quickFilterValue}
-        onChange={(e) => setQuickFilterValue(e.target.value)}></input>
-      </div>
+        onChange={(e) => setQuickFilterValue(e.target.value)}
+        sx={{ marginBottom: 2 }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchOutlinedIcon />
+            </InputAdornment>
+          ),
+        }}
+      />
       <DataGrid
         localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
         rows={rows}

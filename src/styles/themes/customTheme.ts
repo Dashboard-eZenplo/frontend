@@ -57,7 +57,6 @@ const customTheme = createTheme({
     MuiDataGrid: {
       styleOverrides: {
         root: {
-          //border: 'none',
           borderRadius: '20px',
         },
         columnHeaders: {
