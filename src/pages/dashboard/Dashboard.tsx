@@ -1,14 +1,12 @@
-import { useState } from 'react';
-import { Dayjs } from 'dayjs';
 import FilterSidebar from '../../components/filterSidebar/FilterSidebar';
 import Header from '../../components/Header';
 import StatisticCard from '../../components/statisticCard/StatisticCard';
 import { defaultHeaderOptions } from '../../config/HeaderOptions';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import StackedBarChart from '../../components/stackedBarChart/StackedBarChart';
+import DateRangePicker, { DateRange, RangeType } from 'rsuite/DateRangePicker';
+import '../../styles/rsuite/styles.css';
+import { useState } from 'react';
+import * as dateFns from 'date-fns';
 
 const statistics = [
   {
@@ -27,137 +25,90 @@ const statistics = [
     percentage: 90
   },
   {
-    title: 'Média de Avaliação das Atividades',
+    title: 'Média Avaliação Atividades',
     value: '7,5 / 10',
     percentage: 80
   }
 ];
 
 export default function Dashboard() {
-  const [initialDatePeriod1, setInitialDatePeriod1] = useState<Dayjs | null>(null);
-  const [finalDatePeriod1, setFinalDatePeriod1] = useState<Dayjs | null>(null);
+  const [period1, setPeriod1] = useState<[Date, Date] | null>(null);
+  const [period2, setPeriod2] = useState<[Date, Date] | null>(null);
+  const [period3, setPeriod3] = useState<[Date, Date] | null>(null);
 
-  const [initialDatePeriod2, setInitialDatePeriod2] = useState<Dayjs | null>(null);
-  const [finalDatePeriod2, setFinalDatePeriod2] = useState<Dayjs | null>(null);
-
-  const [initialDatePeriod3, setInitialDatePeriod3] = useState<Dayjs | null>(null);
-  const [finalDatePeriod3, setFinalDatePeriod3] = useState<Dayjs | null>(null);
+  const ranges: RangeType<DateRange>[] = [
+    {
+      label: 'Hoje',
+      value: [dateFns.startOfDay(new Date()), dateFns.endOfDay(new Date())]
+    },
+    {
+      label: 'Ontem',
+      value: [
+        dateFns.startOfDay(dateFns.addDays(new Date(), -1)),
+        dateFns.endOfDay(dateFns.addDays(new Date(), -1))
+      ]
+    },
+    {
+      label: 'Últimos 7 dias',
+      value: [dateFns.startOfDay(dateFns.subDays(new Date(), 6)), dateFns.endOfDay(new Date())]
+    },
+    {
+      label: 'Últimos 30 dias',
+      value: [dateFns.startOfDay(dateFns.subDays(new Date(), 6)), dateFns.endOfDay(new Date())]
+    }
+  ];
 
   return (
     <main className="flex flex-col min-h-screen scrollbar">
       <Header headerOptions={defaultHeaderOptions.userManagement} />
 
       <section className="flex justify-center w-full bg-gradient-to-t from-secondary to-primary">
-        <div className="w-full max-w-screen-xxl h-full p-[1.6rem] flex items-center justify-between gap-8">
+        <div className="w-full max-w-[1440px] h-full py-5 px-6 flex items-center justify-between gap-8">
           {statistics &&
             statistics.map((statistic, index) => <StatisticCard key={index} data={statistic} />)}
         </div>
       </section>
 
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <section className="px-[1.6rem] flex flex-1 w-full max-w-screen-xxl ml-auto mr-auto">
-          <FilterSidebar />
-          <div className="flex-1 flex flex-col p-4 overflow-x-hidden">
-            <div className="flex items-center gap-8 pb-2 overflow-x-scroll scrollbar">
-              <div className="flex items-center gap-2">
-                <DemoContainer components={['DatePicker']}>
-                  <DatePicker
-                    label="Data Início"
-                    value={initialDatePeriod1}
-                    onChange={(newValue) => setInitialDatePeriod1(newValue)}
-                    slotProps={{
-                      textField: {
-                        size: 'small'
-                      }
-                    }}
-                  />
-                </DemoContainer>
+      <section className="px-6 flex flex-1 w-full max-w-[1440px] ml-auto mr-auto">
+        <FilterSidebar />
+        <div className="flex-1 flex flex-col p-4 overflow-x-hidden">
+          <div className="flex items-center justify-center gap-4 date-ranges">
+            <DateRangePicker
+              value={period1}
+              onChange={setPeriod1}
+              placeholder="Período 1"
+              size="md"
+              format="dd/MM/yy"
+              preventOverflow
+              ranges={ranges}
+            />
+            <DateRangePicker
+              value={period2}
+              onChange={setPeriod2}
+              placeholder="Período 2"
+              size="md"
+              format="dd/MM/yy"
+              preventOverflow
+              ranges={ranges}
+            />
+            <DateRangePicker
+              value={period3}
+              onChange={setPeriod3}
+              placeholder="Período 3"
+              size="md"
+              format="dd/MM/yy"
+              preventOverflow
+              ranges={ranges}
+            />
+          </div>
 
-                <span className="w-[0.4rem] h-[0.05rem] rounded bg-zinc-400 mt-2"></span>
-
-                <DemoContainer components={['DatePicker']}>
-                  <DatePicker
-                    label="Data Final"
-                    value={finalDatePeriod1}
-                    onChange={(newValue) => setFinalDatePeriod1(newValue)}
-                    slotProps={{
-                      textField: {
-                        size: 'small'
-                      }
-                    }}
-                  />
-                </DemoContainer>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <DemoContainer components={['DatePicker']}>
-                  <DatePicker
-                    label="Data Início"
-                    value={initialDatePeriod2}
-                    onChange={(newValue) => setInitialDatePeriod2(newValue)}
-                    slotProps={{
-                      textField: {
-                        size: 'small'
-                      }
-                    }}
-                  />
-                </DemoContainer>
-
-                <span className="w-[0.4rem] h-[0.05rem] rounded bg-zinc-400 mt-2"></span>
-
-                <DemoContainer components={['DatePicker']}>
-                  <DatePicker
-                    label="Data Final"
-                    value={finalDatePeriod2}
-                    onChange={(newValue) => setFinalDatePeriod2(newValue)}
-                    slotProps={{
-                      textField: {
-                        size: 'small'
-                      }
-                    }}
-                  />
-                </DemoContainer>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <DemoContainer components={['DatePicker']}>
-                  <DatePicker
-                    label="Data Início"
-                    value={initialDatePeriod3}
-                    onChange={(newValue) => setInitialDatePeriod3(newValue)}
-                    slotProps={{
-                      textField: {
-                        size: 'small'
-                      }
-                    }}
-                  />
-                </DemoContainer>
-
-                <span className="w-[0.4rem] h-[0.05rem] rounded bg-zinc-400 mt-2"></span>
-
-                <DemoContainer components={['DatePicker']}>
-                  <DatePicker
-                    label="Data Final"
-                    value={finalDatePeriod3}
-                    onChange={(newValue) => setFinalDatePeriod3(newValue)}
-                    slotProps={{
-                      textField: {
-                        size: 'small'
-                      }
-                    }}
-                  />
-                </DemoContainer>
-              </div>
-            </div>
-
-            <div className="w-full flex-1 flex items-end justify-center">
-              <div className="w-[70%] h-[70%]">
-                <StackedBarChart />
-              </div>
+          <div className="w-full flex-1 flex items-center justify-center max-h-[500px]">
+            <div className="w-[80%] 2xl:w-[70%] h-[70%] max-h-[380px]">
+              <StackedBarChart />
             </div>
           </div>
-        </section>
-      </LocalizationProvider>
+        </div>
+      </section>
     </main>
   );
 }
