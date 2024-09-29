@@ -2,22 +2,20 @@ import '../../styles/App.css';
 import LogotipoEzenplo from '../../assets/logo.svg';
 import { TextField } from '@mui/material';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { login } from '../../services/auth/authService';
+import { useAuth } from '../../contexts/AuthContext';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+
+  const { signIn } = useAuth();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      await login(email, password);
-
-      navigate('/dashboard');
+      await signIn(email, password);
     } catch (error: any) {
       setError(error.message);
     }
