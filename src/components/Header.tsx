@@ -31,7 +31,9 @@ const Header: React.FC<HeaderProps> = ({ headerOptions, className }) => {
   if (isMobile) return null;
 
   return (
-    <header className={`bg-white p-4 flex justify-between items-center border-b border-black ${className}`}>
+    <header
+      className={`bg-white p-4 flex justify-between items-center border-b border-black ${className}`}
+    >
       <img src={LogotipoEzenplo} className="w-auto h-9 ml-40" alt="LogotipoEzenplo" />
       <nav className="flex mr-24">
         <ul className="flex">
