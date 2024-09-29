@@ -24,7 +24,7 @@ const UploadDownloadPage = () => {
                     <UploadDownloadBox />
                     <button
                         className="mt-8 text-blue-500 border border-blue-500 rounded-lg text-[18px] md:text-[20px] lg:text-[25px] xl:text-[30px] flex items-center justify-center
-                        w-[300px] h-[35px] md:w-[360px] md:h-[45px] lg:w-[500px] lg:h-[55px] xl:w-[600px] xl:h-[65px] bg-white" // Aumentei a largura aqui
+                        w-[300px] h-[35px] md:w-[360px] md:h-[45px] lg:w-[500px] lg:h-[55px] xl:w-[600px] xl:h-[65px] bg-white"
                     >
                         Enviar
                     </button>

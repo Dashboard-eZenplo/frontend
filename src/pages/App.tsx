@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from './home/HomePage';
 import RegistrationPage from './registration/RegistrationPage';
 import LoginPage from './login/LoginPage';
-import UploadDownloadPage from './uploadDownload/uploadDownloadPage';
+import UploadDownloadPage from './uploadDownload/UploadDownloadPage';
 import NotFoundPage from './error/NotFoundPage';
 
 const App: React.FC = () => {
