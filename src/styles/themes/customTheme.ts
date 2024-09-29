@@ -44,6 +44,56 @@ const customTheme = createTheme({
             boxShadow: 'none'
           }
         }
+      },
+      variants: [
+        {
+          props: { variant: 'outlined' },
+          style: {
+            backgroundColor: '#FFFFFF',
+            color: '#004BF9',
+            '&:hover': {
+              backgroundColor: '#FAFAFA'
+            }
+          }
+        },
+        {
+          props: { variant: 'contained', color: 'secondary' },
+          style: {
+            backgroundColor: '#FFFFFF',
+            color: '#282828',
+            '&:hover': {
+              backgroundColor: '#FAFAFA'
+            }
+          }
+        },
+        {
+          props: { variant: 'outlined', color: 'secondary' },
+          style: {
+            backgroundColor: '#FFFFFF',
+            color: '#282828',
+            borderColor: '#282828',
+            '&:hover': {
+              backgroundColor: '#FAFAFA',
+              borderColor: '#282828'
+            }
+          }
+        },
+
+        {
+          props: { fullWidth: true },
+          style: {
+            width: '100%'
+          }
+        }
+      ]
+    },
+
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          variant: 'standard',
+          fontSize: '1rem'
+        }
       }
     },
     MuiDataGrid: {
@@ -54,9 +104,9 @@ const customTheme = createTheme({
         columnHeader: {
           backgroundColor: '#004BF9',
           color: '#FFFFFF'
-        },
-      },
-    },
+        }
+      }
+    }
   }
 });
 

@@ -1,4 +1,4 @@
-import { Button, Box } from '@mui/material';
+import { Button } from '@mui/material';
 import ManagersTable from '../../components/ManagersTable';
 import Header from '../../components/Header';
 import { defaultHeaderOptions } from '../../config/HeaderOptions';
@@ -10,19 +10,19 @@ function ManagersPage() {
     return (
         <>
             <Header headerOptions={defaultHeaderOptions.logoutOnly} />
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 3, minHeight: '100vh' }}>
-
-                <ManagersTable />
-
-                <Box sx={{ marginTop: 15, textAlign: 'center' }}>
+            <div className="flex flex-col items-center p-3 min-h-screen">
+                <div className="flex justify-center w-full mb-8">
+                    <ManagersTable />
+                </div>
+                <div className="mt-14 text-center">
                     <Button
                         variant="outlined"
                         color="primary"
                         onClick={() => navigate('/cadastro')}>
                         Adicionar
                     </Button>
-                </Box>
-            </Box>
+                </div>
+            </div>
         </>
     );
 }

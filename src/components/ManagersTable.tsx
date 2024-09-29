@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Alert, Box, IconButton, InputAdornment, TextField } from '@mui/material';
+import { Alert, IconButton, InputAdornment, TextField } from '@mui/material';
 import { Link } from 'react-router-dom';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
@@ -104,14 +104,14 @@ export default function ManagersTable() {
   };
 
   return (
-    <Box sx={{ height: 631, width: '90%' }}>
+    <div className="h-[631px] w-[90%]">
       {error && <Alert severity="error">{error}</Alert>}
       <TextField
-        label="Procurar"
+        placeholder="Busque pelo e-mail da empresa"
         variant="standard"
         value={quickFilterValue}
         onChange={(e) => setQuickFilterValue(e.target.value)}
-        sx={{ marginBottom: 2 }}
+        sx={{ marginBottom: 2, width: '26%' }}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -138,6 +138,6 @@ export default function ManagersTable() {
         autoHeight
         style={{ height: '100%' }}
       />
-    </Box>
+    </div>
   );
 }
