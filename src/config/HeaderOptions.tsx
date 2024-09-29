@@ -10,7 +10,7 @@ export const defaultHeaderOptions = {
   userManagement: [
     {
       title: 'Gerenciamento Usuários',
-      to: '/user-management',
+      to: '/admin',
       icon: <SupervisorAccountOutlined />
     },
     { title: '', to: '/logout', icon: <Logout /> }

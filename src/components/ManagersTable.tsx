@@ -5,7 +5,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { ptBR } from '@mui/x-data-grid/locales';
 import { useEffect, useState } from 'react';
-import { deleteManager, getManagers } from '../services/managers/managerService';
+import { deleteManager } from '../services/managers/managerService';
 
 interface Row {
   id: number;
@@ -99,7 +99,7 @@ export default function ManagersTable() {
   useEffect(() => {
     const fetchManagers = async () => {
       try {
-        const data = await getManagers();
+        // const data = await getManagers();
         setRows(rows);
       } catch (error: any) {
         console.error('Error fetching managers:', error);

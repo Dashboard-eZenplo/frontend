@@ -10,10 +10,9 @@ type HeaderOptionsType = {
 
 type HeaderProps = {
   headerOptions: HeaderOptionsType[];
-  className?: string;
 };
 
-const Header: React.FC<HeaderProps> = ({ headerOptions, className }) => {
+const Header: React.FC<HeaderProps> = ({ headerOptions }) => {
   const [isMobile, setIsMobile] = useState(false);
 
   const handleResize = () => {
