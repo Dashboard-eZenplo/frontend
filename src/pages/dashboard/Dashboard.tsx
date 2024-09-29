@@ -95,7 +95,7 @@ export default function Dashboard() {
                 preventOverflow
                 ranges={ranges}
               />
-              {period1 && <p className="text-black">{getNumberOfDaysInPeriod(period1)}</p>}
+              {period1 && <p className="text-black">{getNumberOfDaysInPeriod(period1)} dias</p>}
             </div>
             <div className="flex flex-col items-center">
               <DateRangePicker
@@ -107,7 +107,7 @@ export default function Dashboard() {
                 preventOverflow
                 ranges={ranges}
               />
-              {period2 && <p className="text-black">{getNumberOfDaysInPeriod(period2)}</p>}
+              {period2 && <p className="text-black">{getNumberOfDaysInPeriod(period2)} dias</p>}
             </div>
             <div className="flex flex-col items-center">
               <DateRangePicker
@@ -119,7 +119,7 @@ export default function Dashboard() {
                 preventOverflow
                 ranges={ranges}
               />
-              {period3 && <p className="text-black">{getNumberOfDaysInPeriod(period3)}</p>}
+              {period3 && <p className="text-black">{getNumberOfDaysInPeriod(period3)} dias</p>}
             </div>
           </div>
 
