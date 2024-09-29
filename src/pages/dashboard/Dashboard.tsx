@@ -8,6 +8,18 @@ import '../../styles/rsuite/styles.css';
 import { useState } from 'react';
 import * as dateFns from 'date-fns';
 
+type Period = [Date, Date];
+
+const getNumberOfDaysInPeriod = (period: Period) => {
+  if (period) {
+    const [startDate, endDate] = period;
+    const diffTime = endDate.getTime() - startDate.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
+  return 0;
+};
+
 const statistics = [
   {
     title: 'Usuários Ativos',
@@ -32,9 +44,9 @@ const statistics = [
 ];
 
 export default function Dashboard() {
-  const [period1, setPeriod1] = useState<[Date, Date] | null>(null);
-  const [period2, setPeriod2] = useState<[Date, Date] | null>(null);
-  const [period3, setPeriod3] = useState<[Date, Date] | null>(null);
+  const [period1, setPeriod1] = useState<Period | null>(null);
+  const [period2, setPeriod2] = useState<Period | null>(null);
+  const [period3, setPeriod3] = useState<Period | null>(null);
 
   const ranges: RangeType<DateRange>[] = [
     {
@@ -72,34 +84,43 @@ export default function Dashboard() {
       <section className="px-6 flex flex-1 w-full max-w-[1440px] ml-auto mr-auto">
         <FilterSidebar />
         <div className="flex-1 flex flex-col p-4 overflow-x-hidden">
-          <div className="flex items-center justify-center gap-4 date-ranges">
-            <DateRangePicker
-              value={period1}
-              onChange={setPeriod1}
-              placeholder="Período 1"
-              size="md"
-              format="dd/MM/yy"
-              preventOverflow
-              ranges={ranges}
-            />
-            <DateRangePicker
-              value={period2}
-              onChange={setPeriod2}
-              placeholder="Período 2"
-              size="md"
-              format="dd/MM/yy"
-              preventOverflow
-              ranges={ranges}
-            />
-            <DateRangePicker
-              value={period3}
-              onChange={setPeriod3}
-              placeholder="Período 3"
-              size="md"
-              format="dd/MM/yy"
-              preventOverflow
-              ranges={ranges}
-            />
+          <div className="flex items-start justify-center gap-4 date-ranges h-14">
+            <div className="flex flex-col items-center">
+              <DateRangePicker
+                value={period1}
+                onChange={setPeriod1}
+                placeholder="Período 1"
+                size="md"
+                format="dd/MM/yy"
+                preventOverflow
+                ranges={ranges}
+              />
+              {period1 && <p className="text-black">{getNumberOfDaysInPeriod(period1)}</p>}
+            </div>
+            <div className="flex flex-col items-center">
+              <DateRangePicker
+                value={period2}
+                onChange={setPeriod2}
+                placeholder="Período 2"
+                size="md"
+                format="dd/MM/yy"
+                preventOverflow
+                ranges={ranges}
+              />
+              {period2 && <p className="text-black">{getNumberOfDaysInPeriod(period2)}</p>}
+            </div>
+            <div className="flex flex-col items-center">
+              <DateRangePicker
+                value={period3}
+                onChange={setPeriod3}
+                placeholder="Período 3"
+                size="md"
+                format="dd/MM/yy"
+                preventOverflow
+                ranges={ranges}
+              />
+              {period3 && <p className="text-black">{getNumberOfDaysInPeriod(period3)}</p>}
+            </div>
           </div>
 
           <div className="w-full flex-1 flex items-center justify-center max-h-[500px]">
