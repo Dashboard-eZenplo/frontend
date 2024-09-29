@@ -14,8 +14,8 @@ type HeaderProps = {
 
 function Header({ headerOptions }: HeaderProps) {
   return (
-    <header className="bg-white p-4 flex justify-between items-center border-b border-black">
-      <img src={LogotipoEzenplo} className="w-auto h-9 ml-40" alt="LogotipoEzenplo" />
+    <header className="bg-white p-4 flex justify-between items-center border-b border-zinc-300 border-black">
+      <img src={LogotipoEzenplo} className="w-auto h-9 ml-24" alt="LogotipoEzenplo" />
       <nav className="flex mr-24">
         <ul className="flex">
           {headerOptions.map(({ title, to, icon }, index) => (
@@ -25,7 +25,7 @@ function Header({ headerOptions }: HeaderProps) {
             >
               <Link
                 to={to.startsWith('/') ? to : `/${to}`}
-                className="text-black flex items-center space-x-2"
+                className="text-zinc-800 flex items-center space-x-2"
               >
                 <span>{icon}</span>
                 <span>{title}</span>

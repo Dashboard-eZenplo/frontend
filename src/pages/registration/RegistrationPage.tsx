@@ -163,7 +163,7 @@ export default function RegistrationPage() {
                 textTransform: 'none',
                 fontSize: '1rem'
               }}
-              className="w-full"
+              fullWidth
               type="submit"
             >
               Cadastrar
