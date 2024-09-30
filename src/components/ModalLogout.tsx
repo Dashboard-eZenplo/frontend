@@ -1,5 +1,6 @@
 import { Dialog, DialogTitle, Typography, Box, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 interface ModalProps {
   open: boolean;
@@ -7,11 +8,12 @@ interface ModalProps {
 }
 
 const LogoutModal = ({ open, onClose }: ModalProps) => {
+  const { signOut } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     try {
-      localStorage.removeItem('authToken');
+      signOut();
       navigate('/login');
     } catch (error) {
       console.error('Error during logout:', error);
@@ -38,9 +40,9 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
             md: '500px'
           },
           maxHeight: {
-            xs: '80vh',
-            sm: '80vh',
-            md: '500px'
+            xs: '70vh',
+            sm: '70vh',
+            md: '400px'
           },
           border: '4px solid blue',
           borderRadius: '20px',
@@ -70,14 +72,14 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
               textAlign: 'center',
               fontWeight: 'bold',
               fontSize: {
-                xs: '30px',
-                sm: '30px',
-                md: '65px'
+                xs: '25px',
+                sm: '25px',
+                md: '40px'
               },
               mt: {
                 xs: '0',
-                sm: '20px',
-                md: '30px'
+                sm: '30px',
+                md: '50px'
               }
             }}
           >
@@ -88,9 +90,9 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
             sx={{
               textAlign: 'center',
               fontSize: {
-                xs: '24px',
-                sm: '40px',
-                md: '40px'
+                xs: '20px',
+                sm: '35px',
+                md: '35px'
               },
               marginBottom: {
                 xs: '24px',

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import LogotipoEzenplo from '../assets/logo-header.png';
+import LogoutModal from './ModalLogout';
 
 type HeaderOptionsType = {
   title: string;
@@ -14,6 +15,7 @@ type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({ headerOptions }) => {
   const [isMobile, setIsMobile] = useState(false);
+  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
 
   const handleResize = () => {
     setIsMobile(window.innerWidth < 768);
@@ -27,6 +29,15 @@ const Header: React.FC<HeaderProps> = ({ headerOptions }) => {
     };
   }, []);
 
+  const handleLogoutClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    setLogoutModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setLogoutModalOpen(false);
+  };
+
   if (isMobile) return null;
 
   return (
@@ -39,17 +50,30 @@ const Header: React.FC<HeaderProps> = ({ headerOptions }) => {
               key={index}
               className={`flex items-center ${index !== headerOptions.length - 1 ? 'mr-12' : 'ml-32'}`}
             >
-              <Link
-                to={to.startsWith('/') ? to : `/${to}`}
-                className="text-zinc-800 flex items-center space-x-2"
-              >
-                <span>{icon}</span>
-                <span>{title}</span>
-              </Link>
+              {to === '/logout' ? (
+                <button
+                  onClick={handleLogoutClick}
+                  className="text-zinc-800 flex items-center space-x-2"
+                  style={{ backgroundColor: 'transparent', border: 'none' }}
+                >
+                  <span>{icon}</span>
+                  <span>{title}</span>
+                </button>
+              ) : (
+                <Link
+                  to={to.startsWith('/') ? to : `/${to}`}
+                  className="text-zinc-800 flex items-center space-x-2"
+                >
+                  <span>{icon}</span>
+                  <span>{title}</span>
+                </Link>
+              )}
             </li>
           ))}
         </ul>
       </nav>
+
+      {isLogoutModalOpen && <LogoutModal open={isLogoutModalOpen} onClose={closeModal} />}
     </header>
   );
 };

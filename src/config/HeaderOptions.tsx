@@ -1,7 +1,7 @@
 import {
   Logout,
   SupervisorAccountOutlined,
-  FileDownloadOutlined,
+  // FileDownloadOutlined,
   FileUploadOutlined
 } from '@mui/icons-material';
 
@@ -16,8 +16,8 @@ export const defaultHeaderOptions = {
     { title: '', to: '/logout', icon: <Logout /> }
   ],
   csvManagement: [
-    { title: 'Download Modelo', to: '/csv/download-csv', icon: <FileDownloadOutlined /> },
-    { title: 'Upload Modelo', to: '/csv/upload-csv', icon: <FileUploadOutlined /> },
+    // { title: 'Download Modelo', to: '/csv/download-csv', icon: <FileDownloadOutlined /> },
+    { title: 'Upload Modelo', to: '/upload', icon: <FileUploadOutlined /> },
     { title: '', to: '/logout', icon: <Logout /> }
   ]
 };

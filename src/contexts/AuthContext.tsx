@@ -32,7 +32,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setUser(loggedInUser);
       setIsUserAuthenticated(true);
 
-      navigate(loggedInUser.admin ? '/admin-dashboard' : '/dashboard');
+      navigate(loggedInUser.admin ? '/admin' : '/dashboard');
     } catch (error) {
       console.error('Error while signing in: ', error);
     }

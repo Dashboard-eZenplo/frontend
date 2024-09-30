@@ -8,6 +8,7 @@ import { IHRManager } from '../../types/HRManager';
 import { formatCNPJ, formatPhone } from '../../utils/formatters';
 import { useState } from 'react';
 import { registerUser } from '../../services/userService';
+import { useNavigate } from 'react-router-dom';
 
 export default function RegistrationPage() {
   const {
@@ -22,6 +23,7 @@ export default function RegistrationPage() {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
   const [showSnackbar, setShowSnackbar] = useState(false);
+  const navigate = useNavigate();
 
   const handleShowSnackbar = (message: string, severity: 'success' | 'error') => {
     setSnackbarMessage(message);
@@ -50,6 +52,10 @@ export default function RegistrationPage() {
     }
   };
 
+  const handleReturnClick = () => {
+    navigate('/admin');
+  };
+
   const handleCNPJChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const formattedCNPJ = formatCNPJ(event.target.value);
     setValue('cnpj', formattedCNPJ);
@@ -72,7 +78,7 @@ export default function RegistrationPage() {
       <section className="w-full lg:w-1/2 p-10 lg:py-16 text-zinc-700 flex justify-center">
         <div className="max-w-[34rem] xl:max-w-[30rem] 2xl:max-w-[34rem] w-full flex flex-col items-center justify-center">
           <div className="w-full flex justify-end mb-4">
-            <KeyboardReturn className="cursor-pointer" />
+            <KeyboardReturn className="cursor-pointer" onClick={handleReturnClick} />
           </div>
 
           <h1 className="font-bold text-[2.2rem] md:text-[2.6rem] mb-8 2xl:mb-12">Cadastro</h1>
