@@ -72,7 +72,7 @@ export default function Dashboard() {
 
   return (
     <main className="flex flex-col min-h-screen scrollbar">
-      <Header headerOptions={defaultHeaderOptions.userManagement} />
+      <Header headerOptions={defaultHeaderOptions.userHeaderOptions} />
 
       <section className="flex justify-center w-full bg-gradient-to-t from-secondary to-primary">
         <div className="w-full max-w-[1440px] h-full py-5 px-6 flex items-center justify-between gap-8">

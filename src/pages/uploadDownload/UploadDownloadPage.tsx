@@ -7,7 +7,7 @@ import Download from '../../assets/Download.png';
 const UploadDownloadPage = () => {
   return (
     <Background>
-      <Header headerOptions={defaultHeaderOptions.userManagement} />
+      <Header headerOptions={defaultHeaderOptions.userHeaderOptions} />
       <div className="flex flex-col items-center">
         <div className="flex items-center justify-center mt-20 md:mt-20 lg:mt-24">
           <p

@@ -4,7 +4,7 @@ import { defaultHeaderOptions } from '../../config/HeaderOptions';
 function HomePage() {
   return (
     <div>
-      <Header headerOptions={defaultHeaderOptions.userManagement} />
+      <Header headerOptions={defaultHeaderOptions.userHeaderOptions} />
     </div>
   );
 }

@@ -21,15 +21,15 @@ export default function ManagersTable() {
       id: 1,
       nome: 'João',
       email: 'joao@gmail.com',
-      cnpj: '123456789',
-      telefone: '123456789'
+      cnpj: '56.669.036/0001-17',
+      telefone: '(51) 123456789'
     },
     {
       id: 2,
       nome: 'Maria',
       email: 'maria@gmail.com',
-      cnpj: '987654321',
-      telefone: '987654321'
+      cnpj: '87.271.602/0001-61',
+      telefone: '(51) 987654321'
     }
   ]);
 

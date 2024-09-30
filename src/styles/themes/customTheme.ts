@@ -99,7 +99,7 @@ const customTheme = createTheme({
     MuiDataGrid: {
       styleOverrides: {
         root: {
-          borderRadius: '20px',
+          borderRadius: '20px'
         },
         columnHeader: {
           backgroundColor: '#004BF9',
