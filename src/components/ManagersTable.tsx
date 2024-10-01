@@ -5,7 +5,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { ptBR } from '@mui/x-data-grid/locales';
 import { useEffect, useState } from 'react';
-import { deleteManager } from '../services/managers/managerService';
+import { deleteManager, getManagers } from '../services/managers/managerService';
 
 interface Row {
   id: number;
@@ -16,22 +16,7 @@ interface Row {
 }
 
 export default function ManagersTable() {
-  const [rows, setRows] = useState<Row[]>([
-    {
-      id: 1,
-      nome: 'João',
-      email: 'joao@gmail.com',
-      cnpj: '56.669.036/0001-17',
-      telefone: '(51) 123456789'
-    },
-    {
-      id: 2,
-      nome: 'Maria',
-      email: 'maria@gmail.com',
-      cnpj: '87.271.602/0001-61',
-      telefone: '(51) 987654321'
-    }
-  ]);
+  const [rows, setRows] = useState<Row[]>([]);
 
   const [quickFilterValue, setQuickFilterValue] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -99,8 +84,8 @@ export default function ManagersTable() {
   useEffect(() => {
     const fetchManagers = async () => {
       try {
-        // const data = await getManagers();
-        setRows(rows);
+        const data = await getManagers();
+        setRows(data);
       } catch (error: any) {
         console.error('Error fetching managers:', error);
         setRows([]);
@@ -140,6 +125,7 @@ export default function ManagersTable() {
         localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
         rows={rows}
         columns={columns}
+        pageSizeOptions={[10]}
         initialState={{
           pagination: {
             paginationModel: {
