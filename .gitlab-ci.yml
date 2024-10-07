@@ -9,6 +9,7 @@ stages:
   - build
   - lint
   - test
+  - setup
   - deploy
 
 before_script:
@@ -36,8 +37,15 @@ unit-test:
   tags:
     - aws-frontend
 
+setup_git:
+  stage: setup
+  script:
+    - apk update
+    - apk add git
+
 deploy:
   stage: deploy
+  needs: ['setup_git']
   script:
     - git config --global user.name "$GITHUB_USERNAME"
     - git config --global user.email "$GIT_EMAIL"
