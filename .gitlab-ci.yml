@@ -38,13 +38,13 @@ unit-test:
 
 deploy:
   stage: deploy
-  tag:
-    - aws-frontend
   script:
     - git config --global user.name "$GITHUB_USERNAME"
     - git config --global user.email "$GIT_EMAIL"
     - git clone --mirror https://$GITHUB_TOKEN@github.com/$GITHUB_REPO.git
     - cd $REPO_NAME.git
     - git push --mirror https://$GITHUB_TOKEN@github.com/$GITHUB_REPO.git
+  tags:
+    - aws-frontend
   only:
     - main
