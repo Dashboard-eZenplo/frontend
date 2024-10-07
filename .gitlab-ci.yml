@@ -1,4 +1,4 @@
-image: node:18-alpine
+image: node:18
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -9,7 +9,6 @@ stages:
   - build
   - lint
   - test
-  - setup
   - deploy
 
 before_script:
@@ -37,17 +36,8 @@ unit-test:
   tags:
     - aws-frontend
 
-setup_git:
-  stage: setup
-  script:
-    - apk update
-    - apk add git
-  tags:
-    - aws-frontend
-
 deploy:
   stage: deploy
-  needs: ['setup_git']
   script:
     - git config --global user.name "$GITHUB_USERNAME"
     - git config --global user.email "$GIT_EMAIL"
