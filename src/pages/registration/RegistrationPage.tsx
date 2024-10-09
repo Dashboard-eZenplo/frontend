@@ -148,7 +148,7 @@ export default function RegistrationPage() {
               className="w-full"
               type="submit"
             >
-              Cadastrar
+              Cadastra
             </Button>
 
           </form>
