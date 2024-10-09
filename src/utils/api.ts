@@ -3,7 +3,7 @@ import { isTokenExpired } from './jwt-decoder';
 import { refreshAccessToken, redirectToLogin } from '../services/auth/authService';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: 'http://ezenplo.duckdns.org:8080',
   headers: {
     'Content-Type': 'application/json'
   }
