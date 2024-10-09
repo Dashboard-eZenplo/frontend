@@ -43,6 +43,9 @@ export default function RegistrationPage() {
   };
 
   return (
+
+    <>
+    
     <div className="w-full min-h-screen flex">
       <section className="hidden lg:flex w-1/2 max-h-screen sticky top-0 items-center justify-center bg-primary">
         <img
@@ -148,14 +151,17 @@ export default function RegistrationPage() {
               className="w-full"
               type="submit"
             >
-              Cadastra
+              Cadastrar
             </Button>
 
           </form>
         </div>
+        
       </section>
 
-      <Toaster richColors/>
+
     </div>
+    <Toaster richColors toastOptions={{style: { height: '50px', padding: '10px' }}} position='bottom-left'/>
+    </>
   );
 }
