@@ -13,6 +13,7 @@ stages:
 
 before_script:
   - rm -rf node_modules
+  - npm ci
 
 build:
   stage: build
