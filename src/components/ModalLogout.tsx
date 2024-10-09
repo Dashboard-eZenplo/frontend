@@ -83,7 +83,7 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
               }
             }}
           >
-            CONFIRMAR SAÍDA
+            Confirmar Saída
           </DialogTitle>
 
           <Typography
