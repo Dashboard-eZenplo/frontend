@@ -24,37 +24,23 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
     <Dialog
       open={open}
       onClose={onClose}
-      maxWidth="xl"
-      fullWidth
       sx={{
         '& .MuiDialog-paper': {
           width: {
-            xs: '90%',
-            sm: '100%',
-            md: '850px'
+            xs: '80vw',
+            sm: '60vw',
+            md: '40vw'  
           },
-          maxWidth: '850px',
-          height: {
-            xs: 'auto',
-            sm: 'auto',
-            md: '500px'
-          },
-          maxHeight: {
-            xs: '70vh',
-            sm: '70vh',
-            md: '400px'
-          },
-          border: '4px solid blue',
-          borderRadius: '20px',
-          overflow: 'hidden',
+          maxWidth: '500px', 
+          height: 'auto',
+          maxHeight: '70vh',
+          border: '3px solid blue',
+          borderRadius: '15px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          padding: '20px',
-          margin: {
-            xs: '0 auto',
-            sm: '0 auto'
-          }
+          padding: '16px',
+          margin: '0 auto'
         }
       }}
     >
@@ -72,14 +58,14 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
               textAlign: 'center',
               fontWeight: 'bold',
               fontSize: {
-                xs: '25px',
-                sm: '25px',
-                md: '40px'
+                xs: '18px', 
+                sm: '22px',
+                md: '28px' 
               },
               mt: {
-                xs: '0',
-                sm: '30px',
-                md: '50px'
+                xs: '8px',  
+                sm: '20px',
+                md: '30px'
               }
             }}
           >
@@ -90,14 +76,14 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
             sx={{
               textAlign: 'center',
               fontSize: {
-                xs: '20px',
-                sm: '35px',
-                md: '35px'
+                xs: '14px', 
+                sm: '18px',
+                md: '20px'  
               },
               marginBottom: {
-                xs: '24px',
-                sm: '20px',
-                md: '24px'
+                xs: '12px',  
+                sm: '16px',
+                md: '20px'
               },
               fontWeight: 'bold'
             }}
@@ -117,16 +103,16 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
               xs: 'column',
               sm: 'row'
             },
-            gap: 2,
+            gap: 1, 
             justifyContent: 'center',
             width: '100%',
             mt: {
-              xs: '24px',
-              sm: '40px',
-              md: '30px'
+              xs: '16px', 
+              sm: '30px',
+              md: '20px'
             },
             px: 2,
-            mb: '40px'
+            mb: '20px'
           }}
         >
           <Button
@@ -137,20 +123,23 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
             fullWidth
             sx={{
               minWidth: {
-                xs: '120px',
-                sm: '325px'
+                xs: '100px', 
+                sm: '120px',
+                md: '140px'
               },
               height: {
-                xs: '40px',
-                sm: '69px'
+                xs: '30px',
+                sm: '40px',
+                md: '45px'
               },
-              borderRadius: '10px',
+              borderRadius: '8px',
               border: '2px solid blue',
               backgroundColor: '#ffffff',
               textTransform: 'none',
               fontSize: {
-                xs: '14px',
-                sm: '18px'
+                xs: '12px', 
+                sm: '14px',
+                md: '16px'
               }
             }}
           >
@@ -161,21 +150,24 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
             fullWidth
             sx={{
               minWidth: {
-                xs: '120px',
-                sm: '325px'
+                xs: '100px',
+                sm: '120px',
+                md: '140px'
               },
               height: {
-                xs: '40px',
-                sm: '69px'
+                xs: '30px',
+                sm: '40px',
+                md: '45px'
               },
-              borderRadius: '10px',
+              borderRadius: '8px',
               border: '2px solid black',
               backgroundColor: '#ffffff',
               color: '#000000',
               textTransform: 'none',
               fontSize: {
-                xs: '14px',
-                sm: '18px'
+                xs: '12px',
+                sm: '14px',
+                md: '16px'
               }
             }}
           >
