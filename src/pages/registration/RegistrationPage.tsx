@@ -8,6 +8,7 @@ import { IHRManager } from '../../types/HRManager';
 import { formatCNPJ, formatPhone } from '../../utils/formatters';
 import { useState } from 'react';
 import { registerUser } from '../../services/userService';
+import { Toaster, toast } from 'sonner'
 
 export default function RegistrationPage() {
   const {
@@ -19,33 +20,14 @@ export default function RegistrationPage() {
   } = useForm<IHRManager>({
     resolver: zodResolver(hrManagerValidation)
   });
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
-  const [showSnackbar, setShowSnackbar] = useState(false);
-
-  const handleShowSnackbar = (message: string, severity: 'success' | 'error') => {
-    setSnackbarMessage(message);
-    setSnackbarSeverity(severity);
-    setShowSnackbar(true);
-  };
-
-  const handleCloseSnackbar = (
-    _event?: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setShowSnackbar(false);
-  };
 
   const handleFormSubmit = async (userData: IHRManager) => {
     try {
       await registerUser(userData);
-      handleShowSnackbar('Usuário cadastrado com sucesso!', 'success');
+      toast.success('Usuário cadastrado com sucesso!');
       reset();
     } catch (e) {
-      handleShowSnackbar('Erro ao cadastrar usuário.', 'error');
+      toast.error('Erro ao cadastrar usuário.')
       console.log(e);
     }
   };
@@ -169,21 +151,11 @@ export default function RegistrationPage() {
               Cadastrar
             </Button>
 
-            <Snackbar open={showSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
-              <Alert
-                sx={{
-                  backgroundColor: `${snackbarSeverity === 'success' ? '#7ED298' : '#F3858C'}`
-                }}
-                onClose={handleCloseSnackbar}
-                severity={snackbarSeverity}
-                variant="filled"
-              >
-                {snackbarMessage}
-              </Alert>
-            </Snackbar>
           </form>
         </div>
       </section>
+
+      <Toaster richColors/>
     </div>
   );
 }
