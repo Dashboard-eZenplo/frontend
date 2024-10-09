@@ -1,4 +1,4 @@
-import { Alert, Button, Snackbar, SnackbarCloseReason, TextField } from '@mui/material';
+import {Button, TextField } from '@mui/material';
 import LogotipoEzenplo from '../../assets/logo-ezenplo.png';
 import { KeyboardReturn } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { hrManagerValidation } from '../../utils/validationSchemas';
 import { IHRManager } from '../../types/HRManager';
 import { formatCNPJ, formatPhone } from '../../utils/formatters';
-import { useState } from 'react';
 import { registerUser } from '../../services/userService';
 import { Toaster, toast } from 'sonner'
 
