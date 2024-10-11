@@ -7,6 +7,7 @@ import UploadDownloadPage from './uploadDownload/UploadDownloadPage';
 import NotFoundPage from './error/NotFoundPage';
 import Dashboard from './dashboard/Dashboard';
 import ManagersPage from './managers/ManagersPage';
+import EmployeesPage from './employees/EmployeesPage';
 
 const App: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const App: React.FC = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/admin" element={<ManagersPage />} />
+      <Route path="/employees" element={<EmployeesPage />} />
       <Route path="/upload" element={<UploadDownloadPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
