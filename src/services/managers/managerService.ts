@@ -11,13 +11,15 @@ export const getManagers = async () => {
       }
     });
 
-    const jsonString = JSON.stringify(response.data.managers.map((managerArray: any[]) => ({
-      id: managerArray[0],
-      nome: managerArray[1],
-      email: managerArray[2],
-      cnpj: managerArray[3],
-      telefone: managerArray[4]
-    })));
+    const jsonString = JSON.stringify(
+      response.data.managers.map((managerArray: any[]) => ({
+        id: managerArray[0],
+        nome: managerArray[1],
+        email: managerArray[2],
+        cnpj: managerArray[3],
+        telefone: managerArray[4]
+      }))
+    );
 
     const managers: Manager[] = JSON.parse(jsonString);
 

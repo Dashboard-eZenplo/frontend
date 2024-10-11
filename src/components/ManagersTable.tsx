@@ -19,7 +19,7 @@ export default function ManagersTable() {
   const columns: GridColDef<Row>[] = [
     {
       field: 'gridRowID',
-      headerName: 'Grid Row ID',
+      headerName: 'Grid Row ID'
     },
     {
       field: 'id',
@@ -86,7 +86,7 @@ export default function ManagersTable() {
         const data = await getManagers();
         const rows = data.map((manager, index) => ({
           ...manager,
-          gridRowID: index,
+          gridRowID: index
         }));
         setRows(rows);
       } catch (error: any) {
@@ -139,8 +139,8 @@ export default function ManagersTable() {
           columns: {
             columnVisibilityModel: {
               gridRowID: false
-            },
-          },
+            }
+          }
         }}
         filterModel={{
           items: [],
