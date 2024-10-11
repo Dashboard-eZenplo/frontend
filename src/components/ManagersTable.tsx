@@ -6,22 +6,21 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { ptBR } from '@mui/x-data-grid/locales';
 import { useEffect, useState } from 'react';
 import { deleteManager, getManagers } from '../services/managers/managerService';
-
-interface Row {
-  id: number;
-  nome: string;
-  email: string;
-  cnpj: string;
-  telefone: string;
-}
+import { Manager } from '../models/Manager';
 
 export default function ManagersTable() {
+  type Row = Manager & { gridRowID: number };
+
   const [rows, setRows] = useState<Row[]>([]);
 
   const [quickFilterValue, setQuickFilterValue] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   const columns: GridColDef<Row>[] = [
+    {
+      field: 'gridRowID',
+      headerName: 'Grid Row ID',
+    },
     {
       field: 'id',
       headerName: 'ID',
@@ -85,7 +84,11 @@ export default function ManagersTable() {
     const fetchManagers = async () => {
       try {
         const data = await getManagers();
-        setRows(data);
+        const rows = data.map((manager, index) => ({
+          ...manager,
+          gridRowID: index,
+        }));
+        setRows(rows);
       } catch (error: any) {
         console.error('Error fetching managers:', error);
         setRows([]);
@@ -126,12 +129,18 @@ export default function ManagersTable() {
         rows={rows}
         columns={columns}
         pageSizeOptions={[10]}
+        getRowId={(row) => row.gridRowID}
         initialState={{
           pagination: {
             paginationModel: {
               pageSize: 10
             }
-          }
+          },
+          columns: {
+            columnVisibilityModel: {
+              gridRowID: false
+            },
+          },
         }}
         filterModel={{
           items: [],

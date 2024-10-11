@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Manager } from '../../models/Manager';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -9,20 +10,23 @@ export const getManagers = async () => {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`
       }
     });
-    const transformedData = response.data.managers.map((manager: any[]) => ({
-      id: manager[0],
-      nome: manager[1],
-      email: manager[2],
-      cnpj: manager[3],
-      telefone: manager[4]
-    }));
 
-    return transformedData;
+    const jsonString = JSON.stringify(response.data.managers.map((managerArray: any[]) => ({
+      id: managerArray[0],
+      nome: managerArray[1],
+      email: managerArray[2],
+      cnpj: managerArray[3],
+      telefone: managerArray[4]
+    })));
+
+    const managers: Manager[] = JSON.parse(jsonString);
+
+    return managers;
   } catch (error: any) {
     if (error.response?.status === 404) {
-      return null;
+      return [];
     }
-    throw new Error(error.response?.data?.message || 'Error fetching managers');
+    throw new Error(error || 'Error fetching managers');
   }
 };
 
