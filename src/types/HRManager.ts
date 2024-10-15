@@ -1,4 +1,5 @@
 export interface IHRManager {
+  id: number;
   cnpj: string;
   name: string;
   phone: string;

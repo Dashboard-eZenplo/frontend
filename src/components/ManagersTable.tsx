@@ -1,15 +1,14 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Alert, IconButton, InputAdornment, TextField } from '@mui/material';
-import { Link } from 'react-router-dom';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { ptBR } from '@mui/x-data-grid/locales';
 import { useEffect, useState } from 'react';
 import { deleteManager, getManagers } from '../services/managers/managerService';
-import { Manager } from '../models/Manager';
+import { IHRManager } from '../types/HRManager';
 
 export default function ManagersTable() {
-  type Row = Manager & { gridRowID: number };
+  type Row = IHRManager & { gridRowID: number };
 
   const [rows, setRows] = useState<Row[]>([]);
 
@@ -31,11 +30,6 @@ export default function ManagersTable() {
     {
       field: 'nome',
       headerName: 'Nome',
-      renderCell: (params) => (
-        <Link to={`/manager/${params.row.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-          {params.value}
-        </Link>
-      ),
       width: 150,
       headerAlign: 'center',
       align: 'center',
@@ -84,7 +78,18 @@ export default function ManagersTable() {
     const fetchManagers = async () => {
       try {
         const data = await getManagers();
-        const rows = data.map((manager, index) => ({
+
+        const managers: IHRManager[] = data.managers.map(
+          ([id, nome, email, cnpj, telefone]: any) => ({
+            id,
+            nome,
+            email,
+            cnpj,
+            telefone
+          })
+        );
+
+        const rows = managers.map((manager, index) => ({
           ...manager,
           gridRowID: index
         }));

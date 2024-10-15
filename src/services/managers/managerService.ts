@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Manager } from '../../models/Manager';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -11,19 +10,7 @@ export const getManagers = async () => {
       }
     });
 
-    const jsonString = JSON.stringify(
-      response.data.managers.map((managerArray: any[]) => ({
-        id: managerArray[0],
-        nome: managerArray[1],
-        email: managerArray[2],
-        cnpj: managerArray[3],
-        telefone: managerArray[4]
-      }))
-    );
-
-    const managers: Manager[] = JSON.parse(jsonString);
-
-    return managers;
+    return response.data;
   } catch (error: any) {
     if (error.response?.status === 404) {
       return [];
