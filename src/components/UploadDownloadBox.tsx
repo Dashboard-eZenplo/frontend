@@ -1,3 +1,5 @@
+import { Button } from '@mui/material';
+
 const UploadDownloadBox = () => {
   return (
     <div className="flex flex-col items-center text-zinc-700">
@@ -10,18 +12,18 @@ const UploadDownloadBox = () => {
             (apenas arquivos .csv baixados do template)
           </p>
 
-          <div className="mt-[90px]">
+          <div className="mt-20">
             <p className="text-[20px] md:text-[30px] lg:text-[35px] font-medium">OU</p>
           </div>
         </div>
 
         <div className="flex flex-col items-center">
-          <button
-            className="bg-primary text-white rounded-lg text-[20px] md:text-[25px] lg:text-[30px] flex items-center justify-center border-0
-                        w-[190px] md:w-[250px] lg:w-[350px] h-[45px] md:h-[60px] lg:h-[70px]"
+          <Button
+            className="w-[300px] h-[35px] md:w-[360px] md:h-[45px] lg:w-[500px] lg:h-[55px] xl:w-[600px] xl:h-[65px]"
+            variant="contained"
           >
             Meus Arquivos
-          </button>
+          </Button>
 
           <p className="mt-2 text-center text-[18px] md:text-[25px] lg:text-[30px]">
             Faça upload pelos seus arquivos
