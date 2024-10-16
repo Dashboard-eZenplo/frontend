@@ -170,14 +170,13 @@ export default function EmployeesTable() {
   return (
     <div className="h-[631px] w-[90%]">
       {error && <Alert severity="error">{error}</Alert>}
-
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex items-center justify-between mb-4 w-[100%]">
         <TextField
           placeholder="Busque pelo e-mail da empresa"
           variant="standard"
           value={quickFilterValue}
           onChange={(e) => setQuickFilterValue(e.target.value)}
-          sx={{ marginBottom: 2, width: '26%' }}
+          sx={{ marginLeft: '1vw', width: '26%' }}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -186,13 +185,13 @@ export default function EmployeesTable() {
             )
           }}
         />
-        <div className="flex space-x-4">
+        <div className="flex items-center w-[auto]">
           <Button
-            startIcon={<FileUploadOutlinedIcon sx={{ fontSize: 20 }} />}
+            startIcon={<FileUploadOutlinedIcon style={{ fontSize: 30 }} />}
             onClick={handleOpenModal}
             sx={{
-              width: '70%',
-              padding: 0,
+              padding: '6px 8px',
+              width: 'auto',
               textTransform: 'none',
               color: 'black',
               fontSize: '0.875rem',
@@ -207,10 +206,10 @@ export default function EmployeesTable() {
             Upload Modelo
           </Button>
           <Button
-            startIcon={<FileDownloadOutlinedIcon sx={{ fontSize: 20 }} />}
+            startIcon={<FileDownloadOutlinedIcon style={{ fontSize: 30 }} />}
             sx={{
-              width: '70%',
-              padding: 0,
+              padding: '6px 8px',
+              width: 'auto',
               textTransform: 'none',
               color: 'black',
               fontSize: '0.875rem',
