@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const login = async (email: string, password: string) => {
   try {
-    const response = await axios.post(`${API_URL}/auth/login`, {
+    const response = await axios.post(`${API_URL}/auth/login/`, {
       email,
       password
     });
@@ -47,7 +47,7 @@ export const refreshAccessToken = async () => {
       throw new Error('No refresh token available');
     }
 
-    const response = await axios.post(`${API_URL}/auth/refresh`, { refresh_token: refreshToken });
+    const response = await axios.post(`${API_URL}/auth/refresh/`, { refresh_token: refreshToken });
 
     const newAccessToken = response.data.access_token;
 
