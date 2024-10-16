@@ -60,18 +60,18 @@ export default function FilterSidebar() {
               <FilterAlt className="text-zinc-700" />
               <strong className="font-medium text-[0.9rem] text-zinc-700 ml-5">Categorias</strong>
             </AccordionSummary>
-            <AccordionDetails sx={{ padding: 0 }}>
+            <AccordionDetails sx={{ padding: 0 }} className="overflow-y-scroll max-h-44 scrollbar">
               <List disablePadding>
                 <ListItem disablePadding>
                   <ListItemButton
                     role={undefined}
                     dense
-                    onClick={() => handleCategoryChange('Atividade Física')}
+                    onClick={() => handleCategoryChange('Física')}
                   >
                     <ListItemIcon sx={{ minWidth: '2rem' }}>
                       <Checkbox
                         edge="start"
-                        checked={categories.includes('Atividade Física')}
+                        checked={categories.includes('Física')}
                         tabIndex={-1}
                         disableRipple
                         size="small"
@@ -79,7 +79,7 @@ export default function FilterSidebar() {
                     </ListItemIcon>
                     <ListItemText
                       primaryTypographyProps={{ fontSize: '0.85rem' }}
-                      primary={'Atividade Física'}
+                      primary={'Física'}
                     />
                   </ListItemButton>
                 </ListItem>
@@ -88,12 +88,12 @@ export default function FilterSidebar() {
                   <ListItemButton
                     role={undefined}
                     dense
-                    onClick={() => handleCategoryChange('Estudos')}
+                    onClick={() => handleCategoryChange('Espiritual')}
                   >
                     <ListItemIcon sx={{ minWidth: '2rem' }}>
                       <Checkbox
                         edge="start"
-                        checked={categories.includes('Estudos')}
+                        checked={categories.includes('Espiritual')}
                         tabIndex={-1}
                         disableRipple
                         size="small"
@@ -101,7 +101,7 @@ export default function FilterSidebar() {
                     </ListItemIcon>
                     <ListItemText
                       primaryTypographyProps={{ fontSize: '0.85rem' }}
-                      primary={'Estudos'}
+                      primary={'Espiritual'}
                     />
                   </ListItemButton>
                 </ListItem>
@@ -110,12 +110,12 @@ export default function FilterSidebar() {
                   <ListItemButton
                     role={undefined}
                     dense
-                    onClick={() => handleCategoryChange('Ar Livre')}
+                    onClick={() => handleCategoryChange('Social')}
                   >
                     <ListItemIcon sx={{ minWidth: '2rem' }}>
                       <Checkbox
                         edge="start"
-                        checked={categories.includes('Ar Livre')}
+                        checked={categories.includes('Social')}
                         tabIndex={-1}
                         disableRipple
                         size="small"
@@ -123,7 +123,7 @@ export default function FilterSidebar() {
                     </ListItemIcon>
                     <ListItemText
                       primaryTypographyProps={{ fontSize: '0.85rem' }}
-                      primary={'Ar Livre'}
+                      primary={'Social'}
                     />
                   </ListItemButton>
                 </ListItem>
@@ -132,12 +132,12 @@ export default function FilterSidebar() {
                   <ListItemButton
                     role={undefined}
                     dense
-                    onClick={() => handleCategoryChange('Leitura')}
+                    onClick={() => handleCategoryChange('Mental')}
                   >
                     <ListItemIcon sx={{ minWidth: '2rem' }}>
                       <Checkbox
                         edge="start"
-                        checked={categories.includes('Leitura')}
+                        checked={categories.includes('Mental')}
                         tabIndex={-1}
                         disableRipple
                         size="small"
@@ -145,11 +145,77 @@ export default function FilterSidebar() {
                     </ListItemIcon>
                     <ListItemText
                       primaryTypographyProps={{ fontSize: '0.85rem' }}
-                      primary={'Leitura'}
+                      primary={'Mental'}
+                    />
+                  </ListItemButton>
+                </ListItem>
+
+                <ListItem disablePadding>
+                  <ListItemButton
+                    role={undefined}
+                    dense
+                    onClick={() => handleCategoryChange('Ocupacional')}
+                  >
+                    <ListItemIcon sx={{ minWidth: '2rem' }}>
+                      <Checkbox
+                        edge="start"
+                        checked={categories.includes('Ocupacional')}
+                        tabIndex={-1}
+                        disableRipple
+                        size="small"
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      primaryTypographyProps={{ fontSize: '0.85rem' }}
+                      primary={'Ocupacional'}
                     />
                   </ListItemButton>
                 </ListItem>
               </List>
+
+              <ListItem disablePadding>
+                <ListItemButton
+                  role={undefined}
+                  dense
+                  onClick={() => handleCategoryChange('Intelectual')}
+                >
+                  <ListItemIcon sx={{ minWidth: '2rem' }}>
+                    <Checkbox
+                      edge="start"
+                      checked={categories.includes('Intelectual')}
+                      tabIndex={-1}
+                      disableRipple
+                      size="small"
+                    />
+                  </ListItemIcon>
+                  <ListItemText
+                    primaryTypographyProps={{ fontSize: '0.85rem' }}
+                    primary={'Intelectual'}
+                  />
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem disablePadding>
+                <ListItemButton
+                  role={undefined}
+                  dense
+                  onClick={() => handleCategoryChange('Financeira')}
+                >
+                  <ListItemIcon sx={{ minWidth: '2rem' }}>
+                    <Checkbox
+                      edge="start"
+                      checked={categories.includes('Financeira')}
+                      tabIndex={-1}
+                      disableRipple
+                      size="small"
+                    />
+                  </ListItemIcon>
+                  <ListItemText
+                    primaryTypographyProps={{ fontSize: '0.85rem' }}
+                    primary={'Financeira'}
+                  />
+                </ListItemButton>
+              </ListItem>
             </AccordionDetails>
           </Accordion>
         </div>
