@@ -7,8 +7,12 @@ import { useEffect, useState } from 'react';
 import { deleteManager, getManagers } from '../services/managers/managerService';
 import { IHRManager } from '../types/HRManager';
 
+interface LocalHRManager extends IHRManager {
+  id: number;
+}
+
 export default function ManagersTable() {
-  type Row = IHRManager & { gridRowID: number };
+  type Row = LocalHRManager;
 
   const [rows, setRows] = useState<Row[]>([]);
 
@@ -16,10 +20,6 @@ export default function ManagersTable() {
   const [error, setError] = useState<string | null>(null);
 
   const columns: GridColDef<Row>[] = [
-    {
-      field: 'gridRowID',
-      headerName: 'Grid Row ID'
-    },
     {
       field: 'id',
       headerName: 'ID',
@@ -79,7 +79,7 @@ export default function ManagersTable() {
       try {
         const data = await getManagers();
 
-        const managers: IHRManager[] = data.managers.map(
+        const rows: LocalHRManager[] = data.managers.map(
           ([id, nome, email, cnpj, telefone]: any) => ({
             id,
             nome,
@@ -89,10 +89,6 @@ export default function ManagersTable() {
           })
         );
 
-        const rows = managers.map((manager, index) => ({
-          ...manager,
-          gridRowID: index
-        }));
         setRows(rows);
       } catch (error: any) {
         console.error('Error fetching managers:', error);
@@ -134,16 +130,10 @@ export default function ManagersTable() {
         rows={rows}
         columns={columns}
         pageSizeOptions={[10]}
-        getRowId={(row) => row.gridRowID}
         initialState={{
           pagination: {
             paginationModel: {
               pageSize: 10
-            }
-          },
-          columns: {
-            columnVisibilityModel: {
-              gridRowID: false
             }
           }
         }}
