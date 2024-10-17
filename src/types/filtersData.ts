@@ -1,10 +1,8 @@
 export interface IFiltersRequest {
-  periods: [
-    {
-      initial_date: string;
-      final_date: string;
-    }
-  ];
+  periods: {
+    initial_date: string;
+    final_date: string;
+  }[];
   filters: {
     category: string[];
     role?: string;
@@ -14,11 +12,9 @@ export interface IFiltersRequest {
 }
 
 export interface IFiltersResponse {
-  grades: [
-    {
-      good: number;
-      neutral: number;
-      bad: number;
-    }
-  ];
+  grades: {
+    good: number;
+    neutral: number;
+    bad: number;
+  }[];
 }
