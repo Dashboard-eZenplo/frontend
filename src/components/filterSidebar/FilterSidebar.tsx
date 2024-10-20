@@ -12,8 +12,11 @@ import {
   ListItemText
 } from '@mui/material';
 import { useState } from 'react';
+import { useFilters } from '../../contexts/FiltersContext';
 
 export default function FilterSidebar() {
+  const { applyFilters }: any = useFilters();
+
   const [categories, setCategories] = useState<string[]>([]);
   const [expandedAccordion, setExpandedAccordion] = useState<string | false>('categorias');
 
@@ -23,6 +26,14 @@ export default function FilterSidebar() {
         ? prevCategories.filter((item) => item !== category)
         : [...prevCategories, category]
     );
+  };
+
+  const handleApplyFilters = () => {
+    applyFilters({
+      filters: {
+        category: categories
+      }
+    });
   };
 
   return (
@@ -66,12 +77,12 @@ export default function FilterSidebar() {
                   <ListItemButton
                     role={undefined}
                     dense
-                    onClick={() => handleCategoryChange('Física')}
+                    onClick={() => handleCategoryChange('Fisica')}
                   >
                     <ListItemIcon sx={{ minWidth: '2rem' }}>
                       <Checkbox
                         edge="start"
-                        checked={categories.includes('Física')}
+                        checked={categories.includes('Fisica')}
                         tabIndex={-1}
                         disableRipple
                         size="small"
@@ -335,6 +346,7 @@ export default function FilterSidebar() {
         sx={{ fontSize: '0.9rem', padding: '0.4rem', borderRadius: '8px' }}
         variant="contained"
         fullWidth
+        onClick={handleApplyFilters}
       >
         Aplicar Filtros
       </Button>

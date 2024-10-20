@@ -5,8 +5,10 @@ import { defaultHeaderOptions } from '../../config/HeaderOptions';
 import StackedBarChart from '../../components/stackedBarChart/StackedBarChart';
 import DateRangePicker, { DateRange, RangeType } from 'rsuite/DateRangePicker';
 import '../../styles/rsuite/styles.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as dateFns from 'date-fns';
+import { useFilters } from '../../contexts/FiltersContext';
+import { format } from 'date-fns';
 
 type Period = [Date, Date];
 
@@ -44,6 +46,8 @@ const statistics = [
 ];
 
 export default function Dashboard() {
+  const { applyFilters } = useFilters();
+
   const [period1, setPeriod1] = useState<Period | null>(null);
   const [period2, setPeriod2] = useState<Period | null>(null);
   const [period3, setPeriod3] = useState<Period | null>(null);
@@ -69,6 +73,19 @@ export default function Dashboard() {
       value: [dateFns.startOfDay(dateFns.subDays(new Date(), 6)), dateFns.endOfDay(new Date())]
     }
   ];
+
+  useEffect(() => {
+    const periods = [period1, period2, period3]
+      .filter((p): p is Period => p !== null)
+      .map(([startDate, endDate]) => ({
+        initial_date: format(startDate, 'dd/MM/yyyy'),
+        final_date: format(endDate, 'dd/MM/yyyy')
+      }));
+
+    if (periods.length > 0) {
+      applyFilters({ periods });
+    }
+  }, [period1, period2, period3]);
 
   return (
     <main className="flex flex-col min-h-screen scrollbar">
