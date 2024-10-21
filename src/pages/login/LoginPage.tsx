@@ -19,8 +19,10 @@ function LoginPage() {
 
       navigate('/dashboard');
     } catch (error: any) {
-      console.log(error);
-      toast.error('Erro ao executar o login.');
+      if (error.response?.status === 401) {
+        toast.error('Credenciais inválidas.');
+        return;
+      } else toast.error('Erro ao executar o login.');
     }
   };
 
