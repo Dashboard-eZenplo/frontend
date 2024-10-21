@@ -7,7 +7,7 @@
     "dev": "vite --host",
     "build": "tsc -b && vite build",
     "test": "jest --passWithNoTests",
-    "lint": "eslint --fix 'src/**/*.{ts,tsx,js,jsx}'",
+    "lint": "eslint --fix src/**/*.{ts,tsx,js,jsx}",
     "preview": "vite preview",
     "prepare": "husky install",
     "postinstall": "shx chmod +x .husky/*"
@@ -19,6 +19,7 @@
     "@mui/icons-material": "^6.0.1",
     "@mui/material": "^6.0.1",
     "axios": "^1.7.7",
+    "frontend": "file:",
     "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

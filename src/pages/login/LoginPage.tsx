@@ -19,7 +19,8 @@ function LoginPage() {
 
       navigate('/dashboard');
     } catch (error: any) {
-      toast.error('Erro ao executar o login.')
+      console.log(error);
+      toast.error('Erro ao executar o login.');
     }
   };
 
@@ -95,7 +96,11 @@ function LoginPage() {
           </div>
         </div>
       </div>
-      <Toaster richColors toastOptions={{style: { height: '50px', padding: '10px' }}} position='bottom-left'/>
+      <Toaster
+        richColors
+        toastOptions={{ style: { height: '50px', padding: '10px' } }}
+        position="bottom-left"
+      />
     </>
   );
 }
