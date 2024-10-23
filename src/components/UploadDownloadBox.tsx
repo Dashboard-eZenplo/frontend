@@ -1,6 +1,4 @@
-// src/components/UploadDownloadBox.tsx
-
-import React, { useRef, useState, ChangeEvent, DragEvent } from 'react';
+import { useRef, useState, ChangeEvent, DragEvent } from 'react';
 import { uploadCsv } from '../services/fileService';
 
 interface UploadDownloadBoxProps {
@@ -18,16 +16,13 @@ const UploadDownloadBox: React.FC<UploadDownloadBoxProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string>('');
 
-  // Constants for validation
-  const MAX_FILE_SIZE_MB = 5; // Maximum file size in MB
-  const REQUIRED_COLUMNS = ['Name', 'Age', 'Email']; // Required CSV columns
+  const MAX_FILE_SIZE_MB = 5;
+  const REQUIRED_COLUMNS = ['Name', 'Age', 'Email'];
 
-  // Handle button click to trigger file input
   const handleButtonClick = () => {
     fileInputRef.current?.click();
   };
 
-  // Handle file selection via dialog
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
@@ -35,7 +30,6 @@ const UploadDownloadBox: React.FC<UploadDownloadBoxProps> = ({
     }
   };
 
-  // Handle drag events
   const handleDrag = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
@@ -46,7 +40,6 @@ const UploadDownloadBox: React.FC<UploadDownloadBoxProps> = ({
     }
   };
 
-  // Handle drop event
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
@@ -111,7 +104,6 @@ const UploadDownloadBox: React.FC<UploadDownloadBoxProps> = ({
     setUploading(true);
 
     try {
-      // Assuming single file upload; modify if multiple uploads are needed
       const file = fileArray[0];
       setFileName(file.name);
       const response = await uploadCsv(file);
@@ -130,7 +122,7 @@ const UploadDownloadBox: React.FC<UploadDownloadBoxProps> = ({
     } finally {
       setUploading(false);
       if (fileInputRef.current) {
-        fileInputRef.current.value = ''; // Reset file input
+        fileInputRef.current.value = '';
       }
     }
   };
@@ -174,7 +166,7 @@ const UploadDownloadBox: React.FC<UploadDownloadBoxProps> = ({
             className="hidden"
             accept=".csv"
             onChange={handleFileChange}
-            multiple={false} // Set to false for single file upload
+            multiple={false}
           />
 
           {uploading && (
@@ -189,7 +181,6 @@ const UploadDownloadBox: React.FC<UploadDownloadBoxProps> = ({
             </p>
           )}
 
-          {/* Optional: Display uploaded file name */}
           {fileName && !error && (
             <p className="mt-2 text-center text-green-500 text-[16px] md:text-[20px] lg:text-[25px]">
               {fileName} enviado com sucesso!
