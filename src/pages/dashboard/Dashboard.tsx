@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import * as dateFns from 'date-fns';
 import { useFilters } from '../../contexts/FiltersContext';
 import { format } from 'date-fns';
+import { AccessTime, EditCalendar, People, StarBorder } from '@mui/icons-material';
 
 type Period = [Date, Date];
 
@@ -26,22 +27,22 @@ const statistics = [
   {
     title: 'Usuários Ativos',
     value: '87 / 110',
-    percentage: 80
+    icon: <People fontSize="large" />
   },
   {
     title: 'Atividades Registradas',
     value: '1.042',
-    percentage: 75
+    icon: <EditCalendar fontSize="large" />
   },
   {
     title: 'Horas Registradas',
     value: '3.545',
-    percentage: 90
+    icon: <AccessTime fontSize="large" />
   },
   {
     title: 'Média Avaliação Atividades',
     value: '7,5 / 10',
-    percentage: 80
+    icon: <StarBorder fontSize="large" />
   }
 ];
 

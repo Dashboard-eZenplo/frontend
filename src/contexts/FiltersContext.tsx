@@ -21,7 +21,7 @@ export const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   });
 
-  const [data, setData] = useState<IFiltersResponse | null>(null);
+  const [data, _setData] = useState<IFiltersResponse | null>(null);
 
   const [good, setGood] = useState<number[]>([0, 0, 0]);
   const [neutral, setNeutral] = useState<number[]>([0, 0, 0]);
