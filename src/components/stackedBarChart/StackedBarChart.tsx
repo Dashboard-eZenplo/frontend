@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
+import { useFilters } from '../../contexts/FiltersContext';
 
 Chart.register(CategoryScale, LinearScale, PointElement, BarElement, Title, Tooltip, Legend);
 
@@ -16,6 +17,8 @@ Chart.defaults.color = '#333333';
 Chart.defaults.font.family = "'Inter', system-ui, 'Avenir', Helvetica, 'Arial', sans-serif";
 
 export default function StackedBarChart() {
+  const { good, neutral, bad } = useFilters();
+
   const stackedBarOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -34,17 +37,20 @@ export default function StackedBarChart() {
     datasets: [
       {
         label: 'Ruim',
-        data: [14, 24, 36],
+        // data: [14, 24, 36],
+        data: bad,
         backgroundColor: '#ff5050'
       },
       {
         label: 'Razoável',
-        data: [16, 22, 32],
+        // data: [16, 22, 32],
+        data: neutral,
         backgroundColor: '#fdfa20'
       },
       {
         label: 'Bom',
-        data: [12, 26, 34],
+        // data: [12, 26, 34],
+        data: good,
         backgroundColor: '#3be07d'
       }
     ]
