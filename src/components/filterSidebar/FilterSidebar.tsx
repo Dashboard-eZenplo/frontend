@@ -17,8 +17,19 @@ import { useFilters } from '../../contexts/FiltersContext';
 export default function FilterSidebar() {
   const { applyFilters }: any = useFilters();
 
+  const categoriesList = [
+    'Fisica',
+    'Espiritual',
+    'Social',
+    'Mental',
+    'Ocupacional',
+    'Intelectual',
+    'Financeira'
+  ];
+
   const [categories, setCategories] = useState<string[]>([]);
   const [expandedAccordion, setExpandedAccordion] = useState<string | false>('categorias');
+  const [selectAll, setSelectAll] = useState<boolean>(false);
 
   const handleCategoryChange = (category: string) => {
     setCategories((prevCategories) =>
@@ -28,6 +39,15 @@ export default function FilterSidebar() {
     );
   };
 
+  const handleSelectAllChange = () => {
+    if (selectAll) {
+      setCategories([]);
+    } else {
+      setCategories(categoriesList);
+    }
+    setSelectAll(!selectAll);
+  };
+
   const handleApplyFilters = () => {
     applyFilters({
       filters: {
@@ -35,6 +55,10 @@ export default function FilterSidebar() {
       }
     });
   };
+
+  // Update selectAll state when categories change
+  const allSelected = categories.length === categoriesList.length;
+  const someSelected = categories.length > 0 && categories.length < categoriesList.length;
 
   return (
     <aside className="py-4 flex flex-col gap-5 min-w-[16rem]">
@@ -74,159 +98,53 @@ export default function FilterSidebar() {
             <AccordionDetails sx={{ padding: 0 }} className="overflow-y-scroll max-h-44 scrollbar">
               <List disablePadding>
                 <ListItem disablePadding>
-                  <ListItemButton
-                    role={undefined}
-                    dense
-                    onClick={() => handleCategoryChange('Fisica')}
-                  >
+                  <ListItemButton role={undefined} dense onClick={handleSelectAllChange}>
                     <ListItemIcon sx={{ minWidth: '2rem' }}>
                       <Checkbox
                         edge="start"
-                        checked={categories.includes('Fisica')}
+                        checked={allSelected}
+                        indeterminate={someSelected}
                         tabIndex={-1}
                         disableRipple
                         size="small"
                       />
                     </ListItemIcon>
                     <ListItemText
-                      primaryTypographyProps={{ fontSize: '0.85rem' }}
-                      primary={'Física'}
+                      primaryTypographyProps={{
+                        fontSize: '0.85rem',
+                        fontStyle: 'italic',
+                        fontWeight: '500'
+                      }}
+                      className="text-[85rem]"
+                      primary="Selecionar todos"
                     />
                   </ListItemButton>
                 </ListItem>
 
-                <ListItem disablePadding>
-                  <ListItemButton
-                    role={undefined}
-                    dense
-                    onClick={() => handleCategoryChange('Espiritual')}
-                  >
-                    <ListItemIcon sx={{ minWidth: '2rem' }}>
-                      <Checkbox
-                        edge="start"
-                        checked={categories.includes('Espiritual')}
-                        tabIndex={-1}
-                        disableRipple
-                        size="small"
+                {categoriesList.map((category) => (
+                  <ListItem key={category} disablePadding>
+                    <ListItemButton
+                      role={undefined}
+                      dense
+                      onClick={() => handleCategoryChange(category)}
+                    >
+                      <ListItemIcon sx={{ minWidth: '2rem' }}>
+                        <Checkbox
+                          edge="start"
+                          checked={categories.includes(category)}
+                          tabIndex={-1}
+                          disableRipple
+                          size="small"
+                        />
+                      </ListItemIcon>
+                      <ListItemText
+                        primaryTypographyProps={{ fontSize: '0.85rem' }}
+                        primary={category}
                       />
-                    </ListItemIcon>
-                    <ListItemText
-                      primaryTypographyProps={{ fontSize: '0.85rem' }}
-                      primary={'Espiritual'}
-                    />
-                  </ListItemButton>
-                </ListItem>
-
-                <ListItem disablePadding>
-                  <ListItemButton
-                    role={undefined}
-                    dense
-                    onClick={() => handleCategoryChange('Social')}
-                  >
-                    <ListItemIcon sx={{ minWidth: '2rem' }}>
-                      <Checkbox
-                        edge="start"
-                        checked={categories.includes('Social')}
-                        tabIndex={-1}
-                        disableRipple
-                        size="small"
-                      />
-                    </ListItemIcon>
-                    <ListItemText
-                      primaryTypographyProps={{ fontSize: '0.85rem' }}
-                      primary={'Social'}
-                    />
-                  </ListItemButton>
-                </ListItem>
-
-                <ListItem disablePadding>
-                  <ListItemButton
-                    role={undefined}
-                    dense
-                    onClick={() => handleCategoryChange('Mental')}
-                  >
-                    <ListItemIcon sx={{ minWidth: '2rem' }}>
-                      <Checkbox
-                        edge="start"
-                        checked={categories.includes('Mental')}
-                        tabIndex={-1}
-                        disableRipple
-                        size="small"
-                      />
-                    </ListItemIcon>
-                    <ListItemText
-                      primaryTypographyProps={{ fontSize: '0.85rem' }}
-                      primary={'Mental'}
-                    />
-                  </ListItemButton>
-                </ListItem>
-
-                <ListItem disablePadding>
-                  <ListItemButton
-                    role={undefined}
-                    dense
-                    onClick={() => handleCategoryChange('Ocupacional')}
-                  >
-                    <ListItemIcon sx={{ minWidth: '2rem' }}>
-                      <Checkbox
-                        edge="start"
-                        checked={categories.includes('Ocupacional')}
-                        tabIndex={-1}
-                        disableRipple
-                        size="small"
-                      />
-                    </ListItemIcon>
-                    <ListItemText
-                      primaryTypographyProps={{ fontSize: '0.85rem' }}
-                      primary={'Ocupacional'}
-                    />
-                  </ListItemButton>
-                </ListItem>
+                    </ListItemButton>
+                  </ListItem>
+                ))}
               </List>
-
-              <ListItem disablePadding>
-                <ListItemButton
-                  role={undefined}
-                  dense
-                  onClick={() => handleCategoryChange('Intelectual')}
-                >
-                  <ListItemIcon sx={{ minWidth: '2rem' }}>
-                    <Checkbox
-                      edge="start"
-                      checked={categories.includes('Intelectual')}
-                      tabIndex={-1}
-                      disableRipple
-                      size="small"
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    primaryTypographyProps={{ fontSize: '0.85rem' }}
-                    primary={'Intelectual'}
-                  />
-                </ListItemButton>
-              </ListItem>
-
-              <ListItem disablePadding>
-                <ListItemButton
-                  role={undefined}
-                  dense
-                  onClick={() => handleCategoryChange('Financeira')}
-                >
-                  <ListItemIcon sx={{ minWidth: '2rem' }}>
-                    <Checkbox
-                      edge="start"
-                      checked={categories.includes('Financeira')}
-                      tabIndex={-1}
-                      disableRipple
-                      size="small"
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    primaryTypographyProps={{ fontSize: '0.85rem' }}
-                    primary={'Financeira'}
-                  />
-                </ListItemButton>
-              </ListItem>
             </AccordionDetails>
           </Accordion>
         </div>
