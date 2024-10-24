@@ -9,7 +9,6 @@ const UploadDownloadPage = () => {
   const handleDownload = async () => {
     try {
       await downloadCsvTemplate();
-      // Optionally, show a success message or notification here
       alert('Template baixado com sucesso!');
     } catch (error: any) {
       console.error('Erro ao baixar o template:', error);
@@ -36,7 +35,6 @@ const UploadDownloadPage = () => {
 
         <div className="flex flex-col items-center justify-center mt-4">
           <UploadDownloadBox />
-          {/* The "Enviar" button has been removed as UploadDownloadBox handles uploads */}
         </div>
       </div>
     </Background>

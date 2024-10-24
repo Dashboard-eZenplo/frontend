@@ -17,7 +17,6 @@ const UploadDownloadBox: React.FC<UploadDownloadBoxProps> = ({
   const [fileName, setFileName] = useState<string>('');
 
   const MAX_FILE_SIZE_MB = 5;
-  const REQUIRED_COLUMNS = ['Name', 'Age', 'Email'];
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
@@ -50,14 +49,11 @@ const UploadDownloadBox: React.FC<UploadDownloadBoxProps> = ({
     }
   };
 
-  // Validate and upload files
   const uploadFiles = async (files: FileList) => {
     setError(null);
 
-    // Convert FileList to Array for easier manipulation
     const fileArray = Array.from(files);
 
-    // Check file size
     for (const file of fileArray) {
       const fileSizeMB = file.size / (1024 * 1024);
       if (fileSizeMB > MAX_FILE_SIZE_MB) {
@@ -66,11 +62,10 @@ const UploadDownloadBox: React.FC<UploadDownloadBoxProps> = ({
       }
     }
 
-    // Validate file types (extension and MIME type)
     const invalidFiles = fileArray.filter(
       (file) =>
         !file.name.toLowerCase().endsWith('.csv') ||
-        (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel') // Some browsers use 'application/vnd.ms-excel' for CSV
+        (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel')
     );
 
     if (invalidFiles.length > 0) {
@@ -79,33 +74,12 @@ const UploadDownloadBox: React.FC<UploadDownloadBoxProps> = ({
       return;
     }
 
-    // Optional: Validate CSV structure client-side
-    /*
-    try {
-      const file = fileArray[0]; // Assuming single file upload
-      const text = await file.text();
-      const lines = text.split('\n').filter(line => line.trim() !== ''); // Remove empty lines
-      const headers = lines[0].split(',').map(header => header.trim());
-
-      const missingColumns = REQUIRED_COLUMNS.filter(
-        (col) => !headers.includes(col)
-      );
-
-      if (missingColumns.length > 0) {
-        setError(`Colunas obrigatórias faltando no CSV: ${missingColumns.join(', ')}`);
-        return;
-      }
-    } catch (readError) {
-      setError('Erro ao ler o arquivo CSV.');
-      return;
-    }
-    */
-
     setUploading(true);
 
     try {
       const file = fileArray[0];
       setFileName(file.name);
+
       const response = await uploadCsv(file);
 
       if (onUploadSuccess) {
