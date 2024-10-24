@@ -5,7 +5,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { ptBR } from '@mui/x-data-grid/locales';
 import { useEffect, useState } from 'react';
-import { deleteEmployee } from '../services/employees/employeeService';
+import { deleteEmployee, getEmployees } from '../services/employees/employeeService';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import UploadDownloadBox from './UploadDownloadBox';
@@ -20,44 +20,7 @@ interface Row {
 }
 
 export default function EmployeesTable() {
-  const [rows, setRows] = useState<Row[]>([
-    {
-      id: 1,
-      nome: 'João',
-      email: 'joao@gmail.com',
-      cargo: 'Desenvolvedor',
-      departamento: 'TI',
-      dataDeAdmissao: '2021-10-01',
-      dataDeAniversario: '1990-01-01'
-    },
-    {
-      id: 2,
-      nome: 'Maria',
-      email: 'maria@gmail.com',
-      cargo: 'Gerente',
-      departamento: 'Administração',
-      dataDeAdmissao: '2021-10-01',
-      dataDeAniversario: '1990-01-01'
-    },
-    {
-      id: 3,
-      nome: 'Thiagp',
-      email: 'thiago@gmail.com',
-      cargo: 'Motorista',
-      departamento: 'Transporte',
-      dataDeAdmissao: '2021-10-01',
-      dataDeAniversario: '1980-01-01'
-    },
-    {
-      id: 4,
-      nome: 'Gabriela',
-      email: 'gabriela@gmail.com',
-      cargo: 'Gerente',
-      departamento: 'Administração',
-      dataDeAdmissao: '2021-10-01',
-      dataDeAniversario: '1990-01-01'
-    }
-  ]);
+  const [rows, setRows] = useState<Row[]>([]);
 
   const [quickFilterValue, setQuickFilterValue] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -148,7 +111,8 @@ export default function EmployeesTable() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        setRows(rows);
+        const res = await getEmployees();
+        setRows(res.ok ? await res.json() : []);
       } catch (error: any) {
         console.error('Error fetching employees:', error);
         setRows([]);
@@ -236,6 +200,7 @@ export default function EmployeesTable() {
             }
           }
         }}
+        pageSizeOptions={[10, 20, 30]}
         filterModel={{
           items: [],
           quickFilterValues: [quickFilterValue]
