@@ -9,19 +9,16 @@ import { deleteEmployee, getEmployees } from '../services/employees/employeeServ
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import UploadDownloadBox from './UploadDownloadBox';
-interface Row {
+import { IHREmployee } from '../types/HREmployee';
+
+interface LocalHREmployee extends IHREmployee {
   id: number;
-  nome: string;
-  email: string;
-  cargo: string;
-  departamento: string;
-  dataDeAdmissao: string;
-  dataDeAniversario: string;
 }
 
 export default function EmployeesTable() {
-  const [rows, setRows] = useState<Row[]>([]);
+  type Row = LocalHREmployee;
 
+  const [rows, setRows] = useState<Row[]>([]);
   const [quickFilterValue, setQuickFilterValue] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -112,7 +109,18 @@ export default function EmployeesTable() {
     const fetchEmployees = async () => {
       try {
         const res = await getEmployees();
-        setRows(res.ok ? await res.json() : []);
+        const rows: LocalHREmployee[] = res.managers.map(
+          ([id, nome, email, cargo, departamento, dataDeAdmissao, dataDeAniversario]: any) => ({
+            id,
+            nome,
+            email,
+            cargo,
+            departamento,
+            dataDeAdmissao,
+            dataDeAniversario
+          })
+        );
+        setRows(rows);
       } catch (error: any) {
         console.error('Error fetching employees:', error);
         setRows([]);
