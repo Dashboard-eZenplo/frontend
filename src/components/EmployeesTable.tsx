@@ -5,7 +5,11 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { ptBR } from '@mui/x-data-grid/locales';
 import { useEffect, useState } from 'react';
-import { deleteEmployee, getEmployees } from '../services/employees/employeeService';
+import {
+  deleteEmployee,
+  getEmployees,
+  downloadCSVTemplate
+} from '../services/employees/employeeService';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import UploadDownloadBox from './UploadDownloadBox';
@@ -139,6 +143,15 @@ export default function EmployeesTable() {
     }
   };
 
+  const handleDownloadTemplate = async () => {
+    try {
+      await downloadCSVTemplate();
+    } catch (error) {
+      console.error('Failed to download template', error);
+      setError('Failed to download template');
+    }
+  };
+
   return (
     <div className="h-[631px] w-[90%]">
       {error && <Alert severity="error">{error}</Alert>}
@@ -179,6 +192,7 @@ export default function EmployeesTable() {
           </Button>
           <Button
             startIcon={<FileDownloadOutlinedIcon style={{ fontSize: 30 }} />}
+            onClick={handleDownloadTemplate}
             sx={{
               padding: '6px 8px',
               width: 'auto',
