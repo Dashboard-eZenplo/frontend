@@ -21,7 +21,7 @@ export const uploadCsv = async (file: File): Promise<any> => {
 export const downloadCsvTemplate = async (): Promise<void> => {
   try {
     const response = await api.get<Blob>('/csv/download-csv-template/', {
-      responseType: 'blob',
+      responseType: 'blob'
     });
 
     const filename = extractFilename(response.headers['content-disposition']) || 'template.csv';
