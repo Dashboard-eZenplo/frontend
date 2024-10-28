@@ -2,8 +2,6 @@ import { useRef, useState, ChangeEvent, DragEvent } from 'react';
 import { Button } from '@mui/material';
 interface UploadDownloadBoxProps {
   onFileSelect: (file: File | null) => void;
-  onUploadSuccess?: (response: any) => void;
-  onUploadError?: (error: any) => void;
 }
 
 const UploadDownloadBox: React.FC<UploadDownloadBoxProps> = ({ onFileSelect }) => {
