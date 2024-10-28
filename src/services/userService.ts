@@ -23,8 +23,8 @@ export const uploadFile = async (file: File) => {
 
     const response = await api.post('/file/upload/', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+        'Content-Type': 'multipart/form-data'
+      }
     });
 
     return response.data;
@@ -36,4 +36,4 @@ export const uploadFile = async (file: File) => {
     console.error('Error while uploading file:', error);
     throw error;
   }
-}
+};
