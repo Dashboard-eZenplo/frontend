@@ -137,6 +137,7 @@ export default function RegistrationPage() {
               </div>
 
               <Button
+                fullWidth
                 variant="contained"
                 sx={{
                   marginTop: '2.5rem',

@@ -1,4 +1,19 @@
-import { createTheme } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+
+declare module '@mui/material/styles' {
+  interface Components {
+    MuiDataGrid?: {
+      styleOverrides?: {
+        root?: React.CSSProperties;
+        columnHeaders?: React.CSSProperties;
+        columnHeader?: React.CSSProperties;
+        toolbarContainer?: React.CSSProperties;
+        filterPanel?: React.CSSProperties;
+        checkbox?: React.CSSProperties;
+      };
+    };
+  }
+}
 
 const customTheme = createTheme({
   typography: {
@@ -78,6 +93,17 @@ const customTheme = createTheme({
         root: {
           variant: 'standard',
           fontSize: '1rem'
+        }
+      }
+    },
+    MuiDataGrid: {
+      styleOverrides: {
+        root: {
+          borderRadius: '20px'
+        },
+        columnHeader: {
+          backgroundColor: '#004BF9',
+          color: '#FFFFFF'
         }
       }
     }

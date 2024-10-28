@@ -22,7 +22,8 @@ export default [
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       'prettier/prettier': 'error',
-      'react/react-in-jsx-scope': 'off'
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off'
     },
     settings: {
       react: {
