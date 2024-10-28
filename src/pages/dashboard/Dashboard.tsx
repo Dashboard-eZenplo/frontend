@@ -139,9 +139,22 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="w-full flex-1 flex items-center justify-center max-h-[500px]">
-            <div className="w-[80%] 2xl:w-[70%] h-[70%] max-h-[380px]">
-              <StackedBarChart />
+          <div className="w-full flex-1 flex flex-col items-center justify-center max-h-[500px]">
+            <div className="w-[80%] 2xl:w-[70%] flex-1 max-h-[380px]">
+              <div className=" h-full max-h-[300px]">
+                <StackedBarChart />
+              </div>
+              <div className="w-full flex justify-around  ml-[3%] mt-8">
+                <div className="text-black flex items-center justify-center w-24 h-10 border border-1 rounded-lg font-bold">
+                  6,5
+                </div>
+                <div className="text-black flex items-center justify-center w-24 h-10 border border-1 rounded-lg font-bold">
+                  7,1
+                </div>
+                <div className="text-black flex items-center justify-center w-24 h-10 border border-1 rounded-lg font-bold">
+                  8,4
+                </div>
+              </div>
             </div>
           </div>
         </div>
