@@ -1,33 +1,33 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { IFiltersRequest, IFiltersResponse } from '../types/filtersData';
-import { filter } from '../services/filters/filtersService';
+import { IFiltersRequest, IGrade } from '../types/filtersData';
+import { filterChartData } from '../services/filters/filtersService';
 
-interface FiltersContextProps {
+interface ChartFiltersContextProps {
   filtersRequest: IFiltersRequest;
   applyFilters: (newFilters: Partial<IFiltersRequest>) => void;
-  data: IFiltersResponse | null;
   good: number[];
   neutral: number[];
   bad: number[];
 }
 
-const FiltersContext = createContext<FiltersContextProps>({} as FiltersContextProps);
+const ChartFiltersContext = createContext<ChartFiltersContextProps>({} as ChartFiltersContextProps);
 
-export const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [filtersRequest, setFiltersRequest] = useState<IFiltersRequest>({
     periods: [],
     filters: {
-      category: []
+      category: [],
+      role: [],
+      department: [],
+      branch: []
     }
   });
-
-  const [data, _setData] = useState<IFiltersResponse | null>(null);
 
   const [good, setGood] = useState<number[]>([0, 0, 0]);
   const [neutral, setNeutral] = useState<number[]>([0, 0, 0]);
   const [bad, setBad] = useState<number[]>([0, 0, 0]);
 
-  const applyFilters: any = (newFilters: Partial<IFiltersRequest>) => {
+  const applyFilters = (newFilters: Partial<IFiltersRequest>) => {
     setFiltersRequest((prev) => ({
       periods: newFilters.periods ?? prev.periods,
       filters: {
@@ -47,29 +47,36 @@ export const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({ child
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log('Request data: ', filtersRequest);
-        const response = await filter(filtersRequest);
+        const response = await filterChartData(filtersRequest);
 
-        setGood(ensureThreeValues(response.good));
-        setNeutral(ensureThreeValues(response.neutral));
-        setBad(ensureThreeValues(response.bad));
+        const goodValues = response.grades.map((grade: IGrade) => grade.good);
+        const neutralValues = response.grades.map((grade: IGrade) => grade.neutral);
+        const badValues = response.grades.map((grade: IGrade) => grade.bad);
 
-        // setData(response);
+        setGood(ensureThreeValues(goodValues));
+        setNeutral(ensureThreeValues(neutralValues));
+        setBad(ensureThreeValues(badValues));
       } catch (error) {
         console.error(error);
       }
     };
 
-    if (filtersRequest.periods.length > 0) {
-      fetchData();
-    }
+    fetchData();
   }, [filtersRequest]);
 
   return (
-    <FiltersContext.Provider value={{ filtersRequest, applyFilters, data, good, neutral, bad }}>
+    <ChartFiltersContext.Provider
+      value={{
+        filtersRequest,
+        applyFilters,
+        good,
+        neutral,
+        bad
+      }}
+    >
       {children}
-    </FiltersContext.Provider>
+    </ChartFiltersContext.Provider>
   );
 };
 
-export const useFilters = () => useContext(FiltersContext);
+export const useChartFilters = () => useContext(ChartFiltersContext);

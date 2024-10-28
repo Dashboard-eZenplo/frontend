@@ -7,7 +7,7 @@ import DateRangePicker, { DateRange, RangeType } from 'rsuite/DateRangePicker';
 import '../../styles/rsuite/styles.css';
 import { useEffect, useState } from 'react';
 import * as dateFns from 'date-fns';
-import { useFilters } from '../../contexts/FiltersContext';
+import { useChartFilters } from '../../contexts/ChartFiltersContext';
 import { format } from 'date-fns';
 import { AccessTime, EditCalendar, People, StarBorder } from '@mui/icons-material';
 
@@ -47,7 +47,7 @@ const statistics = [
 ];
 
 export default function Dashboard() {
-  const { applyFilters } = useFilters();
+  const { applyFilters } = useChartFilters();
 
   const [period1, setPeriod1] = useState<Period | null>(null);
   const [period2, setPeriod2] = useState<Period | null>(null);
@@ -79,13 +79,11 @@ export default function Dashboard() {
     const periods = [period1, period2, period3]
       .filter((p): p is Period => p !== null)
       .map(([startDate, endDate]) => ({
-        initial_date: format(startDate, 'dd/MM/yyyy'),
-        final_date: format(endDate, 'dd/MM/yyyy')
+        initial_date: format(startDate, 'yyyy-MM-dd'),
+        final_date: format(endDate, 'yyyy-MM-dd')
       }));
 
-    if (periods.length > 0) {
-      applyFilters({ periods });
-    }
+    applyFilters({ periods });
   }, [period1, period2, period3]);
 
   return (
