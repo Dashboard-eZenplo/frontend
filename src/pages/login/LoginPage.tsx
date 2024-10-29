@@ -1,15 +1,33 @@
 import '../../styles/App.css';
 import LogotipoEzenplo from '../../assets/logo.svg';
 import { TextField } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { Toaster, toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
+import { isAdmin, isTokenExpired } from '../../utils/jwt-decoder';
+import { getToken } from '../../services/auth/authService';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const { signIn } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = getToken();
+
+    if (token && !isTokenExpired(token)) {
+      if (isAdmin(token)) {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
+      }
+    } else {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+    }
+  }, [navigate]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

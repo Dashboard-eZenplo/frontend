@@ -9,42 +9,35 @@ export interface JwtPayload {
 }
 
 export function isAdmin(token: string): boolean {
-  try {
-    const decoded: JwtPayload = jwtDecode<JwtPayload>(token);
-    return decoded.admin;
-  } catch (error) {
-    console.error('Failed to decode JWT token:', error);
-    return false;
-  }
+  const decoded = decodeToken(token);
+  return decoded?.admin ?? false;
 }
 
 export function getUserEMailFromToken(token: string): string {
-  try {
-    const decoded: JwtPayload = jwtDecode<JwtPayload>(token);
-    return decoded.sub || '';
-  } catch (error) {
-    console.error('Failed to decode JWT token:', error);
-    return '';
-  }
+  const decoded = decodeToken(token);
+  return decoded?.sub ?? '';
 }
 
 export function getUserIdFromToken(token: string): number | null {
-  try {
-    const decoded: JwtPayload = jwtDecode<JwtPayload>(token);
-    return decoded.user_id || null;
-  } catch (error) {
-    console.error('Failed to decode JWT token:', error);
-    return null;
-  }
+  const decoded = decodeToken(token);
+  return decoded?.user_id ?? null;
 }
 
 export function isTokenExpired(token: string): boolean {
+  const decoded = decodeToken(token);
+  if (!decoded) {
+    return true; // Se não conseguir decodificar, considera o token expirado
+  }
+
+  const currentTime = Math.floor(Date.now() / 1000);
+  return decoded.exp < currentTime;
+}
+
+function decodeToken(token: string): JwtPayload | null {
   try {
-    const decoded: JwtPayload = jwtDecode<JwtPayload>(token);
-    const currentTime = Math.floor(Date.now() / 1000);
-    return decoded.exp < currentTime;
+    return jwtDecode<JwtPayload>(token);
   } catch (error) {
     console.error('Failed to decode JWT token:', error);
-    return true;
+    return null;
   }
 }

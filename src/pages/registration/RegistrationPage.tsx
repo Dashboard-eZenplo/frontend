@@ -8,6 +8,7 @@ import { IHRManager } from '../../types/HRManager';
 import { formatCNPJ, formatPhone } from '../../utils/formatters';
 import { registerUser } from '../../services/userService';
 import { Toaster, toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 export default function RegistrationPage() {
   const {
@@ -19,6 +20,8 @@ export default function RegistrationPage() {
   } = useForm<IHRManager>({
     resolver: zodResolver(hrManagerValidation)
   });
+
+  const navigate = useNavigate();
 
   const handleFormSubmit = async (userData: IHRManager) => {
     try {
@@ -41,6 +44,10 @@ export default function RegistrationPage() {
     setValue('phone', formattedPhone);
   };
 
+  const handleReturnToAdmin = () => {
+    navigate('/admin');
+  };
+
   return (
     <>
       <div className="w-full min-h-screen flex">
@@ -54,7 +61,7 @@ export default function RegistrationPage() {
         <section className="w-full lg:w-1/2 p-10 lg:py-16 text-zinc-700 flex justify-center">
           <div className="max-w-[34rem] xl:max-w-[30rem] 2xl:max-w-[34rem] w-full flex flex-col items-center justify-center">
             <div className="w-full flex justify-end mb-4">
-              <KeyboardReturn className="cursor-pointer" />
+              <KeyboardReturn className="cursor-pointer" onClick={handleReturnToAdmin} />
             </div>
 
             <h1 className="font-bold text-[2.2rem] md:text-[2.6rem] mb-8 2xl:mb-12">Cadastro</h1>
