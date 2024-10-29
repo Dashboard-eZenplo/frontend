@@ -10,6 +10,8 @@ import * as dateFns from 'date-fns';
 import { useChartFilters } from '../../contexts/ChartFiltersContext';
 import { format } from 'date-fns';
 import { AccessTime, EditCalendar, People, StarBorder } from '@mui/icons-material';
+import { getPossibleFilters } from '../../services/filters/filtersService';
+import { usePossibleFilters } from '../../contexts/PossibleFiltersContext';
 
 type Period = [Date, Date];
 
@@ -47,7 +49,8 @@ const statistics = [
 ];
 
 export default function Dashboard() {
-  const { applyFilters } = useChartFilters();
+  const { applyFilters, fetchChartData } = useChartFilters();
+  const { setPossibleFilters } = usePossibleFilters();
 
   const [period1, setPeriod1] = useState<Period | null>(null);
   const [period2, setPeriod2] = useState<Period | null>(null);
@@ -85,6 +88,23 @@ export default function Dashboard() {
 
     applyFilters({ periods });
   }, [period1, period2, period3]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getPossibleFilters();
+        setPossibleFilters(response);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    fetchChartData();
+  }, [fetchChartData]);
 
   return (
     <main className="flex flex-col min-h-screen scrollbar">

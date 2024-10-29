@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import { IFiltersRequest, IGrade } from '../types/filtersData';
 import { filterChartData } from '../services/filters/filtersService';
 
@@ -8,6 +8,7 @@ interface ChartFiltersContextProps {
   good: number[];
   neutral: number[];
   bad: number[];
+  fetchChartData: () => Promise<void>;
 }
 
 const ChartFiltersContext = createContext<ChartFiltersContextProps>({} as ChartFiltersContextProps);
@@ -44,24 +45,19 @@ export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ 
     return arr.length === 3 ? arr : [...arr, ...defaultArray].slice(0, 3);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await filterChartData(filtersRequest);
+  const fetchChartData = useCallback(async () => {
+    try {
+      const response = await filterChartData(filtersRequest);
+      const goodValues = response.grades.map((grade: IGrade) => grade.good);
+      const neutralValues = response.grades.map((grade: IGrade) => grade.neutral);
+      const badValues = response.grades.map((grade: IGrade) => grade.bad);
 
-        const goodValues = response.grades.map((grade: IGrade) => grade.good);
-        const neutralValues = response.grades.map((grade: IGrade) => grade.neutral);
-        const badValues = response.grades.map((grade: IGrade) => grade.bad);
-
-        setGood(ensureThreeValues(goodValues));
-        setNeutral(ensureThreeValues(neutralValues));
-        setBad(ensureThreeValues(badValues));
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchData();
+      setGood(ensureThreeValues(goodValues));
+      setNeutral(ensureThreeValues(neutralValues));
+      setBad(ensureThreeValues(badValues));
+    } catch (error) {
+      console.error(error);
+    }
   }, [filtersRequest]);
 
   return (
@@ -71,7 +67,8 @@ export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ 
         applyFilters,
         good,
         neutral,
-        bad
+        bad,
+        fetchChartData
       }}
     >
       {children}

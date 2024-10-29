@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { IPossibleFilters } from '../types/filtersData';
-import { getPossibleFilters } from '../services/filters/filtersService';
 
 interface PossibleFiltersContextProps {
   possibleFilters: IPossibleFilters;
+  setPossibleFilters: (data: IPossibleFilters) => void;
 }
 
 const PossibleFiltersContext = createContext<PossibleFiltersContextProps>(
@@ -21,21 +21,8 @@ export const PossibleFiltersProvider: React.FC<{ children: React.ReactNode }> = 
     }
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getPossibleFilters();
-        setPossibleFilters(response);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
   return (
-    <PossibleFiltersContext.Provider value={{ possibleFilters }}>
+    <PossibleFiltersContext.Provider value={{ possibleFilters, setPossibleFilters }}>
       {children}
     </PossibleFiltersContext.Provider>
   );
