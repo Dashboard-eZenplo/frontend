@@ -29,9 +29,9 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
           width: {
             xs: '80vw',
             sm: '60vw',
-            md: '40vw'  
+            md: '40vw'
           },
-          maxWidth: '500px', 
+          maxWidth: '500px',
           height: 'auto',
           maxHeight: '70vh',
           border: '3px solid blue',
@@ -58,12 +58,12 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
               textAlign: 'center',
               fontWeight: 'bold',
               fontSize: {
-                xs: '18px', 
+                xs: '18px',
                 sm: '22px',
-                md: '28px' 
+                md: '28px'
               },
               mt: {
-                xs: '8px',  
+                xs: '8px',
                 sm: '20px',
                 md: '30px'
               }
@@ -76,12 +76,12 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
             sx={{
               textAlign: 'center',
               fontSize: {
-                xs: '14px', 
+                xs: '14px',
                 sm: '18px',
-                md: '20px'  
+                md: '20px'
               },
               marginBottom: {
-                xs: '12px',  
+                xs: '12px',
                 sm: '16px',
                 md: '20px'
               },
@@ -103,11 +103,11 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
               xs: 'column',
               sm: 'row'
             },
-            gap: 1, 
+            gap: 1,
             justifyContent: 'center',
             width: '100%',
             mt: {
-              xs: '16px', 
+              xs: '16px',
               sm: '30px',
               md: '20px'
             },
@@ -123,7 +123,7 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
             fullWidth
             sx={{
               minWidth: {
-                xs: '100px', 
+                xs: '100px',
                 sm: '120px',
                 md: '140px'
               },
@@ -137,7 +137,7 @@ const LogoutModal = ({ open, onClose }: ModalProps) => {
               backgroundColor: '#ffffff',
               textTransform: 'none',
               fontSize: {
-                xs: '12px', 
+                xs: '12px',
                 sm: '14px',
                 md: '16px'
               }
