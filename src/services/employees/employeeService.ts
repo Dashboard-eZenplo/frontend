@@ -34,7 +34,10 @@ export const deleteEmployee = async (id: number) => {
 export async function downloadCSVTemplate(): Promise<void> {
   try {
     const response = await axios.get('/csv/download-csv-template/', {
-      responseType: 'blob'
+      responseType: 'blob',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
     });
 
     const url = window.URL.createObjectURL(new Blob([response.data]));
