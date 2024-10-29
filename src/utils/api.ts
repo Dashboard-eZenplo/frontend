@@ -3,7 +3,11 @@ import { isTokenExpired } from './jwt-decoder';
 import { refreshAccessToken, redirectToLogin } from '../services/auth/authService';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json'
+  }
 });
 
 api.interceptors.request.use(
