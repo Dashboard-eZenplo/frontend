@@ -5,8 +5,7 @@ import { refreshAccessToken, logout } from '../services/auth/authService';
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
-    'Access-Control-Allow-Origin': '*',
-    'Content-Type': 'application/json'
+    'Access-Control-Allow-Origin': '*'
   }
 });
 
