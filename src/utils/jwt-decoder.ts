@@ -26,7 +26,7 @@ export function getUserIdFromToken(token: string): number | null {
 export function isTokenExpired(token: string): boolean {
   const decoded = decodeToken(token);
   if (!decoded) {
-    return true; // Se não conseguir decodificar, considera o token expirado
+    return true;
   }
 
   const currentTime = Math.floor(Date.now() / 1000);

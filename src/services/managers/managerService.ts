@@ -1,14 +1,10 @@
-import axios from 'axios';
+import api from '../../utils/api';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const getManagers = async () => {
   try {
-    const response = await axios.get(`${API_URL}/user/list_managers/`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-      }
-    });
+    const response = await api.get(`${API_URL}/user/list_managers/`);
 
     return response.data;
   } catch (error: any) {
@@ -21,11 +17,7 @@ export const getManagers = async () => {
 
 export const deleteManager = async (id: number) => {
   try {
-    await axios.delete(`${API_URL}/user/${id}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-      }
-    });
+    await api.delete(`${API_URL}/user/${id}`);
   } catch (error: any) {
     throw new Error(error.response?.data?.message || 'Error deleting manager');
   }
