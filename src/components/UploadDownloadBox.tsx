@@ -1,74 +1,74 @@
-import React, { useState, useRef } from 'react';
-import axios from 'axios';
+import { useRef, useState, ChangeEvent, DragEvent } from 'react';
+import { Button } from '@mui/material';
+interface UploadDownloadBoxProps {
+  onFileSelect: (file: File | null) => void;
+}
 
-const UploadDownloadBox = () => {
-  const [file, setFile] = useState<File | null>(null);
-  const [error, setError] = useState<string>('');
-  const [successMessage, setSuccessMessage] = useState<string>('');
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+const UploadDownloadBox: React.FC<UploadDownloadBoxProps> = ({ onFileSelect }) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [dragActive, setDragActive] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string>('');
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setError('');
-      setSuccessMessage('');
+  const MAX_FILE_SIZE_MB = 5;
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      const fileSizeMB = file.size / (1024 * 1024);
+      if (fileSizeMB > MAX_FILE_SIZE_MB) {
+        setError(`O arquivo "${file.name}" excede o tamanho máximo de ${MAX_FILE_SIZE_MB}MB.`);
+        onFileSelect(null);
+        return;
+      }
+      if (
+        !file.name.toLowerCase().endsWith('.csv') ||
+        (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel')
+      ) {
+        setError('Apenas arquivos .csv são permitidos.');
+        onFileSelect(null);
+        return;
+      }
+      setFileName(file.name);
+      setError(null);
+      onFileSelect(file);
     }
   };
 
-  const handleUpload = async () => {
-    if (!file) {
-      setError('Por favor, selecione um arquivo para upload.');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-      const response = await axios.post('csv/upload-csv/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-
-      console.log('Upload successful:', response.data);
-      setSuccessMessage('Arquivo enviado com sucesso!');
-      setFile(null);
-    } catch (error: any) {
-      console.error('Error uploading file:', error);
-      const errorMessage = error.message || 'Falha ao fazer upload do arquivo.';
-      setError(errorMessage);
-    }
-  };
-
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDrag = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
+    event.stopPropagation();
+    if (event.type === 'dragenter' || event.type === 'dragover') {
+      setDragActive(true);
+    } else if (event.type === 'dragleave') {
+      setDragActive(false);
+    }
   };
 
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    const droppedFile = event.dataTransfer.files[0];
-    if (droppedFile) {
-      setFile(droppedFile);
-      setError('');
-      setSuccessMessage('');
+    event.stopPropagation();
+    setDragActive(false);
+    const files = event.dataTransfer.files;
+    if (files && files.length > 0) {
+      handleFileChange({ target: { files } } as ChangeEvent<HTMLInputElement>);
     }
   };
-
-  const openFileDialog = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const boxHeightClass = error || successMessage ? 'h-[550px]' : 'h-[500px]';
 
   return (
     <div className="flex flex-col items-center text-zinc-700">
       <div
-        className={`border border-black rounded-lg ${boxHeightClass} w-full xl:w-[1300px] flex flex-col items-center justify-between bg-white p-4`}
-        onDragOver={handleDragOver}
+        className={`border border-black rounded-lg h-[400px] lg:h-[450px] w-full xl:w-[1300px] flex flex-col items-center justify-between bg-white p-4 ${
+          dragActive ? 'bg-gray-100' : 'bg-white'
+        }`}
+        onDragEnter={handleDrag}
+        onDragOver={handleDrag}
+        onDragLeave={handleDrag}
         onDrop={handleDrop}
       >
         <div className="flex flex-col items-center">
@@ -79,41 +79,40 @@ const UploadDownloadBox = () => {
             (apenas arquivos .csv baixados do template)
           </p>
 
-          <p className="text-[20px] md:text-[30px] lg:text-[35px] font-medium mb-5">ou</p>
+          <div className="mt-20">
+            <p className="text-[20px] md:text-[30px] lg:text-[35px] font-medium">OU</p>
+          </div>
         </div>
 
-        <input
-          type="file"
-          accept=".csv"
-          onChange={handleFileChange}
-          style={{ display: 'none' }}
-          ref={fileInputRef}
-        />
+        <div className="flex flex-col items-center">
+          <Button
+            onClick={handleButtonClick}
+            className="w-[300px] h-[35px] md:w-[360px] md:h-[45px] lg:w-[500px] lg:h-[55px] xl:w-[600px] xl:h-[65px]"
+            variant="contained"
+          >
+            Meus Arquivos
+          </Button>
+          <input
+            type="file"
+            ref={fileInputRef}
+            className="hidden"
+            accept=".csv"
+            onChange={handleFileChange}
+            multiple={false}
+          />
 
-        <button
-          onClick={openFileDialog}
-          className="bg-primary text-white rounded-lg text-[20px] md:text-[25px] lg:text-[30px] flex items-center justify-center border-0
-                      w-[190px] md:w-[250px] lg:w-[350px] h-[45px] md:h-[60px] lg:h-[70px]"
-        >
-          Meus Arquivos
-        </button>
+          {error && (
+            <p className="mt-2 text-center text-red-500 text-[16px] md:text-[20px] lg:text-[25px]">
+              {error}
+            </p>
+          )}
 
-        <p className="mt-2 text-center text-[18px] md:text-[25px] lg:text-[30px]">
-          Faça upload pelos seus arquivos
-        </p>
-
-        {error && <p className="text-red-600">{error}</p>}
-        {successMessage && <p className="text-green-600">{successMessage}</p>}
-        {file && <p>Arquivo selecionado: {file.name}</p>}
-
-        <button
-          onClick={handleUpload}
-          disabled={!file}
-          className="mt-4 border border-primary text-primary rounded-lg text-[20px] md:text-[25px] lg:text-[30px] flex items-center justify-center 
-                      w-[190px] md:w-[250px] lg:w-[350px] h-[45px] md:h-[60px] lg:h-[70px] hover:bg-primary hover:text-white transition duration-300 ease-in-out"
-        >
-          Enviar
-        </button>
+          {fileName && !error && (
+            <p className="mt-2 text-center text-green-500 text-[16px] md:text-[20px] lg:text-[25px]">
+              {fileName} pronto para envio!
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
