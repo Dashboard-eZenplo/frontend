@@ -30,26 +30,3 @@ export const deleteEmployee = async (id: number) => {
     throw new Error(error.response?.data?.message || 'Error deleting employee');
   }
 };
-
-export async function downloadCSVTemplate(): Promise<void> {
-  try {
-    const response = await axios.get('/csv/download-csv-template/', {
-      responseType: 'blob',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-      }
-    });
-
-    const url = window.URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement('a');
-
-    link.href = url;
-    link.setAttribute('download', 'base_template.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  } catch (error) {
-    console.error('Error downloading CSV template:', error);
-    throw error;
-  }
-}

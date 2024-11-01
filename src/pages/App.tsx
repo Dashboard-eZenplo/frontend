@@ -51,7 +51,7 @@ const App: React.FC = () => {
         />
 
         <Route path="/employees" element={<EmployeesPage />} />
-      <Route path="/unauthorized" element={<UnauthorizedPage />} />
+        <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

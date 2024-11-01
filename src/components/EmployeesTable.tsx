@@ -5,15 +5,12 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { ptBR } from '@mui/x-data-grid/locales';
 import { useEffect, useState } from 'react';
-import {
-  deleteEmployee,
-  getEmployees,
-  downloadCSVTemplate
-} from '../services/employees/employeeService';
+import { deleteEmployee, getEmployees } from '../services/employees/employeeService';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import UploadDownloadBox from './UploadDownloadBox';
 import { IHREmployee } from '../types/HREmployee';
+import { downloadCsvTemplate, uploadCsv } from '../services/fileService';
 
 interface LocalHREmployee extends IHREmployee {
   id: number;
@@ -26,6 +23,9 @@ export default function EmployeesTable() {
   const [quickFilterValue, setQuickFilterValue] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
@@ -142,12 +142,36 @@ export default function EmployeesTable() {
     }
   };
 
-  const handleDownloadTemplate = async () => {
+  const handleDownload = async () => {
     try {
-      await downloadCSVTemplate();
-    } catch (error) {
-      console.error('Failed to download template', error);
-      setError('Failed to download template');
+      await downloadCsvTemplate();
+      alert('Template baixado com sucesso!');
+    } catch (error: any) {
+      console.error('Erro ao baixar o template:', error);
+      alert(error.message || 'Ocorreu um erro ao baixar o template.');
+    }
+  };
+
+  const handleFileSelect = (file: File | null) => {
+    setSelectedFile(file);
+  };
+
+  const handleUpload = async () => {
+    if (!selectedFile) {
+      alert('Por favor, selecione um arquivo para enviar.');
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      await uploadCsv(selectedFile);
+      alert('Arquivo enviado com sucesso!');
+    } catch (error: any) {
+      console.error('Erro ao enviar o arquivo:', error);
+      alert(error.message || 'Ocorreu um erro ao enviar o arquivo.');
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -191,7 +215,7 @@ export default function EmployeesTable() {
           </Button>
           <Button
             startIcon={<FileDownloadOutlinedIcon style={{ fontSize: 30 }} />}
-            onClick={handleDownloadTemplate}
+            onClick={handleDownload}
             sx={{
               padding: '6px 8px',
               width: 'auto',
@@ -244,7 +268,10 @@ export default function EmployeesTable() {
             outline: 0
           }}
         >
-          <UploadDownloadBox />
+          <UploadDownloadBox onFileSelect={handleFileSelect} />
+          <Button onClick={handleUpload} disabled={!selectedFile} variant="outlined">
+            {uploading ? 'Enviando...' : 'Enviar'}
+          </Button>
         </Box>
       </Modal>
     </div>
