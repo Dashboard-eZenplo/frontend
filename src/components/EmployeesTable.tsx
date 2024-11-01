@@ -111,19 +111,19 @@ export default function EmployeesTable() {
 
   useEffect(() => {
     const fetchEmployees = async () => {
+      console.log('Fetching employees...');
       try {
-        const res = await getEmployees();
-        const rows: LocalHREmployee[] = res.managers.map(
-          ([id, nome, email, cargo, departamento, dataDeAdmissao, dataDeAniversario]: any) => ({
-            id,
-            nome,
-            email,
-            cargo,
-            departamento,
-            dataDeAdmissao,
-            dataDeAniversario
-          })
-        );
+        const res: Array<any> = await getEmployees();
+        console.log(res)
+        const rows: LocalHREmployee[] = res.map((employee: any) => ({
+          id: employee.id,
+          nome: employee.name,
+          email: employee.email,
+          cargo: employee.position,
+          departamento: employee.department,
+          dataDeAdmissao: employee.admission_date,
+          dataDeAniversario: employee.birth_date
+        }));
         setRows(rows);
       } catch (error: any) {
         console.error('Error fetching employees:', error);
