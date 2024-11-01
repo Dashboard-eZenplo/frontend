@@ -114,7 +114,6 @@ export default function EmployeesTable() {
       console.log('Fetching employees...');
       try {
         const res: Array<any> = await getEmployees();
-        console.log(res)
         const rows: LocalHREmployee[] = res.map((employee: any) => ({
           id: employee.id,
           nome: employee.name,
