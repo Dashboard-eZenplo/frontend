@@ -50,7 +50,15 @@ const App: React.FC = () => {
           }
         />
 
-        <Route path="/employees" element={<EmployeesPage />} />
+        <Route
+          path="/funcionarios"
+          element={
+            <ProtectedRoute>
+              <EmployeesPage />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
         <Route path="*" element={<NotFoundPage />} />

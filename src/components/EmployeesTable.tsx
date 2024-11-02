@@ -31,13 +31,6 @@ export default function EmployeesTable() {
   const handleCloseModal = () => setOpen(false);
 
   const columns: GridColDef<Row>[] = [
-    // {
-    //     field: 'id',
-    //     headerName: 'ID',
-    //     width: 90,
-    //     headerAlign: 'center',
-    //     align: 'center'
-    // },
     {
       field: 'nome',
       headerName: 'Nome',
