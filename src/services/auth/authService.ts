@@ -56,5 +56,5 @@ export const refreshAccessToken = async () => {
 };
 
 export const redirectToLogin = () => {
-  window.location.href = '/login';
+  window.location.href = '/';
 };

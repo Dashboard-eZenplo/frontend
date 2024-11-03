@@ -14,7 +14,7 @@ api.interceptors.request.use(
     const token = localStorage.getItem('accessToken');
 
     if (token) {
-      if (config.url !== '/login') {
+      if (config.url !== '/') {
         if (isTokenExpired(token)) {
           try {
             const newAccessToken = await refreshAccessToken();

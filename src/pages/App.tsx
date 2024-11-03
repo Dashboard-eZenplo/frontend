@@ -14,7 +14,7 @@ const App: React.FC = () => {
   return (
     <>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage />} />
 
         <Route
           path="/cadastro"
@@ -60,7 +60,6 @@ const App: React.FC = () => {
         />
 
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
-
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
