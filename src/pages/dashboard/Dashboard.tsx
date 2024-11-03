@@ -12,6 +12,8 @@ import { format } from 'date-fns';
 import { AccessTime, EditCalendar, People, StarBorder } from '@mui/icons-material';
 import { getPossibleFilters } from '../../services/filters/filtersService';
 import { usePossibleFilters } from '../../contexts/PossibleFiltersContext';
+import { getEmployees } from '../../services/employees/employeeService';
+import { useNavigate } from 'react-router-dom';
 
 type Period = [Date, Date];
 
@@ -51,6 +53,7 @@ const statistics = [
 export default function Dashboard() {
   const { applyFilters, fetchChartData } = useChartFilters();
   const { setPossibleFilters } = usePossibleFilters();
+  const navigate = useNavigate();
 
   const [period1, setPeriod1] = useState<Period | null>(null);
   const [period2, setPeriod2] = useState<Period | null>(null);
@@ -74,7 +77,7 @@ export default function Dashboard() {
     },
     {
       label: 'Últimos 30 dias',
-      value: [dateFns.startOfDay(dateFns.subDays(new Date(), 6)), dateFns.endOfDay(new Date())]
+      value: [dateFns.startOfDay(dateFns.subDays(new Date(), 30)), dateFns.endOfDay(new Date())]
     }
   ];
 
@@ -92,6 +95,9 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const employees = await getEmployees();
+        if (employees.length === 0) navigate('/upload');
+
         const response = await getPossibleFilters();
         setPossibleFilters(response);
       } catch (error) {
