@@ -77,7 +77,7 @@ export default function Dashboard() {
     },
     {
       label: 'Últimos 30 dias',
-      value: [dateFns.startOfDay(dateFns.subDays(new Date(), 30)), dateFns.endOfDay(new Date())]
+      value: [dateFns.startOfDay(dateFns.subDays(new Date(), 29)), dateFns.endOfDay(new Date())]
     }
   ];
 
