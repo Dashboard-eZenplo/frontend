@@ -5,11 +5,14 @@ import UploadDownloadBox from '../../components/UploadDownloadBox';
 import Download from '../../assets/Download.png';
 import { downloadCsvTemplate, uploadCsv } from '../../services/fileService';
 import { Button } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getEmployees } from '../../services/employees/employeeService';
 
 const UploadDownloadPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const navigate = useNavigate();
 
   const handleDownload = async () => {
     try {
@@ -22,7 +25,7 @@ const UploadDownloadPage = () => {
   };
 
   const handleFileSelect = (file: File | null) => {
-    setSelectedFile(file); // Recebe o arquivo selecionado do componente filho
+    setSelectedFile(file);
   };
 
   const handleUpload = async () => {
@@ -36,6 +39,7 @@ const UploadDownloadPage = () => {
     try {
       await uploadCsv(selectedFile);
       alert('Arquivo enviado com sucesso!');
+      navigate('/funcionarios');
     } catch (error: any) {
       console.error('Erro ao enviar o arquivo:', error);
       alert(error.message || 'Ocorreu um erro ao enviar o arquivo.');
@@ -43,6 +47,21 @@ const UploadDownloadPage = () => {
       setUploading(false);
     }
   };
+
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const employees = await getEmployees();
+        if (employees.length) {
+          navigate('/funcionarios');
+        }
+      } catch (error: any) {
+        console.error('Error fetching employees:', error);
+      }
+    };
+
+    fetchEmployees();
+  }, []);
 
   return (
     <Background>

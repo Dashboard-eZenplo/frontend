@@ -102,27 +102,27 @@ export default function EmployeesTable() {
     }
   ];
 
-  useEffect(() => {
-    const fetchEmployees = async () => {
-      console.log('Fetching employees...');
-      try {
-        const res: Array<any> = await getEmployees();
-        const rows: LocalHREmployee[] = res.map((employee: any) => ({
-          id: employee.id,
-          nome: employee.name,
-          email: employee.email,
-          cargo: employee.position,
-          departamento: employee.department,
-          dataDeAdmissao: employee.admission_date,
-          dataDeAniversario: employee.birth_date
-        }));
-        setRows(rows);
-      } catch (error: any) {
-        console.error('Error fetching employees:', error);
-        setRows([]);
-      }
-    };
+  const fetchEmployees = async () => {
+    console.log('Fetching employees...');
+    try {
+      const res: Array<any> = await getEmployees();
+      const rows: LocalHREmployee[] = res.map((employee: any) => ({
+        id: employee.id,
+        nome: employee.name,
+        email: employee.email,
+        cargo: employee.position,
+        departamento: employee.department,
+        dataDeAdmissao: employee.admission_date,
+        dataDeAniversario: employee.birth_date
+      }));
+      setRows(rows);
+    } catch (error: any) {
+      console.error('Error fetching employees:', error);
+      setRows([]);
+    }
+  };
 
+  useEffect(() => {
     fetchEmployees();
   }, []);
 
@@ -160,6 +160,8 @@ export default function EmployeesTable() {
     try {
       await uploadCsv(selectedFile);
       alert('Arquivo enviado com sucesso!');
+      handleCloseModal();
+      fetchEmployees();
     } catch (error: any) {
       console.error('Erro ao enviar o arquivo:', error);
       alert(error.message || 'Ocorreu um erro ao enviar o arquivo.');
