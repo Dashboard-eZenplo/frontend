@@ -1,12 +1,11 @@
 import axios from 'axios';
 import { isTokenExpired } from './jwt-decoder';
-import { refreshAccessToken, redirectToLogin } from '../services/auth/authService';
+import { refreshAccessToken, logout } from '../services/auth/authService';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
-    'Access-Control-Allow-Origin': '*',
-    'Content-Type': 'application/json'
+    'Access-Control-Allow-Origin': '*'
   }
 });
 
@@ -22,7 +21,7 @@ api.interceptors.request.use(
             config.headers.Authorization = `Bearer ${newAccessToken}`;
           } catch (error) {
             console.error('Failed to refresh token:', error);
-            redirectToLogin();
+            logout();
           }
         } else {
           config.headers.Authorization = `Bearer ${token}`;
@@ -58,7 +57,7 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (error) {
         console.error('Failed to refresh token:', error);
-        redirectToLogin();
+        logout();
       }
     }
 

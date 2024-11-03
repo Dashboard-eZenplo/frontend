@@ -6,6 +6,7 @@ import UploadDownloadPage from './uploadDownload/UploadDownloadPage';
 import NotFoundPage from './error/NotFoundPage';
 import Dashboard from './dashboard/Dashboard';
 import ManagersPage from './managers/ManagersPage';
+import EmployeesPage from './employees/EmployeesPage';
 import ProtectedRoute from '../components/ProtectedRoute';
 import UnauthorizedPage from './error/UnauthorizedPage';
 
@@ -45,6 +46,15 @@ const App: React.FC = () => {
           element={
             <ProtectedRoute requireAdmin>
               <ManagersPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/funcionarios"
+          element={
+            <ProtectedRoute>
+              <EmployeesPage />
             </ProtectedRoute>
           }
         />
