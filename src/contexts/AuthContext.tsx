@@ -20,23 +20,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const navigate = useNavigate();
 
   const signIn = async (email: string, password: string) => {
-    try {
-      const response = await login(email, password);
-      const accessToken = response.access_token;
+    const response = await login(email, password);
+    const accessToken = response.access_token;
 
-      const loggedInUser: User = {
-        id: String(getUserIdFromToken(accessToken)) || '',
-        email: getUserEMailFromToken(accessToken),
-        admin: isAdmin(accessToken)
-      };
+    const loggedInUser: User = {
+      id: String(getUserIdFromToken(accessToken)) || '',
+      email: getUserEMailFromToken(accessToken),
+      admin: isAdmin(accessToken)
+    };
 
-      setUser(loggedInUser);
-      setIsUserAuthenticated(true);
+    setUser(loggedInUser);
+    setIsUserAuthenticated(true);
 
-      navigate(loggedInUser.admin ? '/admin' : '/dashboard');
-    } catch (error) {
-      console.error('Error while signing in: ', error);
-    }
+    navigate(loggedInUser.admin ? '/admin' : '/dashboard');
   };
 
   const signOut = () => {
