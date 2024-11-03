@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL;
+const API_URL = import.meta.env.VITE_API_BASE_URL.replace(/\/+$/, '');
 
 export const getManagers = async () => {
   try {
-    const response = await axios.get(`${API_URL}/user/list_managers/`, {
+    const response = await axios.get(`${API_URL}/user/list_managers`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`
       }
