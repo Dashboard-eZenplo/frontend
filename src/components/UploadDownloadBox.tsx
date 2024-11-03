@@ -75,7 +75,7 @@ const UploadDownloadBox: React.FC<UploadDownloadBoxProps> = ({ onFileSelect }) =
           <p className="text-[20px] md:text-[20px] lg:text-[40px] font-semibold mb-1">
             Arraste & Solte arquivos aqui
           </p>
-          <p className="text-[16px] md:text-[23px] lg:text-[28px] text-center">
+          <p className="text-[16px] md:text-[23px] lg:text-[28px] text-center mb-5">
             (apenas arquivos .csv baixados do template)
           </p>
 
