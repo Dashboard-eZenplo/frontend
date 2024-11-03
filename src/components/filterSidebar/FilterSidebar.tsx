@@ -12,17 +12,80 @@ import {
   ListItemText
 } from '@mui/material';
 import { useState } from 'react';
+import { useChartFilters } from '../../contexts/ChartFiltersContext';
+import { usePossibleFilters } from '../../contexts/PossibleFiltersContext';
+import SidebarListItem from '../SidebarListItem/SidebarListItem';
 
 export default function FilterSidebar() {
+  const { applyFilters } = useChartFilters();
+  const { possibleFilters } = usePossibleFilters();
+
   const [categories, setCategories] = useState<string[]>([]);
+  const [roles, setRoles] = useState<string[]>([]);
+  const [departments, setDepartments] = useState<string[]>([]);
+  const [branches, setBranches] = useState<string[]>([]);
+
+  const [selectAllCategories, setSelectAllCategories] = useState<boolean>(false);
+  const [selectAllRoles, setSelectAllRoles] = useState<boolean>(false);
+  const [selectAllDepartments, setSelectAllDepartments] = useState<boolean>(false);
+  const [selectAllBranches, setSelectAllBranches] = useState<boolean>(false);
+
   const [expandedAccordion, setExpandedAccordion] = useState<string | false>('categorias');
 
   const handleCategoryChange = (category: string) => {
-    setCategories((prevCategories) =>
-      prevCategories.includes(category)
-        ? prevCategories.filter((item) => item !== category)
-        : [...prevCategories, category]
+    setCategories((prev) =>
+      prev.includes(category) ? prev.filter((item) => item !== category) : [...prev, category]
     );
+  };
+
+  const handleRolesChange = (role: string) => {
+    setRoles((prev) =>
+      prev.includes(role) ? prev.filter((item) => item !== role) : [...prev, role]
+    );
+  };
+
+  const handleDepartmentsChange = (department: string) => {
+    setDepartments((prev) =>
+      prev.includes(department) ? prev.filter((item) => item !== department) : [...prev, department]
+    );
+  };
+
+  const handleBranchesChange = (branch: string) => {
+    setBranches((prev) =>
+      prev.includes(branch) ? prev.filter((item) => item !== branch) : [...prev, branch]
+    );
+  };
+
+  const handleSelectAllChange = (category: string) => {
+    switch (category) {
+      case 'categories':
+        setCategories(selectAllCategories ? [] : possibleFilters.filters.category);
+        setSelectAllCategories(!selectAllCategories);
+        break;
+      case 'roles':
+        setRoles(selectAllRoles ? [] : possibleFilters.filters.position);
+        setSelectAllRoles(!selectAllRoles);
+        break;
+      case 'departments':
+        setDepartments(selectAllDepartments ? [] : possibleFilters.filters.department);
+        setSelectAllDepartments(!selectAllDepartments);
+        break;
+      case 'branches':
+        setBranches(selectAllBranches ? [] : possibleFilters.filters.branch);
+        setSelectAllBranches(!selectAllBranches);
+        break;
+    }
+  };
+
+  const handleApplyFilters = () => {
+    applyFilters({
+      filters: {
+        category: categories,
+        role: roles,
+        department: departments,
+        branch: branches
+      }
+    });
   };
 
   return (
@@ -60,95 +123,44 @@ export default function FilterSidebar() {
               <FilterAlt className="text-zinc-700" />
               <strong className="font-medium text-[0.9rem] text-zinc-700 ml-5">Categorias</strong>
             </AccordionSummary>
-            <AccordionDetails sx={{ padding: 0 }}>
+            <AccordionDetails sx={{ padding: 0 }} className="overflow-y-scroll max-h-44 scrollbar">
               <List disablePadding>
                 <ListItem disablePadding>
                   <ListItemButton
                     role={undefined}
                     dense
-                    onClick={() => handleCategoryChange('Atividade Física')}
+                    onClick={() => handleSelectAllChange('categories')}
                   >
                     <ListItemIcon sx={{ minWidth: '2rem' }}>
                       <Checkbox
                         edge="start"
-                        checked={categories.includes('Atividade Física')}
                         tabIndex={-1}
                         disableRipple
                         size="small"
+                        checked={selectAllCategories}
                       />
                     </ListItemIcon>
                     <ListItemText
-                      primaryTypographyProps={{ fontSize: '0.85rem' }}
-                      primary={'Atividade Física'}
+                      primaryTypographyProps={{
+                        fontSize: '0.85rem',
+                        fontStyle: 'italic',
+                        fontWeight: '500'
+                      }}
+                      className="text-[85rem]"
+                      primary="Selecionar todos"
                     />
                   </ListItemButton>
                 </ListItem>
 
-                <ListItem disablePadding>
-                  <ListItemButton
-                    role={undefined}
-                    dense
-                    onClick={() => handleCategoryChange('Estudos')}
-                  >
-                    <ListItemIcon sx={{ minWidth: '2rem' }}>
-                      <Checkbox
-                        edge="start"
-                        checked={categories.includes('Estudos')}
-                        tabIndex={-1}
-                        disableRipple
-                        size="small"
-                      />
-                    </ListItemIcon>
-                    <ListItemText
-                      primaryTypographyProps={{ fontSize: '0.85rem' }}
-                      primary={'Estudos'}
+                {possibleFilters &&
+                  possibleFilters.filters.category.map((category, index) => (
+                    <SidebarListItem
+                      key={index}
+                      itemName={category}
+                      selectedItems={categories}
+                      handleItemChange={handleCategoryChange}
                     />
-                  </ListItemButton>
-                </ListItem>
-
-                <ListItem disablePadding>
-                  <ListItemButton
-                    role={undefined}
-                    dense
-                    onClick={() => handleCategoryChange('Ar Livre')}
-                  >
-                    <ListItemIcon sx={{ minWidth: '2rem' }}>
-                      <Checkbox
-                        edge="start"
-                        checked={categories.includes('Ar Livre')}
-                        tabIndex={-1}
-                        disableRipple
-                        size="small"
-                      />
-                    </ListItemIcon>
-                    <ListItemText
-                      primaryTypographyProps={{ fontSize: '0.85rem' }}
-                      primary={'Ar Livre'}
-                    />
-                  </ListItemButton>
-                </ListItem>
-
-                <ListItem disablePadding>
-                  <ListItemButton
-                    role={undefined}
-                    dense
-                    onClick={() => handleCategoryChange('Leitura')}
-                  >
-                    <ListItemIcon sx={{ minWidth: '2rem' }}>
-                      <Checkbox
-                        edge="start"
-                        checked={categories.includes('Leitura')}
-                        tabIndex={-1}
-                        disableRipple
-                        size="small"
-                      />
-                    </ListItemIcon>
-                    <ListItemText
-                      primaryTypographyProps={{ fontSize: '0.85rem' }}
-                      primary={'Leitura'}
-                    />
-                  </ListItemButton>
-                </ListItem>
+                  ))}
               </List>
             </AccordionDetails>
           </Accordion>
@@ -187,8 +199,45 @@ export default function FilterSidebar() {
               <People className="text-zinc-700" />
               <strong className="font-medium text-[0.9rem] text-zinc-700 ml-5">Cargo</strong>
             </AccordionSummary>
-            <AccordionDetails sx={{ padding: 0 }}>
-              <div className="text-[0.9rem] px-4 py-1">Cargos da empresa</div>
+            <AccordionDetails sx={{ padding: 0 }} className="overflow-y-scroll max-h-44 scrollbar">
+              <List disablePadding>
+                <ListItem disablePadding>
+                  <ListItemButton
+                    role={undefined}
+                    dense
+                    onClick={() => handleSelectAllChange('roles')}
+                  >
+                    <ListItemIcon sx={{ minWidth: '2rem' }}>
+                      <Checkbox
+                        edge="start"
+                        tabIndex={-1}
+                        disableRipple
+                        size="small"
+                        checked={selectAllRoles}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      primaryTypographyProps={{
+                        fontSize: '0.85rem',
+                        fontStyle: 'italic',
+                        fontWeight: '500'
+                      }}
+                      className="text-[85rem]"
+                      primary="Selecionar todos"
+                    />
+                  </ListItemButton>
+                </ListItem>
+
+                {possibleFilters &&
+                  possibleFilters.filters.position.map((position, index) => (
+                    <SidebarListItem
+                      key={index}
+                      itemName={position}
+                      selectedItems={roles}
+                      handleItemChange={handleRolesChange}
+                    />
+                  ))}
+              </List>
             </AccordionDetails>
           </Accordion>
         </div>
@@ -223,8 +272,45 @@ export default function FilterSidebar() {
               <Person className="text-zinc-700" />
               <strong className="font-medium text-[0.9rem] text-zinc-700 ml-5">Departamento</strong>
             </AccordionSummary>
-            <AccordionDetails sx={{ padding: 0 }}>
-              <div className="text-[0.9rem] px-4 py-1">Departamentos da empresa</div>
+            <AccordionDetails sx={{ padding: 0 }} className="overflow-y-scroll max-h-44 scrollbar">
+              <List disablePadding>
+                <ListItem disablePadding>
+                  <ListItemButton
+                    role={undefined}
+                    dense
+                    onClick={() => handleSelectAllChange('departments')}
+                  >
+                    <ListItemIcon sx={{ minWidth: '2rem' }}>
+                      <Checkbox
+                        edge="start"
+                        tabIndex={-1}
+                        disableRipple
+                        size="small"
+                        checked={selectAllDepartments}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      primaryTypographyProps={{
+                        fontSize: '0.85rem',
+                        fontStyle: 'italic',
+                        fontWeight: '500'
+                      }}
+                      className="text-[85rem]"
+                      primary="Selecionar todos"
+                    />
+                  </ListItemButton>
+                </ListItem>
+
+                {possibleFilters &&
+                  possibleFilters.filters.department.map((department, index) => (
+                    <SidebarListItem
+                      key={index}
+                      itemName={department}
+                      selectedItems={departments}
+                      handleItemChange={handleDepartmentsChange}
+                    />
+                  ))}
+              </List>
             </AccordionDetails>
           </Accordion>
         </div>
@@ -259,8 +345,45 @@ export default function FilterSidebar() {
               <Person className="text-zinc-700" />
               <strong className="font-medium text-[0.9rem] text-zinc-700 ml-5">Filial</strong>
             </AccordionSummary>
-            <AccordionDetails sx={{ padding: 0 }}>
-              <div className="text-[0.9rem] px-4 py-1">Filiais da empresa</div>
+            <AccordionDetails sx={{ padding: 0 }} className="overflow-y-scroll max-h-44 scrollbar">
+              <List disablePadding>
+                <ListItem disablePadding>
+                  <ListItemButton
+                    role={undefined}
+                    dense
+                    onClick={() => handleSelectAllChange('branches')}
+                  >
+                    <ListItemIcon sx={{ minWidth: '2rem' }}>
+                      <Checkbox
+                        edge="start"
+                        tabIndex={-1}
+                        disableRipple
+                        size="small"
+                        checked={selectAllBranches}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      primaryTypographyProps={{
+                        fontSize: '0.85rem',
+                        fontStyle: 'italic',
+                        fontWeight: '500'
+                      }}
+                      className="text-[85rem]"
+                      primary="Selecionar todos"
+                    />
+                  </ListItemButton>
+                </ListItem>
+
+                {possibleFilters &&
+                  possibleFilters.filters.branch.map((branch, index) => (
+                    <SidebarListItem
+                      key={index}
+                      itemName={branch}
+                      selectedItems={branches}
+                      handleItemChange={handleBranchesChange}
+                    />
+                  ))}
+              </List>
             </AccordionDetails>
           </Accordion>
         </div>
@@ -269,6 +392,7 @@ export default function FilterSidebar() {
         sx={{ fontSize: '0.9rem', padding: '0.4rem', borderRadius: '8px' }}
         variant="contained"
         fullWidth
+        onClick={handleApplyFilters}
       >
         Aplicar Filtros
       </Button>
