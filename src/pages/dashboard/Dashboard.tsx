@@ -5,8 +5,15 @@ import { defaultHeaderOptions } from '../../config/HeaderOptions';
 import StackedBarChart from '../../components/stackedBarChart/StackedBarChart';
 import DateRangePicker, { DateRange, RangeType } from 'rsuite/DateRangePicker';
 import '../../styles/rsuite/styles.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as dateFns from 'date-fns';
+import { useChartFilters } from '../../contexts/ChartFiltersContext';
+import { format } from 'date-fns';
+import { AccessTime, EditCalendar, People, StarBorder } from '@mui/icons-material';
+import { getPossibleFilters } from '../../services/filters/filtersService';
+import { usePossibleFilters } from '../../contexts/PossibleFiltersContext';
+import { getEmployees } from '../../services/employees/employeeService';
+import { useNavigate } from 'react-router-dom';
 
 type Period = [Date, Date];
 
@@ -24,26 +31,30 @@ const statistics = [
   {
     title: 'Usuários Ativos',
     value: '87 / 110',
-    percentage: 80
+    icon: <People fontSize="large" />
   },
   {
     title: 'Atividades Registradas',
     value: '1.042',
-    percentage: 75
+    icon: <EditCalendar fontSize="large" />
   },
   {
     title: 'Horas Registradas',
     value: '3.545',
-    percentage: 90
+    icon: <AccessTime fontSize="large" />
   },
   {
     title: 'Média Avaliação Atividades',
     value: '7,5 / 10',
-    percentage: 80
+    icon: <StarBorder fontSize="large" />
   }
 ];
 
 export default function Dashboard() {
+  const { applyFilters, fetchChartData } = useChartFilters();
+  const { setPossibleFilters } = usePossibleFilters();
+  const navigate = useNavigate();
+
   const [period1, setPeriod1] = useState<Period | null>(null);
   const [period2, setPeriod2] = useState<Period | null>(null);
   const [period3, setPeriod3] = useState<Period | null>(null);
@@ -66,9 +77,40 @@ export default function Dashboard() {
     },
     {
       label: 'Últimos 30 dias',
-      value: [dateFns.startOfDay(dateFns.subDays(new Date(), 6)), dateFns.endOfDay(new Date())]
+      value: [dateFns.startOfDay(dateFns.subDays(new Date(), 29)), dateFns.endOfDay(new Date())]
     }
   ];
+
+  useEffect(() => {
+    const periods = [period1, period2, period3]
+      .filter((p): p is Period => p !== null)
+      .map(([startDate, endDate]) => ({
+        initial_date: format(startDate, 'yyyy-MM-dd'),
+        final_date: format(endDate, 'yyyy-MM-dd')
+      }));
+
+    applyFilters({ periods });
+  }, [period1, period2, period3]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const employees = await getEmployees();
+        if (employees.length === 0) navigate('/upload');
+
+        const response = await getPossibleFilters();
+        setPossibleFilters(response);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    fetchChartData();
+  }, [fetchChartData]);
 
   return (
     <main className="flex flex-col min-h-screen scrollbar">
@@ -123,9 +165,22 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="w-full flex-1 flex items-center justify-center max-h-[500px]">
-            <div className="w-[80%] 2xl:w-[70%] h-[70%] max-h-[380px]">
-              <StackedBarChart />
+          <div className="w-full flex-1 flex flex-col items-center justify-center max-h-[500px]">
+            <div className="w-[80%] 2xl:w-[70%] flex-1 max-h-[380px]">
+              <div className=" h-full max-h-[300px]">
+                <StackedBarChart />
+              </div>
+              <div className="w-full flex justify-around  ml-[3%] mt-8">
+                <div className="text-black flex items-center justify-center w-24 h-10 border border-1 rounded-lg font-bold">
+                  6,5
+                </div>
+                <div className="text-black flex items-center justify-center w-24 h-10 border border-1 rounded-lg font-bold">
+                  7,1
+                </div>
+                <div className="text-black flex items-center justify-center w-24 h-10 border border-1 rounded-lg font-bold">
+                  8,4
+                </div>
+              </div>
             </div>
           </div>
         </div>
