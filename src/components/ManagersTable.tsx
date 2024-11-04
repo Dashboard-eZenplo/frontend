@@ -6,6 +6,7 @@ import { ptBR } from '@mui/x-data-grid/locales';
 import { useEffect, useState } from 'react';
 import { deleteManager, getManagers } from '../services/managers/managerService';
 import { IHRManager } from '../types/HRManager';
+import ManagerDeleteModal from './ManagerDeleteModal';
 
 interface LocalHRManager extends IHRManager {
   id: number;
@@ -18,6 +19,17 @@ export default function ManagersTable() {
 
   const [quickFilterValue, setQuickFilterValue] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedManager, setSelectedManager] = useState<LocalHRManager | null>(null);
+
+  const handleDeleteClick = (manager: LocalHRManager) => {
+    setSelectedManager(manager);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const columns: GridColDef<Row>[] = [
     {
@@ -67,7 +79,7 @@ export default function ManagersTable() {
       headerAlign: 'right',
       align: 'right',
       renderCell: (params) => (
-        <IconButton onClick={() => handleDelete(params.row.id)}>
+        <IconButton onClick={() => handleDeleteClick(params.row)}>
           <DeleteOutlinedIcon />
         </IconButton>
       )
@@ -144,6 +156,12 @@ export default function ManagersTable() {
         autoHeight
         style={{ height: '100%' }}
         className="bg-white"
+      />
+      <ManagerDeleteModal
+        open={isModalOpen}
+        onClose={closeModal}
+        selectedManager={selectedManager}
+        handleDelete={handleDelete} // Pass the handleDelete function here
       />
     </div>
   );
