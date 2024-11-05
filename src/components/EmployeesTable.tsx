@@ -1,5 +1,14 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Alert, Box, Button, IconButton, InputAdornment, Modal, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  Modal,
+  TextField,
+  Typography
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
@@ -30,13 +39,15 @@ export default function EmployeesTable() {
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
 
-
   const columns: GridColDef<Row>[] = [
     {
       field: 'nome',
       headerName: 'Nome',
       renderCell: (params) => (
-        <Link to={`/employee/${params.row.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+        <Link
+          to={`/employee/${params.row.id}`}
+          style={{ textDecoration: 'none', color: 'inherit' }}
+        >
           {params.value}
         </Link>
       ),
