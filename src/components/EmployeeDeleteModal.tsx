@@ -10,11 +10,14 @@ interface ModalProps {
   onClose: () => void;
   selectedEmployee: LocalHREmployee | null;
   handleDelete: (id: number) => Promise<void>;
+  totalEmployees: number;
 }
 
-const EmployeeDeleteModal = ({ open, onClose, selectedEmployee, handleDelete }: ModalProps) => {
+const EmployeeDeleteModal = ({ open, onClose, selectedEmployee, handleDelete, totalEmployees}: ModalProps) => {
+  const isDeletionAllowed = totalEmployees > 20;
+
   const handleConfirmDelete = async () => {
-    if (selectedEmployee) {
+    if (selectedEmployee && isDeletionAllowed) {
       await handleDelete(selectedEmployee.id);
       onClose();
     }
@@ -69,7 +72,7 @@ const EmployeeDeleteModal = ({ open, onClose, selectedEmployee, handleDelete }: 
               }
             }}
           >
-            CONFIRMAR EXCLUSÃO
+            {isDeletionAllowed ? 'CONFIRMAR EXCLUSÃO' : 'EXCLUSÃO NÃO PERMITIDA'}
           </DialogTitle>
 
           <Typography
@@ -88,7 +91,9 @@ const EmployeeDeleteModal = ({ open, onClose, selectedEmployee, handleDelete }: 
               fontWeight: 'bold'
             }}
           >
-            Você tem certeza que deseja excluir o gerente {selectedEmployee?.name}?
+           {isDeletionAllowed
+              ? `Você tem certeza que deseja excluir o funcionário ${selectedEmployee?.name}?`
+              : 'Não é possível excluir funcionários quando o total é 20 ou menos.'}
           </Typography>
         </Box>
 
@@ -114,6 +119,7 @@ const EmployeeDeleteModal = ({ open, onClose, selectedEmployee, handleDelete }: 
           <Button
             onClick={handleConfirmDelete}
             fullWidth
+            disabled={!isDeletionAllowed}
             sx={{
               minWidth: {
                 xs: '100px',
