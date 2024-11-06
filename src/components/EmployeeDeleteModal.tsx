@@ -1,6 +1,5 @@
 import { Dialog, DialogTitle, Typography, Box, Button } from '@mui/material';
 import { IHREmployee } from '../types/HREmployee';
-
 interface LocalHREmployee extends IHREmployee {
   id: number;
 }
@@ -13,7 +12,13 @@ interface ModalProps {
   totalEmployees: number;
 }
 
-const EmployeeDeleteModal = ({ open, onClose, selectedEmployee, handleDelete, totalEmployees}: ModalProps) => {
+const EmployeeDeleteModal = ({
+  open,
+  onClose,
+  selectedEmployee,
+  handleDelete,
+  totalEmployees
+}: ModalProps) => {
   const isDeletionAllowed = totalEmployees > 20;
 
   const handleConfirmDelete = async () => {
@@ -91,7 +96,7 @@ const EmployeeDeleteModal = ({ open, onClose, selectedEmployee, handleDelete, to
               fontWeight: 'bold'
             }}
           >
-           {isDeletionAllowed
+            {isDeletionAllowed
               ? `Você tem certeza que deseja excluir o funcionário ${selectedEmployee?.name}?`
               : 'Não é possível excluir funcionários quando o total é 20 ou menos.'}
           </Typography>

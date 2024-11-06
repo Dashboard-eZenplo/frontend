@@ -5,12 +5,13 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { ptBR } from '@mui/x-data-grid/locales';
 import { useEffect, useState } from 'react';
-import { deleteEmployee, getEmployees } from '../services/employees/employeeService';
+import { deleteEmployee as deleteEmployeeService, getEmployees } from '../services/employees/employeeService';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import UploadDownloadBox from './UploadDownloadBox';
 import { IHREmployee } from '../types/HREmployee';
 import { downloadCsvTemplate, uploadCsv } from '../services/fileService';
+import EmployeeDeleteModal from './EmployeeDeleteModal'; // Importação já aplicada
 
 interface LocalHREmployee extends IHREmployee {
   id: number;
@@ -27,8 +28,20 @@ export default function EmployeesTable() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [employeeToDelete, setEmployeeToDelete] = useState<Row | null>(null);
+
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
+
+  const handleOpenDeleteModal = (employee: Row) => {
+    setEmployeeToDelete(employee);
+    setDeleteModalOpen(true);
+  };
+  const handleCloseDeleteModal = () => {
+    setEmployeeToDelete(null);
+    setDeleteModalOpen(false);
+  };
 
   const columns: GridColDef<Row>[] = [
     {
@@ -95,7 +108,7 @@ export default function EmployeesTable() {
       headerAlign: 'right',
       align: 'right',
       renderCell: (params) => (
-        <IconButton onClick={() => handleDelete(params.row.id)}>
+        <IconButton onClick={() => handleOpenDeleteModal(params.row)}>
           <DeleteOutlinedIcon />
         </IconButton>
       )
@@ -108,12 +121,12 @@ export default function EmployeesTable() {
       const res: Array<any> = await getEmployees();
       const rows: LocalHREmployee[] = res.map((employee: any) => ({
         id: employee.id,
-        nome: employee.name,
+        name: employee.name,
         email: employee.email,
-        cargo: employee.position,
-        departamento: employee.department,
-        dataDeAdmissao: employee.admission_date,
-        dataDeAniversario: employee.birth_date
+        role: employee.position,
+        department: employee.department,
+        admissionDate: employee.admission_date,
+        birthDate: employee.birth_date
       }));
       setRows(rows);
     } catch (error: any) {
@@ -128,8 +141,9 @@ export default function EmployeesTable() {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteEmployee(id);
+      await deleteEmployeeService(id);
       setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+      handleCloseDeleteModal();
     } catch (error: any) {
       setError(error.message);
     }
@@ -249,6 +263,8 @@ export default function EmployeesTable() {
         style={{ height: '100%' }}
         className="bg-white"
       />
+
+      {/* Modal de Upload */}
       <Modal open={open} onClose={handleCloseModal}>
         <Box
           sx={{
@@ -269,6 +285,16 @@ export default function EmployeesTable() {
           </Button>
         </Box>
       </Modal>
+
+      {employeeToDelete && (
+        <EmployeeDeleteModal
+          open={deleteModalOpen}
+          onClose={handleCloseDeleteModal}
+          selectedEmployee={employeeToDelete}
+          handleDelete={handleDelete}
+          totalEmployees={rows.length}
+        />
+      )}
     </div>
   );
 }
