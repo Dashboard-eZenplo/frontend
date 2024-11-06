@@ -1,8 +1,8 @@
 export interface IHREmployee {
-  nome: string;
+  name: string;
   email: string;
-  cargo: string;
-  departamento: string;
-  dataDeAdmissao: string;
-  dataDeAniversario: string;
+  role: string;
+  departament: string;
+  admissionDate: string;
+  birthDate: string;
 }
