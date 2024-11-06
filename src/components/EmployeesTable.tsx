@@ -11,7 +11,7 @@ import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import UploadDownloadBox from './UploadDownloadBox';
 import { IHREmployee } from '../types/HREmployee';
 import { downloadCsvTemplate, uploadCsv } from '../services/fileService';
-import EmployeeDeleteModal from './EmployeeDeleteModal'; // Importação já aplicada
+import EmployeeDeleteModal from './EmployeeDeleteModal';
 
 interface LocalHREmployee extends IHREmployee {
   id: number;
