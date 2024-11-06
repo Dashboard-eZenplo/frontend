@@ -1,12 +1,12 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Alert, IconButton, InputAdornment, TextField } from '@mui/material';
+import { Alert, IconButton, InputAdornment, TextField, Button } from '@mui/material';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { ptBR } from '@mui/x-data-grid/locales';
 import { useEffect, useState } from 'react';
 import { deleteManager, getManagers } from '../services/managers/managerService';
 import { IHRManager } from '../types/HRManager';
-import ManagerDeleteModal from './ManagerDeleteModal';
+import ManagerDeleteModal from './ModalComponent';
 
 interface LocalHRManager extends IHRManager {
   id: number;
@@ -31,6 +31,78 @@ export default function ManagersTable() {
     setIsModalOpen(false);
   };
 
+  const handleDelete = async () => {
+    if (selectedManager) {
+      try {
+        await deleteManager(selectedManager.id);
+        setRows((prevRows) => prevRows.filter((row) => row.id !== selectedManager.id));
+      } catch (error: any) {
+        setError(error.message);
+      }
+      closeModal();
+    }
+  };
+
+  const modalButtons = (
+    <>
+      <Button
+        onClick={handleDelete}
+        fullWidth
+        sx={{
+          minWidth: {
+            xs: '100px',
+            sm: '120px',
+            md: '140px'
+          },
+          height: {
+            xs: '30px',
+            sm: '40px',
+            md: '45px'
+          },
+          borderRadius: '8px',
+          border: '2px solid blue',
+          backgroundColor: '#ffffff',
+          textTransform: 'none',
+          fontSize: {
+            xs: '12px',
+            sm: '14px',
+            md: '16px'
+          }
+        }}
+      >
+        Excluir
+      </Button>
+      <Button
+        onClick={closeModal}
+        fullWidth
+        sx={{
+          minWidth: {
+            xs: '100px',
+            sm: '120px',
+            md: '140px'
+          },
+          height: {
+            xs: '30px',
+            sm: '40px',
+            md: '45px'
+          },
+          borderRadius: '8px',
+          border: '2px solid black',
+          backgroundColor: '#ffffff',
+          color: '#000000',
+          textTransform: 'none',
+          fontSize: {
+            xs: '12px',
+            sm: '14px',
+            md: '16px'
+          }
+        }}
+      >
+        Cancelar
+      </Button>
+    </>
+  );
+
   const columns: GridColDef<Row>[] = [
     {
       field: 'id',
@@ -40,7 +112,7 @@ export default function ManagersTable() {
       align: 'center'
     },
     {
-      field: 'nome',
+      field: 'name',
       headerName: 'Nome',
       width: 150,
       headerAlign: 'center',
@@ -92,9 +164,9 @@ export default function ManagersTable() {
         const data = await getManagers();
 
         const rows: LocalHRManager[] = data.managers.map(
-          ([id, nome, email, cnpj, telefone]: any) => ({
+          ([id, name, email, cnpj, telefone]: any) => ({
             id,
-            nome,
+            name,
             email,
             cnpj,
             telefone
@@ -110,15 +182,6 @@ export default function ManagersTable() {
 
     fetchManagers();
   }, []);
-
-  const handleDelete = async (id: number) => {
-    try {
-      await deleteManager(id);
-      setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
 
   return (
     <div className="h-[631px] w-[90%]">
@@ -160,8 +223,9 @@ export default function ManagersTable() {
       <ManagerDeleteModal
         open={isModalOpen}
         onClose={closeModal}
-        selectedManager={selectedManager}
-        handleDelete={handleDelete} // Pass the handleDelete function here
+        title='CONFIRMAR EXCLUSÃO'
+        description={`Tem certeza que deseja deletar ${selectedManager?.name}?`}
+        buttons={modalButtons}
       />
     </div>
   );

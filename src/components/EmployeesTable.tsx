@@ -11,7 +11,7 @@ import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import UploadDownloadBox from './UploadDownloadBox';
 import { IHREmployee } from '../types/HREmployee';
 import { downloadCsvTemplate, uploadCsv } from '../services/fileService';
-import EmployeeDeleteModal from './EmployeeDeleteModal';
+import ModalComponent from './ModalComponent';
 
 interface LocalHREmployee extends IHREmployee {
   id: number;
@@ -45,7 +45,7 @@ export default function EmployeesTable() {
 
   const columns: GridColDef<Row>[] = [
     {
-      field: 'nome',
+      field: 'name',
       headerName: 'Nome',
       renderCell: (params) => (
         <Link
@@ -115,6 +115,78 @@ export default function EmployeesTable() {
     }
   ];
 
+  const handleDelete = async () => {
+    if (employeeToDelete)
+      try {
+        await deleteEmployeeService(employeeToDelete.id);
+        setRows((prevRows) => prevRows.filter((row) => row.id !== employeeToDelete.id));
+        handleCloseDeleteModal();
+      } catch (error: any) {
+        setError(error.message);
+      }
+  };
+
+  const modalButtons = (
+    <>
+      <Button
+        onClick={handleDelete}
+        disabled={rows.length <= 20}
+        fullWidth
+        sx={{
+          minWidth: {
+            xs: '100px',
+            sm: '120px',
+            md: '140px'
+          },
+          height: {
+            xs: '30px',
+            sm: '40px',
+            md: '45px'
+          },
+          borderRadius: '8px',
+          border: rows.length > 20 ? '2px solid blue' : '2px solid gray',
+          backgroundColor: '#ffffff',
+          textTransform: 'none',
+          fontSize: {
+            xs: '12px',
+            sm: '14px',
+            md: '16px'
+          }
+        }}
+      >
+        Excluir
+      </Button>
+      <Button
+        onClick={handleCloseDeleteModal}
+        fullWidth
+        sx={{
+          minWidth: {
+            xs: '100px',
+            sm: '120px',
+            md: '140px'
+          },
+          height: {
+            xs: '30px',
+            sm: '40px',
+            md: '45px'
+          },
+          borderRadius: '8px',
+          border: '2px solid black',
+          backgroundColor: '#ffffff',
+          color: '#000000',
+          textTransform: 'none',
+          fontSize: {
+            xs: '12px',
+            sm: '14px',
+            md: '16px'
+          }
+        }}
+      >
+        Cancelar
+      </Button>
+    </>
+  );
+
   const fetchEmployees = async () => {
     console.log('Fetching employees...');
     try {
@@ -138,16 +210,6 @@ export default function EmployeesTable() {
   useEffect(() => {
     fetchEmployees();
   }, []);
-
-  const handleDelete = async (id: number) => {
-    try {
-      await deleteEmployeeService(id);
-      setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-      handleCloseDeleteModal();
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
 
   const handleDownload = async () => {
     try {
@@ -287,12 +349,13 @@ export default function EmployeesTable() {
       </Modal>
 
       {employeeToDelete && (
-        <EmployeeDeleteModal
+        <ModalComponent
           open={deleteModalOpen}
           onClose={handleCloseDeleteModal}
-          selectedEmployee={employeeToDelete}
-          handleDelete={handleDelete}
-          totalEmployees={rows.length}
+          title={rows.length > 20 ? 'CONFIRMAR EXCLUSÃO' : 'EXCLUSÃO NÃO PERMITIDA'}
+          description={rows.length > 20 ? `Você tem certeza que deseja excluir ${employeeToDelete?.name}?`
+            : 'Não é possível excluir funcionários quando o total é 20 ou menos.'}
+          buttons={modalButtons}
         />
       )}
     </div>

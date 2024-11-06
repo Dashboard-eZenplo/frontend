@@ -1,25 +1,14 @@
-import { Dialog, DialogTitle, Typography, Box, Button } from '@mui/material';
-import { IHRManager } from '../types/HRManager';
-
-interface LocalHRManager extends IHRManager {
-  id: number;
-}
+import { Dialog, DialogTitle, Typography, Box } from '@mui/material';
 
 interface ModalProps {
   open: boolean;
   onClose: () => void;
-  selectedManager: LocalHRManager | null;
-  handleDelete: (id: number) => Promise<void>;
+  title: string;
+  description: string;
+  buttons: React.ReactNode;
 }
 
-const ManagerDeleteModal = ({ open, onClose, selectedManager, handleDelete }: ModalProps) => {
-  const handleConfirmDelete = async () => {
-    if (selectedManager) {
-      await handleDelete(selectedManager.id);
-      onClose();
-    }
-  };
-
+const ModalComponent = ({ open, onClose, title, description, buttons }: ModalProps) => {
   return (
     <Dialog
       open={open}
@@ -69,7 +58,7 @@ const ManagerDeleteModal = ({ open, onClose, selectedManager, handleDelete }: Mo
               }
             }}
           >
-            CONFIRMAR EXCLUSÃO
+            {title}
           </DialogTitle>
 
           <Typography
@@ -88,7 +77,7 @@ const ManagerDeleteModal = ({ open, onClose, selectedManager, handleDelete }: Mo
               fontWeight: 'bold'
             }}
           >
-            Você tem certeza que deseja excluir o gerente {selectedManager?.name}?
+            {description}
           </Typography>
         </Box>
 
@@ -111,65 +100,11 @@ const ManagerDeleteModal = ({ open, onClose, selectedManager, handleDelete }: Mo
             mb: '20px'
           }}
         >
-          <Button
-            onClick={handleConfirmDelete}
-            fullWidth
-            sx={{
-              minWidth: {
-                xs: '100px',
-                sm: '120px',
-                md: '140px'
-              },
-              height: {
-                xs: '30px',
-                sm: '40px',
-                md: '45px'
-              },
-              borderRadius: '8px',
-              border: '2px solid blue',
-              backgroundColor: '#ffffff',
-              textTransform: 'none',
-              fontSize: {
-                xs: '12px',
-                sm: '14px',
-                md: '16px'
-              }
-            }}
-          >
-            Excluir
-          </Button>
-          <Button
-            onClick={onClose}
-            fullWidth
-            sx={{
-              minWidth: {
-                xs: '100px',
-                sm: '120px',
-                md: '140px'
-              },
-              height: {
-                xs: '30px',
-                sm: '40px',
-                md: '45px'
-              },
-              borderRadius: '8px',
-              border: '2px solid black',
-              backgroundColor: '#ffffff',
-              color: '#000000',
-              textTransform: 'none',
-              fontSize: {
-                xs: '12px',
-                sm: '14px',
-                md: '16px'
-              }
-            }}
-          >
-            Cancelar
-          </Button>
+          {buttons}
         </Box>
       </Box>
     </Dialog>
   );
 };
 
-export default ManagerDeleteModal;
+export default ModalComponent;
