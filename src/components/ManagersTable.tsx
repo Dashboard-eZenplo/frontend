@@ -223,7 +223,7 @@ export default function ManagersTable() {
       <ManagerDeleteModal
         open={isModalOpen}
         onClose={closeModal}
-        title='CONFIRMAR EXCLUSÃO'
+        title="CONFIRMAR EXCLUSÃO"
         description={`Tem certeza que deseja deletar ${selectedManager?.name}?`}
         buttons={modalButtons}
       />

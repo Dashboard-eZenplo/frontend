@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import LogotipoEzenplo from '../assets/logo-header.png';
-import ModalComponent from './ModalComponent'
+import ModalComponent from './ModalComponent';
 import { Button } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -150,14 +150,15 @@ const Header: React.FC<HeaderProps> = ({ headerOptions }) => {
         </ul>
       </nav>
 
-      {isLogoutModalOpen &&
+      {isLogoutModalOpen && (
         <ModalComponent
           open={isLogoutModalOpen}
           onClose={closeModal}
-          title='CONFIRMAR SAÍDA'
-          description='Você tem certeza que deseja sair de sua conta?'
+          title="CONFIRMAR SAÍDA"
+          description="Você tem certeza que deseja sair de sua conta?"
           buttons={logoutModalButtons}
-        />}
+        />
+      )}
     </header>
   );
 };

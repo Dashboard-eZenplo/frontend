@@ -5,7 +5,10 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { ptBR } from '@mui/x-data-grid/locales';
 import { useEffect, useState } from 'react';
-import { deleteEmployee as deleteEmployeeService, getEmployees } from '../services/employees/employeeService';
+import {
+  deleteEmployee as deleteEmployeeService,
+  getEmployees
+} from '../services/employees/employeeService';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import UploadDownloadBox from './UploadDownloadBox';
@@ -353,8 +356,11 @@ export default function EmployeesTable() {
           open={deleteModalOpen}
           onClose={handleCloseDeleteModal}
           title={rows.length > 20 ? 'CONFIRMAR EXCLUSÃO' : 'EXCLUSÃO NÃO PERMITIDA'}
-          description={rows.length > 20 ? `Você tem certeza que deseja excluir ${employeeToDelete?.name}?`
-            : 'Não é possível excluir funcionários quando o total é 20 ou menos.'}
+          description={
+            rows.length > 20
+              ? `Você tem certeza que deseja excluir ${employeeToDelete?.name}?`
+              : 'Não é possível excluir funcionários quando o total é 20 ou menos.'
+          }
           buttons={modalButtons}
         />
       )}
