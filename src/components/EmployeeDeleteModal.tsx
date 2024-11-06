@@ -1,21 +1,21 @@
 import { Dialog, DialogTitle, Typography, Box, Button } from '@mui/material';
-import { IHRManager } from '../types/HRManager';
+import { IHREmployee } from '../types/HREmployee';
 
-interface LocalHRManager extends IHRManager {
+interface LocalHREmployee extends IHREmployee {
     id: number;
 }
 
 interface ModalProps {
     open: boolean;
     onClose: () => void;
-    selectedManager: LocalHRManager | null;
+    selectedEmployee: LocalHREmployee | null;
     handleDelete: (id: number) => Promise<void>;
 }
 
-const ManagerDeleteModal = ({ open, onClose, selectedManager, handleDelete }: ModalProps) => {
+const EmployeeDeleteModal = ({ open, onClose, selectedEmployee, handleDelete }: ModalProps) => {
     const handleConfirmDelete = async () => {
-        if (selectedManager) {
-            await handleDelete(selectedManager.id);
+        if (selectedEmployee) {
+            await handleDelete(selectedEmployee.id);
             onClose();
         }
     };
@@ -88,7 +88,7 @@ const ManagerDeleteModal = ({ open, onClose, selectedManager, handleDelete }: Mo
                             fontWeight: 'bold'
                         }}
                     >
-                        Você tem certeza que deseja excluir o gerente {selectedManager?.name}?
+                        Você tem certeza que deseja excluir o gerente {selectedEmployee?.nome}?
                     </Typography>
                 </Box>
 
@@ -172,4 +172,4 @@ const ManagerDeleteModal = ({ open, onClose, selectedManager, handleDelete }: Mo
     );
 };
 
-export default ManagerDeleteModal;
+export default EmployeeDeleteModal;
