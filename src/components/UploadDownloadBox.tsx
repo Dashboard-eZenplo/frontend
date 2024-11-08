@@ -63,9 +63,8 @@ const UploadDownloadBox: React.FC<UploadDownloadBoxProps> = ({ onFileSelect }) =
   return (
     <div className="flex flex-col items-center text-zinc-700">
       <div
-        className={`border border-black rounded-lg h-[400px] lg:h-[450px] w-full xl:w-[1300px] flex flex-col items-center justify-between bg-white p-4 ${
-          dragActive ? 'bg-gray-100' : 'bg-white'
-        }`}
+        className={`border border-black rounded-lg h-[400px] lg:h-[450px] w-full xl:w-[1300px] flex flex-col items-center justify-between bg-white p-4 ${dragActive ? 'bg-gray-100' : 'bg-white'
+          }`}
         onDragEnter={handleDrag}
         onDragOver={handleDrag}
         onDragLeave={handleDrag}

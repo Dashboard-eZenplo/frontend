@@ -288,23 +288,15 @@ export default function EmployeesTable() {
       </Modal>
 
       <Modal open={uploadSuccess} onClose={() => setUploadSuccess(false)}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '10%',
-            left: '50%',
-            transform: 'translate(-50%, 0)',
-            bgcolor: 'background.paper',
-            p: 3,
-            boxShadow: 24,
-            borderRadius: 2,
-            outline: 0
-          }}
-        >
-          <Typography variant="h6" align="center" sx={{ color: 'blue' }}>
-            Arquivo enviado com sucesso!
-          </Typography>
-        </Box>
+        <Modal open={uploadSuccess} onClose={() => setUploadSuccess(false)}>
+          <div
+            className="absolute top-10 left-1/2 transform -translate-x-1/2 bg-white p-6 shadow-lg rounded-md outline-none"
+          >
+            <Typography variant="h6" align="center" sx={{ color: 'blue' }}>
+              Arquivo enviado com sucesso!
+            </Typography>
+          </div>
+        </Modal>
       </Modal>
     </div>
   );
