@@ -6,8 +6,8 @@ import {
   IconButton,
   InputAdornment,
   Modal,
+  Snackbar,
   TextField,
-  Typography
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -112,7 +112,6 @@ export default function EmployeesTable() {
   ];
 
   const fetchEmployees = async () => {
-    console.log('Fetching employees...');
     try {
       const res: Array<any> = await getEmployees();
       const rows: LocalHREmployee[] = res.map((employee: any) => ({
@@ -287,17 +286,16 @@ export default function EmployeesTable() {
         </Box>
       </Modal>
 
-      <Modal open={uploadSuccess} onClose={() => setUploadSuccess(false)}>
-        <Modal open={uploadSuccess} onClose={() => setUploadSuccess(false)}>
-          <div
-            className="absolute top-10 left-1/2 transform -translate-x-1/2 bg-white p-6 shadow-lg rounded-md outline-none"
-          >
-            <Typography variant="h6" align="center" sx={{ color: 'blue' }}>
-              Arquivo enviado com sucesso!
-            </Typography>
-          </div>
-        </Modal>
-      </Modal>
+      <Snackbar
+        open={uploadSuccess}
+        onClose={() => setUploadSuccess(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        autoHideDuration={1500}
+      >
+        <Alert onClose={() => setUploadSuccess(false)} severity="success" sx={{ width: '100%' }}>
+          Arquivo enviado com sucesso!
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
