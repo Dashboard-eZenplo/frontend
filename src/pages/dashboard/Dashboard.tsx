@@ -1,6 +1,5 @@
 import FilterSidebar from '../../components/filterSidebar/FilterSidebar';
 import Header from '../../components/Header';
-import StatisticCard from '../../components/statisticCard/StatisticCard';
 import { defaultHeaderOptions } from '../../config/HeaderOptions';
 import StackedBarChart from '../../components/stackedBarChart/StackedBarChart';
 import DateRangePicker, { DateRange, RangeType } from 'rsuite/DateRangePicker';
@@ -9,11 +8,11 @@ import { useEffect, useState } from 'react';
 import * as dateFns from 'date-fns';
 import { useChartFilters } from '../../contexts/ChartFiltersContext';
 import { format } from 'date-fns';
-import { AccessTime, EditCalendar, People, StarBorder } from '@mui/icons-material';
 import { getPossibleFilters } from '../../services/filters/filtersService';
 import { usePossibleFilters } from '../../contexts/PossibleFiltersContext';
 import { getEmployees } from '../../services/employees/employeeService';
 import { useNavigate } from 'react-router-dom';
+import StatisticsBar from '../../components/statisticsBar/StatisticsBar';
 
 type Period = [Date, Date];
 
@@ -26,29 +25,6 @@ const getNumberOfDaysInPeriod = (period: Period) => {
   }
   return 0;
 };
-
-const statistics = [
-  {
-    title: 'Usuários Ativos',
-    value: '87 / 110',
-    icon: <People fontSize="large" />
-  },
-  {
-    title: 'Atividades Registradas',
-    value: '1.042',
-    icon: <EditCalendar fontSize="large" />
-  },
-  {
-    title: 'Horas Registradas',
-    value: '3.545',
-    icon: <AccessTime fontSize="large" />
-  },
-  {
-    title: 'Média Avaliação Atividades',
-    value: '7,5 / 10',
-    icon: <StarBorder fontSize="large" />
-  }
-];
 
 export default function Dashboard() {
   const { applyFilters, fetchChartData } = useChartFilters();
@@ -116,12 +92,7 @@ export default function Dashboard() {
     <main className="flex flex-col min-h-screen scrollbar">
       <Header headerOptions={defaultHeaderOptions.userHeaderOptions} />
 
-      <section className="flex justify-center w-full bg-gradient-to-t from-secondary to-primary">
-        <div className="w-full max-w-[1440px] h-full py-5 px-6 flex items-center justify-between gap-8">
-          {statistics &&
-            statistics.map((statistic, index) => <StatisticCard key={index} data={statistic} />)}
-        </div>
-      </section>
+      <StatisticsBar />
 
       <section className="px-6 flex flex-1 w-full max-w-[1440px] ml-auto mr-auto">
         <FilterSidebar />
