@@ -276,11 +276,22 @@ export default function EmployeesTable() {
             boxShadow: 24,
             p: 4,
             borderRadius: 2,
-            outline: 0
+            outline: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
           }}
         >
           <UploadDownloadBox onFileSelect={handleFileSelect} />
-          <Button onClick={handleUpload} disabled={!selectedFile} variant="outlined">
+          <Button
+            onClick={handleUpload}
+            disabled={!selectedFile}
+            variant="outlined"
+            sx={{
+              mt: 2,
+              alignSelf: 'center'
+            }}
+          >
             {uploading ? 'Enviando...' : 'Enviar'}
           </Button>
         </Box>
