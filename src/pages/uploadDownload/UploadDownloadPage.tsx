@@ -7,6 +7,7 @@ import { downloadCsvTemplate, uploadCsv } from '../../services/fileService';
 import { Button, Snackbar, Alert } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getEmployees } from '../../services/employees/employeeService';
 
 const UploadDownloadPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -38,7 +39,7 @@ const UploadDownloadPage = () => {
 
     try {
       await uploadCsv(selectedFile);
-      setUploadSuccess(true); // Exibe o Snackbar de sucesso
+      setUploadSuccess(true);
     } catch (error: any) {
       console.error('Erro ao enviar o arquivo:', error);
       alert(error.message || 'Ocorreu um erro ao enviar o arquivo.');
@@ -46,6 +47,21 @@ const UploadDownloadPage = () => {
       setUploading(false);
     }
   };
+
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const employees = await getEmployees();
+        if (employees.length) {
+          navigate('/funcionarios');
+        }
+      } catch (error: any) {
+        console.error('Error fetching employees:', error);
+      }
+    };
+
+    fetchEmployees();
+  }, []);
 
   useEffect(() => {
     if (uploadSuccess) {
