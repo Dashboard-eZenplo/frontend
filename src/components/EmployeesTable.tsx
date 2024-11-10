@@ -1,5 +1,14 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Alert, Box, Button, IconButton, InputAdornment, Modal, TextField } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  Modal,
+  Snackbar,
+  TextField
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
@@ -23,7 +32,7 @@ export default function EmployeesTable() {
   const [quickFilterValue, setQuickFilterValue] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-
+  const [uploadSuccess, setUploadSuccess] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 
@@ -103,7 +112,6 @@ export default function EmployeesTable() {
   ];
 
   const fetchEmployees = async () => {
-    console.log('Fetching employees...');
     try {
       const res: Array<any> = await getEmployees();
       const rows: LocalHREmployee[] = res.map((employee: any) => ({
@@ -126,6 +134,16 @@ export default function EmployeesTable() {
     fetchEmployees();
   }, []);
 
+  useEffect(() => {
+    if (uploadSuccess) {
+      const delayFetch = setTimeout(() => {
+        fetchEmployees();
+        setUploadSuccess(false);
+      }, 1500);
+      return () => clearTimeout(delayFetch);
+    }
+  }, [uploadSuccess]);
+
   const handleDelete = async (id: number) => {
     try {
       await deleteEmployee(id);
@@ -140,7 +158,6 @@ export default function EmployeesTable() {
       await downloadCsvTemplate();
       alert('Template baixado com sucesso!');
     } catch (error: any) {
-      console.error('Erro ao baixar o template:', error);
       alert(error.message || 'Ocorreu um erro ao baixar o template.');
     }
   };
@@ -159,11 +176,9 @@ export default function EmployeesTable() {
 
     try {
       await uploadCsv(selectedFile);
-      alert('Arquivo enviado com sucesso!');
+      setUploadSuccess(true);
       handleCloseModal();
-      fetchEmployees();
     } catch (error: any) {
-      console.error('Erro ao enviar o arquivo:', error);
       alert(error.message || 'Ocorreu um erro ao enviar o arquivo.');
     } finally {
       setUploading(false);
@@ -249,6 +264,7 @@ export default function EmployeesTable() {
         style={{ height: '100%' }}
         className="bg-white"
       />
+
       <Modal open={open} onClose={handleCloseModal}>
         <Box
           sx={{
@@ -280,6 +296,17 @@ export default function EmployeesTable() {
           </Button>
         </Box>
       </Modal>
+
+      <Snackbar
+        open={uploadSuccess}
+        onClose={() => setUploadSuccess(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        autoHideDuration={1500}
+      >
+        <Alert onClose={() => setUploadSuccess(false)} severity="success" sx={{ width: '100%' }}>
+          Arquivo enviado com sucesso!
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
