@@ -75,7 +75,7 @@ export default function StatisticsBar() {
             <span className="font-medium text-[0.7rem]">HORAS REGISTRADAS</span>
             <strong className="text-[1.3rem] leading-none">
               {superiorBarData.hours ? (
-                superiorBarData.hours.toFixed(5)
+                superiorBarData.hours.toFixed(0)
               ) : (
                 <CircularProgress size={20} />
               )}
@@ -89,7 +89,7 @@ export default function StatisticsBar() {
             <span className="font-medium text-[0.7rem]">MÉDIA AVALIAÇÃO ATIVIDADES</span>
             <strong className="text-[1.3rem] leading-none">
               {superiorBarData.mean ? (
-                superiorBarData.mean.toFixed(5)
+                superiorBarData.mean.toFixed(2)
               ) : (
                 <CircularProgress size={20} />
               )}

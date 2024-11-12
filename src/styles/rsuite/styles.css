@@ -1,11 +1,6 @@
-.rs-picker-daterange-header {
-  color: #616161;
-}
-
-.rs-calendar-table-cell-content {
-  color: #616161;
-}
-
-.rs-picker-header-date {
+.rs-picker-daterange-header,
+.rs-calendar-table-cell-content,
+.rs-picker-header-date,
+.rs-calendar {
   color: #616161;
 }

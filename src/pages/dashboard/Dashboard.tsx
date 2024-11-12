@@ -13,8 +13,9 @@ import { usePossibleFilters } from '../../contexts/PossibleFiltersContext';
 import { getEmployees } from '../../services/employees/employeeService';
 import { useNavigate } from 'react-router-dom';
 import StatisticsBar from '../../components/statisticsBar/StatisticsBar';
+import EmptyPeriodsModal from '../../components/EmptyPeriodsModal/EmptyPeriodsModal';
 
-type Period = [Date, Date];
+type Period = [Date, Date] | null;
 
 const getNumberOfDaysInPeriod = (period: Period) => {
   if (period) {
@@ -31,9 +32,11 @@ export default function Dashboard() {
   const { setPossibleFilters } = usePossibleFilters();
   const navigate = useNavigate();
 
-  const [period1, setPeriod1] = useState<Period | null>(null);
-  const [period2, setPeriod2] = useState<Period | null>(null);
-  const [period3, setPeriod3] = useState<Period | null>(null);
+  const [period1, setPeriod1] = useState<Period>(null);
+  const [period2, setPeriod2] = useState<Period>(null);
+  const [period3, setPeriod3] = useState<Period>(null);
+
+  const hasAllPeriods = period1 || period2 || period3;
 
   const ranges: RangeType<DateRange>[] = [
     {
@@ -59,7 +62,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     const periods = [period1, period2, period3]
-      .filter((p): p is Period => p !== null)
+      .filter((p) => p !== null)
       .map(([startDate, endDate]) => ({
         initial_date: format(startDate, 'yyyy-MM-dd'),
         final_date: format(endDate, 'yyyy-MM-dd')
@@ -100,8 +103,8 @@ export default function Dashboard() {
           <div className="flex items-start justify-center gap-4 date-ranges h-14">
             <div className="flex flex-col items-center">
               <DateRangePicker
-                value={period1}
-                onChange={setPeriod1}
+                value={period1 as DateRange | null}
+                onChange={setPeriod1 as (value: DateRange | null) => void}
                 placeholder="Período 1"
                 size="md"
                 format="dd/MM/yy"
@@ -112,8 +115,8 @@ export default function Dashboard() {
             </div>
             <div className="flex flex-col items-center">
               <DateRangePicker
-                value={period2}
-                onChange={setPeriod2}
+                value={period2 as DateRange | null}
+                onChange={setPeriod2 as (value: DateRange | null) => void}
                 placeholder="Período 2"
                 size="md"
                 format="dd/MM/yy"
@@ -124,8 +127,8 @@ export default function Dashboard() {
             </div>
             <div className="flex flex-col items-center">
               <DateRangePicker
-                value={period3}
-                onChange={setPeriod3}
+                value={period3 as DateRange | null}
+                onChange={setPeriod3 as (value: DateRange | null) => void}
                 placeholder="Período 3"
                 size="md"
                 format="dd/MM/yy"
@@ -138,7 +141,8 @@ export default function Dashboard() {
 
           <div className="w-full flex-1 flex flex-col items-center justify-center max-h-[500px]">
             <div className="w-[80%] 2xl:w-[70%] flex-1 max-h-[380px]">
-              <div className=" h-full max-h-[300px]">
+              <div className="h-full max-h-[300px] relative flex justify-center items-center">
+                {!hasAllPeriods && <EmptyPeriodsModal />}
                 <StackedBarChart />
               </div>
               <div className="w-full flex justify-around  ml-[3%] mt-8">
