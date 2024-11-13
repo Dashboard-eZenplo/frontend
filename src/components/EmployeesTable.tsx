@@ -129,67 +129,6 @@ export default function EmployeesTable() {
       }
   };
 
-  const modalButtons = (
-    <>
-      <Button
-        onClick={handleDelete}
-        disabled={rows.length <= 20}
-        fullWidth
-        sx={{
-          minWidth: {
-            xs: '100px',
-            sm: '120px',
-            md: '140px'
-          },
-          height: {
-            xs: '30px',
-            sm: '40px',
-            md: '45px'
-          },
-          borderRadius: '8px',
-          border: rows.length > 20 ? '2px solid blue' : '2px solid gray',
-          backgroundColor: '#ffffff',
-          textTransform: 'none',
-          fontSize: {
-            xs: '12px',
-            sm: '14px',
-            md: '16px'
-          }
-        }}
-      >
-        Excluir
-      </Button>
-      <Button
-        onClick={handleCloseDeleteModal}
-        fullWidth
-        sx={{
-          minWidth: {
-            xs: '100px',
-            sm: '120px',
-            md: '140px'
-          },
-          height: {
-            xs: '30px',
-            sm: '40px',
-            md: '45px'
-          },
-          borderRadius: '8px',
-          border: '2px solid black',
-          backgroundColor: '#ffffff',
-          color: '#000000',
-          textTransform: 'none',
-          fontSize: {
-            xs: '12px',
-            sm: '14px',
-            md: '16px'
-          }
-        }}
-      >
-        Cancelar
-      </Button>
-    </>
-  );
-
   const fetchEmployees = async () => {
     console.log('Fetching employees...');
     try {
@@ -329,7 +268,6 @@ export default function EmployeesTable() {
         className="bg-white"
       />
 
-      {/* Modal de Upload */}
       <Modal open={open} onClose={handleCloseModal}>
         <Box
           sx={{
@@ -361,8 +299,66 @@ export default function EmployeesTable() {
               ? `Você tem certeza que deseja excluir ${employeeToDelete?.name}?`
               : 'Não é possível excluir funcionários quando o total é 20 ou menos.'
           }
-          buttons={modalButtons}
-        />
+        >
+          <>
+            <Button
+              onClick={handleDelete}
+              disabled={rows.length <= 20}
+              fullWidth
+              sx={{
+                minWidth: {
+                  xs: '100px',
+                  sm: '120px',
+                  md: '140px'
+                },
+                height: {
+                  xs: '30px',
+                  sm: '40px',
+                  md: '45px'
+                },
+                borderRadius: '8px',
+                border: rows.length > 20 ? '2px solid blue' : '2px solid gray',
+                backgroundColor: '#ffffff',
+                textTransform: 'none',
+                fontSize: {
+                  xs: '12px',
+                  sm: '14px',
+                  md: '16px'
+                }
+              }}
+            >
+              Excluir
+            </Button>
+            <Button
+              onClick={handleCloseDeleteModal}
+              fullWidth
+              sx={{
+                minWidth: {
+                  xs: '100px',
+                  sm: '120px',
+                  md: '140px'
+                },
+                height: {
+                  xs: '30px',
+                  sm: '40px',
+                  md: '45px'
+                },
+                borderRadius: '8px',
+                border: '2px solid black',
+                backgroundColor: '#ffffff',
+                color: '#000000',
+                textTransform: 'none',
+                fontSize: {
+                  xs: '12px',
+                  sm: '14px',
+                  md: '16px'
+                }
+              }}
+            >
+              Cancelar
+            </Button>
+          </>
+        </ModalComponent>
       )}
     </div>
   );

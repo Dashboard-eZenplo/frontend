@@ -54,69 +54,6 @@ const Header: React.FC<HeaderProps> = ({ headerOptions }) => {
     }
   };
 
-  const logoutModalButtons = (
-    <>
-      <Button
-        onClick={() => {
-          handleLogout();
-          closeModal();
-        }}
-        fullWidth
-        sx={{
-          minWidth: {
-            xs: '100px',
-            sm: '120px',
-            md: '140px'
-          },
-          height: {
-            xs: '30px',
-            sm: '40px',
-            md: '45px'
-          },
-          borderRadius: '8px',
-          border: '2px solid blue',
-          backgroundColor: '#ffffff',
-          textTransform: 'none',
-          fontSize: {
-            xs: '12px',
-            sm: '14px',
-            md: '16px'
-          }
-        }}
-      >
-        Sair
-      </Button>
-      <Button
-        onClick={closeModal}
-        fullWidth
-        sx={{
-          minWidth: {
-            xs: '100px',
-            sm: '120px',
-            md: '140px'
-          },
-          height: {
-            xs: '30px',
-            sm: '40px',
-            md: '45px'
-          },
-          borderRadius: '8px',
-          border: '2px solid black',
-          backgroundColor: '#ffffff',
-          color: '#000000',
-          textTransform: 'none',
-          fontSize: {
-            xs: '12px',
-            sm: '14px',
-            md: '16px'
-          }
-        }}
-      >
-        Cancelar
-      </Button>
-    </>
-  );
-
   return (
     <header className="flex items-center justify-between p-4 bg-white border-b border-zinc-300">
       <img src={LogotipoEzenplo} className="w-auto ml-24 h-9" alt="LogotipoEzenplo" />
@@ -156,9 +93,71 @@ const Header: React.FC<HeaderProps> = ({ headerOptions }) => {
           onClose={closeModal}
           title="CONFIRMAR SAÍDA"
           description="Você tem certeza que deseja sair de sua conta?"
-          buttons={logoutModalButtons}
-        />
-      )}
+        >
+          <>
+            <Button
+              onClick={() => {
+                handleLogout();
+                closeModal();
+              }}
+              fullWidth
+              sx={{
+                minWidth: {
+                  xs: '100px',
+                  sm: '120px',
+                  md: '140px'
+                },
+                height: {
+                  xs: '30px',
+                  sm: '40px',
+                  md: '45px'
+                },
+                borderRadius: '8px',
+                border: '2px solid blue',
+                backgroundColor: '#ffffff',
+                textTransform: 'none',
+                fontSize: {
+                  xs: '12px',
+                  sm: '14px',
+                  md: '16px'
+                }
+              }}
+            >
+              Sair
+            </Button>
+            <Button
+              onClick={closeModal}
+              fullWidth
+              sx={{
+                minWidth: {
+                  xs: '100px',
+                  sm: '120px',
+                  md: '140px'
+                },
+                height: {
+                  xs: '30px',
+                  sm: '40px',
+                  md: '45px'
+                },
+                borderRadius: '8px',
+                border: '2px solid black',
+                backgroundColor: '#ffffff',
+                color: '#000000',
+                textTransform: 'none',
+                fontSize: {
+                  xs: '12px',
+                  sm: '14px',
+                  md: '16px'
+                }
+              }}
+            >
+              Cancelar
+            </Button>
+
+          </>
+        </ModalComponent>
+      )
+      }
     </header>
   );
 };

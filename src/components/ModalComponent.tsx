@@ -1,14 +1,23 @@
 import { Dialog, DialogTitle, Typography, Box } from '@mui/material';
+import { ReactNode } from "react";
 
 interface ModalProps {
   open: boolean;
   onClose: () => void;
   title: string;
   description: string;
-  buttons: React.ReactNode;
+  children: ReactNode;
 }
 
-const ModalComponent = ({ open, onClose, title, description, buttons }: ModalProps) => {
+const ModalComponent = ({
+  open,
+  onClose,
+  title,
+  description,
+  children,
+}: ModalProps) => {
+  if (!open) return null;
+
   return (
     <Dialog
       open={open}
@@ -100,7 +109,7 @@ const ModalComponent = ({ open, onClose, title, description, buttons }: ModalPro
             mb: '20px'
           }}
         >
-          {buttons}
+          {children}
         </Box>
       </Box>
     </Dialog>

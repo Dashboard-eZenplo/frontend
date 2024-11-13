@@ -43,66 +43,6 @@ export default function ManagersTable() {
     }
   };
 
-  const modalButtons = (
-    <>
-      <Button
-        onClick={handleDelete}
-        fullWidth
-        sx={{
-          minWidth: {
-            xs: '100px',
-            sm: '120px',
-            md: '140px'
-          },
-          height: {
-            xs: '30px',
-            sm: '40px',
-            md: '45px'
-          },
-          borderRadius: '8px',
-          border: '2px solid blue',
-          backgroundColor: '#ffffff',
-          textTransform: 'none',
-          fontSize: {
-            xs: '12px',
-            sm: '14px',
-            md: '16px'
-          }
-        }}
-      >
-        Excluir
-      </Button>
-      <Button
-        onClick={closeModal}
-        fullWidth
-        sx={{
-          minWidth: {
-            xs: '100px',
-            sm: '120px',
-            md: '140px'
-          },
-          height: {
-            xs: '30px',
-            sm: '40px',
-            md: '45px'
-          },
-          borderRadius: '8px',
-          border: '2px solid black',
-          backgroundColor: '#ffffff',
-          color: '#000000',
-          textTransform: 'none',
-          fontSize: {
-            xs: '12px',
-            sm: '14px',
-            md: '16px'
-          }
-        }}
-      >
-        Cancelar
-      </Button>
-    </>
-  );
-
   const columns: GridColDef<Row>[] = [
     {
       field: 'id',
@@ -225,8 +165,65 @@ export default function ManagersTable() {
         onClose={closeModal}
         title="CONFIRMAR EXCLUSÃO"
         description={`Tem certeza que deseja deletar ${selectedManager?.name}?`}
-        buttons={modalButtons}
-      />
+      >
+        <>
+          <Button
+            onClick={handleDelete}
+            fullWidth
+            sx={{
+              minWidth: {
+                xs: '100px',
+                sm: '120px',
+                md: '140px'
+              },
+              height: {
+                xs: '30px',
+                sm: '40px',
+                md: '45px'
+              },
+              borderRadius: '8px',
+              border: '2px solid blue',
+              backgroundColor: '#ffffff',
+              textTransform: 'none',
+              fontSize: {
+                xs: '12px',
+                sm: '14px',
+                md: '16px'
+              }
+            }}
+          >
+            Excluir
+          </Button>
+          <Button
+            onClick={closeModal}
+            fullWidth
+            sx={{
+              minWidth: {
+                xs: '100px',
+                sm: '120px',
+                md: '140px'
+              },
+              height: {
+                xs: '30px',
+                sm: '40px',
+                md: '45px'
+              },
+              borderRadius: '8px',
+              border: '2px solid black',
+              backgroundColor: '#ffffff',
+              color: '#000000',
+              textTransform: 'none',
+              fontSize: {
+                xs: '12px',
+                sm: '14px',
+                md: '16px'
+              }
+            }}
+          >
+            Cancelar
+          </Button>
+        </>
+      </ManagerDeleteModal>
     </div>
   );
 }
