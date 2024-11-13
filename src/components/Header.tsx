@@ -153,11 +153,9 @@ const Header: React.FC<HeaderProps> = ({ headerOptions }) => {
             >
               Cancelar
             </Button>
-
           </>
         </ModalComponent>
-      )
-      }
+      )}
     </header>
   );
 };

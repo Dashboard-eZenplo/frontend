@@ -171,15 +171,6 @@ export default function EmployeesTable() {
     }
   }, [uploadSuccess]);
 
-  const handleDelete = async (id: number) => {
-    try {
-      await deleteEmployee(id);
-      setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
-
   const handleDownload = async () => {
     try {
       await downloadCsvTemplate();

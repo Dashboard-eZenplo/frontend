@@ -1,5 +1,5 @@
 import { Dialog, DialogTitle, Typography, Box } from '@mui/material';
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 interface ModalProps {
   open: boolean;
@@ -9,13 +9,7 @@ interface ModalProps {
   children: ReactNode;
 }
 
-const ModalComponent = ({
-  open,
-  onClose,
-  title,
-  description,
-  children,
-}: ModalProps) => {
+const ModalComponent = ({ open, onClose, title, description, children }: ModalProps) => {
   if (!open) return null;
 
   return (
