@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LogotipoEzenplo from '../assets/logo-header.png';
-import LogoutModal from './ModalLogout';
+import ModalComponent from './ModalComponent';
+import { Button } from '@mui/material';
+import { useAuth } from '../contexts/AuthContext';
 
 type HeaderOptionsType = {
   title: string;
@@ -40,9 +42,21 @@ const Header: React.FC<HeaderProps> = ({ headerOptions }) => {
 
   if (isMobile) return null;
 
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    try {
+      signOut();
+      navigate('/login');
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
+
   return (
-    <header className="bg-white p-4 flex justify-between items-center border-b border-zinc-300">
-      <img src={LogotipoEzenplo} className="w-auto h-9 ml-24" alt="LogotipoEzenplo" />
+    <header className="flex items-center justify-between p-4 bg-white border-b border-zinc-300">
+      <img src={LogotipoEzenplo} className="w-auto ml-24 h-9" alt="LogotipoEzenplo" />
       <nav className="flex mr-24">
         <ul className="flex">
           {headerOptions.map(({ title, to, icon }, index) => (
@@ -53,7 +67,7 @@ const Header: React.FC<HeaderProps> = ({ headerOptions }) => {
               {to === '/logout' ? (
                 <button
                   onClick={handleLogoutClick}
-                  className="text-zinc-800 flex items-center space-x-2"
+                  className="flex items-center space-x-2 text-zinc-800"
                   style={{ backgroundColor: 'transparent', border: 'none' }}
                 >
                   <span>{icon}</span>
@@ -62,7 +76,7 @@ const Header: React.FC<HeaderProps> = ({ headerOptions }) => {
               ) : (
                 <Link
                   to={to.startsWith('/') ? to : `/${to}`}
-                  className="text-zinc-800 flex items-center space-x-2"
+                  className="flex items-center space-x-2 text-zinc-800"
                 >
                   <span>{icon}</span>
                   <span>{title}</span>
@@ -73,7 +87,75 @@ const Header: React.FC<HeaderProps> = ({ headerOptions }) => {
         </ul>
       </nav>
 
-      {isLogoutModalOpen && <LogoutModal open={isLogoutModalOpen} onClose={closeModal} />}
+      {isLogoutModalOpen && (
+        <ModalComponent
+          open={isLogoutModalOpen}
+          onClose={closeModal}
+          title="CONFIRMAR SAÍDA"
+          description="Você tem certeza que deseja sair de sua conta?"
+        >
+          <>
+            <Button
+              onClick={() => {
+                handleLogout();
+                closeModal();
+              }}
+              fullWidth
+              sx={{
+                minWidth: {
+                  xs: '100px',
+                  sm: '120px',
+                  md: '140px'
+                },
+                height: {
+                  xs: '30px',
+                  sm: '40px',
+                  md: '45px'
+                },
+                borderRadius: '8px',
+                border: '2px solid blue',
+                backgroundColor: '#ffffff',
+                textTransform: 'none',
+                fontSize: {
+                  xs: '12px',
+                  sm: '14px',
+                  md: '16px'
+                }
+              }}
+            >
+              Sair
+            </Button>
+            <Button
+              onClick={closeModal}
+              fullWidth
+              sx={{
+                minWidth: {
+                  xs: '100px',
+                  sm: '120px',
+                  md: '140px'
+                },
+                height: {
+                  xs: '30px',
+                  sm: '40px',
+                  md: '45px'
+                },
+                borderRadius: '8px',
+                border: '2px solid black',
+                backgroundColor: '#ffffff',
+                color: '#000000',
+                textTransform: 'none',
+                fontSize: {
+                  xs: '12px',
+                  sm: '14px',
+                  md: '16px'
+                }
+              }}
+            >
+              Cancelar
+            </Button>
+          </>
+        </ModalComponent>
+      )}
     </header>
   );
 };

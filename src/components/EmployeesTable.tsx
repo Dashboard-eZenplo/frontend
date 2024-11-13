@@ -14,12 +14,16 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { ptBR } from '@mui/x-data-grid/locales';
 import { useEffect, useState } from 'react';
-import { deleteEmployee, getEmployees } from '../services/employees/employeeService';
+import {
+  deleteEmployee as deleteEmployeeService,
+  getEmployees
+} from '../services/employees/employeeService';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import UploadDownloadBox from './UploadDownloadBox';
 import { IHREmployee } from '../types/HREmployee';
 import { downloadCsvTemplate, uploadCsv } from '../services/fileService';
+import ModalComponent from './ModalComponent';
 
 interface LocalHREmployee extends IHREmployee {
   id: number;
@@ -36,12 +40,24 @@ export default function EmployeesTable() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [employeeToDelete, setEmployeeToDelete] = useState<Row | null>(null);
+
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
 
+  const handleOpenDeleteModal = (employee: Row) => {
+    setEmployeeToDelete(employee);
+    setDeleteModalOpen(true);
+  };
+  const handleCloseDeleteModal = () => {
+    setEmployeeToDelete(null);
+    setDeleteModalOpen(false);
+  };
+
   const columns: GridColDef<Row>[] = [
     {
-      field: 'nome',
+      field: 'name',
       headerName: 'Nome',
       renderCell: (params) => (
         <Link
@@ -104,24 +120,35 @@ export default function EmployeesTable() {
       headerAlign: 'right',
       align: 'right',
       renderCell: (params) => (
-        <IconButton onClick={() => handleDelete(params.row.id)}>
+        <IconButton onClick={() => handleOpenDeleteModal(params.row)}>
           <DeleteOutlinedIcon />
         </IconButton>
       )
     }
   ];
 
+  const handleDelete = async () => {
+    if (employeeToDelete)
+      try {
+        await deleteEmployeeService(employeeToDelete.id);
+        setRows((prevRows) => prevRows.filter((row) => row.id !== employeeToDelete.id));
+        handleCloseDeleteModal();
+      } catch (error: any) {
+        setError(error.message);
+      }
+  };
+
   const fetchEmployees = async () => {
     try {
       const res: Array<any> = await getEmployees();
       const rows: LocalHREmployee[] = res.map((employee: any) => ({
         id: employee.id,
-        nome: employee.name,
+        name: employee.name,
         email: employee.email,
-        cargo: employee.position,
-        departamento: employee.department,
-        dataDeAdmissao: employee.admission_date,
-        dataDeAniversario: employee.birth_date
+        role: employee.position,
+        department: employee.department,
+        admissionDate: employee.admission_date,
+        birthDate: employee.birth_date
       }));
       setRows(rows);
     } catch (error: any) {
@@ -143,15 +170,6 @@ export default function EmployeesTable() {
       return () => clearTimeout(delayFetch);
     }
   }, [uploadSuccess]);
-
-  const handleDelete = async (id: number) => {
-    try {
-      await deleteEmployee(id);
-      setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
 
   const handleDownload = async () => {
     try {
@@ -307,6 +325,78 @@ export default function EmployeesTable() {
           Arquivo enviado com sucesso!
         </Alert>
       </Snackbar>
+
+      {employeeToDelete && (
+        <ModalComponent
+          open={deleteModalOpen}
+          onClose={handleCloseDeleteModal}
+          title={rows.length > 20 ? 'CONFIRMAR EXCLUSÃO' : 'EXCLUSÃO NÃO PERMITIDA'}
+          description={
+            rows.length > 20
+              ? `Você tem certeza que deseja excluir ${employeeToDelete?.name}?`
+              : 'Não é possível excluir funcionários quando o total é 20 ou menos.'
+          }
+        >
+          <>
+            <Button
+              onClick={handleDelete}
+              disabled={rows.length <= 20}
+              fullWidth
+              sx={{
+                minWidth: {
+                  xs: '100px',
+                  sm: '120px',
+                  md: '140px'
+                },
+                height: {
+                  xs: '30px',
+                  sm: '40px',
+                  md: '45px'
+                },
+                borderRadius: '8px',
+                border: rows.length > 20 ? '2px solid blue' : '2px solid gray',
+                backgroundColor: '#ffffff',
+                textTransform: 'none',
+                fontSize: {
+                  xs: '12px',
+                  sm: '14px',
+                  md: '16px'
+                }
+              }}
+            >
+              Excluir
+            </Button>
+            <Button
+              onClick={handleCloseDeleteModal}
+              fullWidth
+              sx={{
+                minWidth: {
+                  xs: '100px',
+                  sm: '120px',
+                  md: '140px'
+                },
+                height: {
+                  xs: '30px',
+                  sm: '40px',
+                  md: '45px'
+                },
+                borderRadius: '8px',
+                border: '2px solid black',
+                backgroundColor: '#ffffff',
+                color: '#000000',
+                textTransform: 'none',
+                fontSize: {
+                  xs: '12px',
+                  sm: '14px',
+                  md: '16px'
+                }
+              }}
+            >
+              Cancelar
+            </Button>
+          </>
+        </ModalComponent>
+      )}
     </div>
   );
 }
