@@ -3,7 +3,7 @@ import api from '../utils/api';
 
 export const registerUser = async (userData: IHRManager) => {
   try {
-    const response = await api.post(`/user/register/`, userData);
+    const response = await api.post(`/user/register`, userData);
 
     return response.data;
   } catch (error: any) {
@@ -21,7 +21,7 @@ export const uploadFile = async (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await api.post('/file/upload/', formData, {
+    const response = await api.post('/file/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

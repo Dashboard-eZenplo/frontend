@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const getEmployees = async () => {
   try {
-    const response = await axios.get(`${API_URL}/employee/`, {
+    const response = await axios.get(`${API_URL}/employee`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`
       }
@@ -21,7 +21,7 @@ export const getEmployees = async () => {
 
 export const deleteEmployee = async (id: number) => {
   try {
-    await axios.delete(`${API_URL}/employee/${id}`, {
+    await axios.delete(`${API_URL}/employee${id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`
       }
