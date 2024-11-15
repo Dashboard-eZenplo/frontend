@@ -4,7 +4,7 @@ import { defaultHeaderOptions } from '../../config/HeaderOptions';
 import UploadDownloadBox from '../../components/UploadDownloadBox';
 import Download from '../../assets/Download.png';
 import { downloadCsvTemplate, uploadCsv } from '../../services/fileService';
-import { Button } from '@mui/material';
+import { Button, Snackbar, Alert } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getEmployees } from '../../services/employees/employeeService';
@@ -12,6 +12,7 @@ import { getEmployees } from '../../services/employees/employeeService';
 const UploadDownloadPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleDownload = async () => {
@@ -38,8 +39,7 @@ const UploadDownloadPage = () => {
 
     try {
       await uploadCsv(selectedFile);
-      alert('Arquivo enviado com sucesso!');
-      navigate('/funcionarios');
+      setUploadSuccess(true);
     } catch (error: any) {
       console.error('Erro ao enviar o arquivo:', error);
       alert(error.message || 'Ocorreu um erro ao enviar o arquivo.');
@@ -62,6 +62,16 @@ const UploadDownloadPage = () => {
 
     fetchEmployees();
   }, []);
+
+  useEffect(() => {
+    if (uploadSuccess) {
+      const delayNavigate = setTimeout(() => {
+        setUploadSuccess(false);
+        navigate('/funcionarios');
+      }, 1500);
+      return () => clearTimeout(delayNavigate);
+    }
+  }, [uploadSuccess, navigate]);
 
   return (
     <Background>
@@ -91,6 +101,17 @@ const UploadDownloadPage = () => {
           </div>
         </div>
       </div>
+
+      <Snackbar
+        open={uploadSuccess}
+        onClose={() => setUploadSuccess(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        autoHideDuration={1500}
+      >
+        <Alert onClose={() => setUploadSuccess(false)} severity="success" sx={{ width: '100%' }}>
+          Arquivo enviado com sucesso!
+        </Alert>
+      </Snackbar>
     </Background>
   );
 };

@@ -36,17 +36,17 @@ export default function StackedBarChart() {
     labels: ['Período 1', 'Período 2', 'Período 3'],
     datasets: [
       {
-        label: 'Ruim',
+        label: 'Pode melhorar',
         data: bad,
         backgroundColor: '#ff5050'
       },
       {
-        label: 'Razoável',
+        label: 'Quase lá',
         data: neutral,
         backgroundColor: '#fdfa20'
       },
       {
-        label: 'Bom',
+        label: 'Muito bom',
         data: good,
         backgroundColor: '#3be07d'
       }
