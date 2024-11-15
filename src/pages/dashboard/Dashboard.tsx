@@ -17,16 +17,6 @@ import ChartModal from '../../components/ChartModal/ChartModal';
 
 type Period = [Date, Date] | null;
 
-const getNumberOfDaysInPeriod = (period: Period) => {
-  if (period) {
-    const [startDate, endDate] = period;
-    const diffTime = endDate.getTime() - startDate.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  }
-  return 0;
-};
-
 export default function Dashboard() {
   const { applyFilters, fetchChartData, hasMoreThanTwenty } = useChartFilters();
   const { setPossibleFilters } = usePossibleFilters();
@@ -62,24 +52,27 @@ export default function Dashboard() {
 
   useEffect(() => {
     const formattedPeriods = {
-      period1: period1
-        ? {
-            initial_date: format(period1[0], 'yyyy-MM-dd'),
-            final_date: format(period1[1], 'yyyy-MM-dd')
-          }
-        : { initial_date: '', final_date: '' },
-      period2: period2
-        ? {
-            initial_date: format(period2[0], 'yyyy-MM-dd'),
-            final_date: format(period2[1], 'yyyy-MM-dd')
-          }
-        : { initial_date: '', final_date: '' },
-      period3: period3
-        ? {
-            initial_date: format(period3[0], 'yyyy-MM-dd'),
-            final_date: format(period3[1], 'yyyy-MM-dd')
-          }
-        : { initial_date: '', final_date: '' }
+      period1:
+        period1 && dateFns.isValid(period1[0]) && dateFns.isValid(period1[1])
+          ? {
+              initial_date: format(period1[0], 'yyyy-MM-dd'),
+              final_date: format(period1[1], 'yyyy-MM-dd')
+            }
+          : {},
+      period2:
+        period2 && dateFns.isValid(period2[0]) && dateFns.isValid(period2[1])
+          ? {
+              initial_date: format(period2[0], 'yyyy-MM-dd'),
+              final_date: format(period2[1], 'yyyy-MM-dd')
+            }
+          : {},
+      period3:
+        period3 && dateFns.isValid(period3[0]) && dateFns.isValid(period3[1])
+          ? {
+              initial_date: format(period3[0], 'yyyy-MM-dd'),
+              final_date: format(period3[1], 'yyyy-MM-dd')
+            }
+          : {}
     };
 
     applyFilters({ periods: formattedPeriods });
@@ -114,19 +107,17 @@ export default function Dashboard() {
         <div className="flex-1 flex flex-col p-4 overflow-x-hidden">
           <div className="flex items-start justify-center gap-4 date-ranges h-14">
             {[period1, period2, period3].map((period, index) => (
-              <div key={index} className="flex flex-col items-center">
-                <DateRangePicker
-                  value={period as DateRange | null}
-                  onChange={index === 0 ? setPeriod1 : index === 1 ? setPeriod2 : setPeriod3}
-                  placeholder={`Período ${index + 1}`}
-                  size="md"
-                  format="dd/MM/yy"
-                  preventOverflow
-                  ranges={ranges}
-                  disabled={!hasMoreThanTwenty}
-                />
-                {period && <p className="text-black">{getNumberOfDaysInPeriod(period)} dias</p>}
-              </div>
+              <DateRangePicker
+                key={index}
+                value={period as DateRange | null}
+                onChange={index === 0 ? setPeriod1 : index === 1 ? setPeriod2 : setPeriod3}
+                placeholder={`Período ${index + 1}`}
+                size="md"
+                format="dd/MM/yy"
+                preventOverflow
+                ranges={ranges}
+                disabled={!hasMoreThanTwenty}
+              />
             ))}
           </div>
           <div className="w-full flex-1 flex flex-col items-center justify-center max-h-[500px]">

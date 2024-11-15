@@ -5,9 +5,9 @@ export interface IPeriod {
 
 export interface IFiltersRequest {
   periods: {
-    period1: IPeriod;
-    period2: IPeriod;
-    period3: IPeriod;
+    period1: IPeriod | {};
+    period2: IPeriod | {};
+    period3: IPeriod | {};
   };
   filters: {
     category: string[];

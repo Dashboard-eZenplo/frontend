@@ -18,18 +18,9 @@ const ChartFiltersContext = createContext<ChartFiltersContextProps>({} as ChartF
 export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [filtersRequest, setFiltersRequest] = useState<IFiltersRequest>({
     periods: {
-      period1: {
-        initial_date: '',
-        final_date: ''
-      },
-      period2: {
-        initial_date: '',
-        final_date: ''
-      },
-      period3: {
-        initial_date: '',
-        final_date: ''
-      }
+      period1: {},
+      period2: {},
+      period3: {}
     },
     filters: {
       category: [],
