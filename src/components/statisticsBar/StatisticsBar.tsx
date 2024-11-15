@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { ISuperiorBar } from '../../types/superiorBar';
 import { getSuperiorBarData } from '../../services/superiorBar/superiorBar';
 import { CircularProgress } from '@mui/material';
+import { useChartFilters } from '../../contexts/ChartFiltersContext';
 
 export default function StatisticsBar() {
   const [superiorBarData, setSuperiorBarData] = useState<ISuperiorBar>({
@@ -11,12 +12,18 @@ export default function StatisticsBar() {
     hours: 0,
     mean: 0
   });
+  const { setHasMoreThanTwentyEmployees } = useChartFilters();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await getSuperiorBarData();
-        setSuperiorBarData(response);
+
+        if (response.message) {
+          setHasMoreThanTwentyEmployees(false);
+        } else {
+          setSuperiorBarData(response);
+        }
       } catch (error) {
         console.error(error);
       }

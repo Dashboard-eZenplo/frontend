@@ -13,7 +13,7 @@ import { usePossibleFilters } from '../../contexts/PossibleFiltersContext';
 import { getEmployees } from '../../services/employees/employeeService';
 import { useNavigate } from 'react-router-dom';
 import StatisticsBar from '../../components/statisticsBar/StatisticsBar';
-import EmptyPeriodsModal from '../../components/EmptyPeriodsModal/EmptyPeriodsModal';
+import ChartModal from '../../components/ChartModal/ChartModal';
 
 type Period = [Date, Date] | null;
 
@@ -28,7 +28,7 @@ const getNumberOfDaysInPeriod = (period: Period) => {
 };
 
 export default function Dashboard() {
-  const { applyFilters, fetchChartData } = useChartFilters();
+  const { applyFilters, fetchChartData, hasMoreThanTwenty } = useChartFilters();
   const { setPossibleFilters } = usePossibleFilters();
   const navigate = useNavigate();
 
@@ -36,7 +36,7 @@ export default function Dashboard() {
   const [period2, setPeriod2] = useState<Period>(null);
   const [period3, setPeriod3] = useState<Period>(null);
 
-  const hasAllPeriods = period1 || period2 || period3;
+  const hasAllPeriods = !!(period1 || period2 || period3);
 
   const ranges: RangeType<DateRange>[] = [
     {
@@ -61,14 +61,28 @@ export default function Dashboard() {
   ];
 
   useEffect(() => {
-    const periods = [period1, period2, period3]
-      .filter((p) => p !== null)
-      .map(([startDate, endDate]) => ({
-        initial_date: format(startDate, 'yyyy-MM-dd'),
-        final_date: format(endDate, 'yyyy-MM-dd')
-      }));
+    const formattedPeriods = {
+      period1: period1
+        ? {
+            initial_date: format(period1[0], 'yyyy-MM-dd'),
+            final_date: format(period1[1], 'yyyy-MM-dd')
+          }
+        : { initial_date: '', final_date: '' },
+      period2: period2
+        ? {
+            initial_date: format(period2[0], 'yyyy-MM-dd'),
+            final_date: format(period2[1], 'yyyy-MM-dd')
+          }
+        : { initial_date: '', final_date: '' },
+      period3: period3
+        ? {
+            initial_date: format(period3[0], 'yyyy-MM-dd'),
+            final_date: format(period3[1], 'yyyy-MM-dd')
+          }
+        : { initial_date: '', final_date: '' }
+    };
 
-    applyFilters({ periods });
+    applyFilters({ periods: formattedPeriods });
   }, [period1, period2, period3]);
 
   useEffect(() => {
@@ -94,67 +108,48 @@ export default function Dashboard() {
   return (
     <main className="flex flex-col min-h-screen scrollbar">
       <Header headerOptions={defaultHeaderOptions.userHeaderOptions} />
-
       <StatisticsBar />
-
       <section className="px-6 flex flex-1 w-full max-w-[1440px] ml-auto mr-auto">
         <FilterSidebar />
         <div className="flex-1 flex flex-col p-4 overflow-x-hidden">
           <div className="flex items-start justify-center gap-4 date-ranges h-14">
-            <div className="flex flex-col items-center">
-              <DateRangePicker
-                value={period1 as DateRange | null}
-                onChange={setPeriod1 as (value: DateRange | null) => void}
-                placeholder="Período 1"
-                size="md"
-                format="dd/MM/yy"
-                preventOverflow
-                ranges={ranges}
-              />
-              {period1 && <p className="text-black">{getNumberOfDaysInPeriod(period1)} dias</p>}
-            </div>
-            <div className="flex flex-col items-center">
-              <DateRangePicker
-                value={period2 as DateRange | null}
-                onChange={setPeriod2 as (value: DateRange | null) => void}
-                placeholder="Período 2"
-                size="md"
-                format="dd/MM/yy"
-                preventOverflow
-                ranges={ranges}
-              />
-              {period2 && <p className="text-black">{getNumberOfDaysInPeriod(period2)} dias</p>}
-            </div>
-            <div className="flex flex-col items-center">
-              <DateRangePicker
-                value={period3 as DateRange | null}
-                onChange={setPeriod3 as (value: DateRange | null) => void}
-                placeholder="Período 3"
-                size="md"
-                format="dd/MM/yy"
-                preventOverflow
-                ranges={ranges}
-              />
-              {period3 && <p className="text-black">{getNumberOfDaysInPeriod(period3)} dias</p>}
-            </div>
+            {[period1, period2, period3].map((period, index) => (
+              <div key={index} className="flex flex-col items-center">
+                <DateRangePicker
+                  value={period as DateRange | null}
+                  onChange={index === 0 ? setPeriod1 : index === 1 ? setPeriod2 : setPeriod3}
+                  placeholder={`Período ${index + 1}`}
+                  size="md"
+                  format="dd/MM/yy"
+                  preventOverflow
+                  ranges={ranges}
+                  disabled={!hasMoreThanTwenty}
+                />
+                {period && <p className="text-black">{getNumberOfDaysInPeriod(period)} dias</p>}
+              </div>
+            ))}
           </div>
-
           <div className="w-full flex-1 flex flex-col items-center justify-center max-h-[500px]">
             <div className="w-[80%] 2xl:w-[70%] flex-1 max-h-[380px]">
               <div className="h-full max-h-[300px] relative flex justify-center items-center">
-                {!hasAllPeriods && <EmptyPeriodsModal />}
+                {hasMoreThanTwenty ? (
+                  !hasAllPeriods && (
+                    <ChartModal text="Adicione um período para poder visualizar o gráfico." />
+                  )
+                ) : (
+                  <ChartModal text="É necessário ter 20 ou mais funcionários para realizar o filtro." />
+                )}
                 <StackedBarChart />
               </div>
-              <div className="w-full flex justify-around  ml-[3%] mt-8">
-                <div className="text-black flex items-center justify-center w-24 h-10 border border-1 rounded-lg font-bold">
-                  6,5
-                </div>
-                <div className="text-black flex items-center justify-center w-24 h-10 border border-1 rounded-lg font-bold">
-                  7,1
-                </div>
-                <div className="text-black flex items-center justify-center w-24 h-10 border border-1 rounded-lg font-bold">
-                  8,4
-                </div>
+              <div className="w-full flex justify-around ml-[3%] mt-8">
+                {[6.5, 7.1, 8.4].map((value, idx) => (
+                  <div
+                    key={idx}
+                    className="text-black flex items-center justify-center w-24 h-10 border border-1 rounded-lg font-bold"
+                  >
+                    {value}
+                  </div>
+                ))}
               </div>
             </div>
           </div>

@@ -4,7 +4,11 @@ interface IPeriod {
 }
 
 export interface IFiltersRequest {
-  periods: IPeriod[];
+  periods: {
+    period1: IPeriod;
+    period2: IPeriod;
+    period3: IPeriod;
+  };
   filters: {
     category: string[];
     role?: string[];
@@ -19,8 +23,19 @@ export interface IGrade {
   bad: number;
 }
 
+interface IMean {
+  mean: number;
+  quantity: number;
+}
+
 export interface IFiltersResponse {
   grades: IGrade[];
+  means: {
+    mean: IMean;
+    good_mean: IMean;
+    neutral_mean: IMean;
+    bad_mean: IMean;
+  }[];
 }
 
 export interface IPossibleFilters {

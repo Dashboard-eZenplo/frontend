@@ -8,6 +8,8 @@ interface ChartFiltersContextProps {
   good: number[];
   neutral: number[];
   bad: number[];
+  hasMoreThanTwenty: boolean;
+  setHasMoreThanTwentyEmployees: (value: boolean) => void;
   fetchChartData: () => Promise<void>;
 }
 
@@ -15,7 +17,20 @@ const ChartFiltersContext = createContext<ChartFiltersContextProps>({} as ChartF
 
 export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [filtersRequest, setFiltersRequest] = useState<IFiltersRequest>({
-    periods: [],
+    periods: {
+      period1: {
+        initial_date: '',
+        final_date: ''
+      },
+      period2: {
+        initial_date: '',
+        final_date: ''
+      },
+      period3: {
+        initial_date: '',
+        final_date: ''
+      }
+    },
     filters: {
       category: [],
       role: [],
@@ -27,6 +42,12 @@ export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [good, setGood] = useState<number[]>([0, 0, 0]);
   const [neutral, setNeutral] = useState<number[]>([0, 0, 0]);
   const [bad, setBad] = useState<number[]>([0, 0, 0]);
+
+  const [hasMoreThanTwenty, setHasMoreThanTwenty] = useState<boolean>(true);
+
+  const setHasMoreThanTwentyEmployees = (value: boolean) => {
+    setHasMoreThanTwenty(value);
+  };
 
   const applyFilters = (newFilters: Partial<IFiltersRequest>) => {
     setFiltersRequest((prev) => ({
@@ -68,6 +89,8 @@ export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ 
         good,
         neutral,
         bad,
+        hasMoreThanTwenty,
+        setHasMoreThanTwentyEmployees,
         fetchChartData
       }}
     >
