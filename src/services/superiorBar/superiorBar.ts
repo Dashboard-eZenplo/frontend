@@ -1,8 +1,8 @@
 import api from '../../utils/api';
 
-export const getSuperiorBarData = async () => {
+export const getSuperiorBarData = async (periods: any) => {
   try {
-    const response = await api.post('/dashboard/info');
+    const response = await api.post('/dashboard/info', periods);
     return response.data;
   } catch (error: any) {
     if (error.response?.status === 422) {

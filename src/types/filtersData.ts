@@ -1,4 +1,4 @@
-interface IPeriod {
+export interface IPeriod {
   initial_date: string;
   final_date: string;
 }

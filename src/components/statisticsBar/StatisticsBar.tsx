@@ -12,12 +12,12 @@ export default function StatisticsBar() {
     hours: 0,
     mean: 0
   });
-  const { setHasMoreThanTwentyEmployees } = useChartFilters();
+  const { setHasMoreThanTwentyEmployees, filtersRequest } = useChartFilters();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getSuperiorBarData();
+        const response = await getSuperiorBarData(filtersRequest.periods);
 
         if (response.message) {
           setHasMoreThanTwentyEmployees(false);
