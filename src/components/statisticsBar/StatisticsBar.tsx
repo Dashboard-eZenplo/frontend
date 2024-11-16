@@ -30,7 +30,7 @@ export default function StatisticsBar() {
     };
 
     fetchData();
-  }, []);
+  }, [filtersRequest]);
 
   return (
     <section className="flex justify-center w-full bg-gradient-to-t from-secondary to-primary">
