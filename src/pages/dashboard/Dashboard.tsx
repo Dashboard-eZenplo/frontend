@@ -38,7 +38,15 @@ export default function Dashboard() {
 
   const hasAllPeriods = !!(period1 || period2 || period3);
 
-  const [averages, setAverages] = useState<number[]>([0, 0, 0]);
+  const [averages, setAverages] = useState<{
+    average1: number;
+    average2: number;
+    average3: number;
+  }>({
+    average1: 0,
+    average2: 0,
+    average3: 0
+  });
 
   const ranges: RangeType<DateRange>[] = [
     {
@@ -65,36 +73,104 @@ export default function Dashboard() {
   const calculateMeans = () => {
     if (!labels || !means) return;
 
-    const periodAverages: number[] = [];
-
-    for (let i = 0; i < 3; i++) {
+    if (means.mean1 !== null && means.mean1 !== undefined) {
       let totalMean = 0;
       let totalQuantity = 0;
 
-      if (!means[i]) continue;
-
-      if (labels.includes('Bom')) {
-        totalMean += means[i].good_mean.mean;
-        totalQuantity += means[i].good_mean.quantity;
+      if (labels.includes('Bom') && means.mean1.good_mean) {
+        totalMean += means.mean1.good_mean.mean;
+        totalQuantity += means.mean1.good_mean.quantity;
       }
 
-      if (labels.includes('Razoável')) {
-        totalMean += means[i].neutral_mean.mean;
-        totalQuantity += means[i].neutral_mean.quantity;
+      if (labels.includes('Razoável') && means.mean1.neutral_mean) {
+        totalMean += means.mean1.neutral_mean.mean;
+        totalQuantity += means.mean1.neutral_mean.quantity;
       }
 
-      if (labels.includes('Ruim')) {
-        totalMean += means[i].bad_mean.mean;
-        totalQuantity += means[i].bad_mean.quantity;
+      if (labels.includes('Ruim') && means.mean1.bad_mean) {
+        totalMean += means.mean1.bad_mean.mean;
+        totalQuantity += means.mean1.bad_mean.quantity;
       }
 
       const periodAverage = totalQuantity > 0 ? totalMean / totalQuantity : 0;
       const periodAverageRounded = parseFloat(periodAverage.toFixed(2));
 
-      periodAverages.push(periodAverageRounded);
+      setAverages((prevAverages) => ({
+        ...prevAverages,
+        average1: periodAverageRounded
+      }));
+    } else {
+      setAverages((prevAverages) => ({
+        ...prevAverages,
+        average1: 0
+      }));
     }
 
-    setAverages(periodAverages);
+    if (means.mean2 !== null && means.mean2 !== undefined) {
+      let totalMean = 0;
+      let totalQuantity = 0;
+
+      if (labels.includes('Bom') && means.mean2.good_mean) {
+        totalMean += means.mean2.good_mean.mean;
+        totalQuantity += means.mean2.good_mean.quantity;
+      }
+
+      if (labels.includes('Razoável') && means.mean2.neutral_mean) {
+        totalMean += means.mean2.neutral_mean.mean;
+        totalQuantity += means.mean2.neutral_mean.quantity;
+      }
+
+      if (labels.includes('Ruim') && means.mean2.bad_mean) {
+        totalMean += means.mean2.bad_mean.mean;
+        totalQuantity += means.mean2.bad_mean.quantity;
+      }
+
+      const periodAverage = totalQuantity > 0 ? totalMean / totalQuantity : 0;
+      const periodAverageRounded = parseFloat(periodAverage.toFixed(2));
+
+      setAverages((prevAverages) => ({
+        ...prevAverages,
+        average2: periodAverageRounded
+      }));
+    } else {
+      setAverages((prevAverages) => ({
+        ...prevAverages,
+        average2: 0
+      }));
+    }
+
+    if (means.mean3 !== null && means.mean3 !== undefined) {
+      let totalMean = 0;
+      let totalQuantity = 0;
+
+      if (labels.includes('Bom') && means.mean3.good_mean) {
+        totalMean += means.mean3.good_mean.mean;
+        totalQuantity += means.mean3.good_mean.quantity;
+      }
+
+      if (labels.includes('Razoável') && means.mean3.neutral_mean) {
+        totalMean += means.mean3.neutral_mean.mean;
+        totalQuantity += means.mean3.neutral_mean.quantity;
+      }
+
+      if (labels.includes('Ruim') && means.mean3.bad_mean) {
+        totalMean += means.mean3.bad_mean.mean;
+        totalQuantity += means.mean3.bad_mean.quantity;
+      }
+
+      const periodAverage = totalQuantity > 0 ? totalMean / totalQuantity : 0;
+      const periodAverageRounded = parseFloat(periodAverage.toFixed(2));
+
+      setAverages((prevAverages) => ({
+        ...prevAverages,
+        average3: periodAverageRounded
+      }));
+    } else {
+      setAverages((prevAverages) => ({
+        ...prevAverages,
+        average3: 0
+      }));
+    }
   };
 
   useEffect(() => {
@@ -187,7 +263,7 @@ export default function Dashboard() {
                 <StackedBarChart />
               </div>
               <div className="w-full flex justify-around ml-[3%] mt-8">
-                {[averages[0], averages[1], averages[2]].map((value, idx) => (
+                {[averages.average1, averages.average2, averages.average3].map((value, idx) => (
                   <div
                     key={idx}
                     className="text-black flex items-center justify-center w-24 h-10 border border-1 rounded-lg font-bold"

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import { IFiltersRequest, IPeriodMean } from '../types/filtersData';
+import { IFiltersRequest, IMeans } from '../types/filtersData';
 import { filterChartData } from '../services/filters/filtersService';
 
 interface ChartFiltersContextProps {
@@ -8,7 +8,7 @@ interface ChartFiltersContextProps {
   good: number[];
   neutral: number[];
   bad: number[];
-  means: IPeriodMean[];
+  means: IMeans;
   labels: string[];
   setLabels: React.Dispatch<React.SetStateAction<string[]>>;
   hasMoreThanTwenty: boolean;
@@ -38,7 +38,7 @@ export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [bad, setBad] = useState<number[]>([0, 0, 0]);
 
   const [labels, setLabels] = useState<string[]>(['Bom', 'Razoável', 'Ruim']);
-  const [means, setMeans] = useState<IPeriodMean[]>([]);
+  const [means, setMeans] = useState<IMeans>({mean1: null, mean2: null, mean3: null});
 
   const [hasMoreThanTwenty, setHasMoreThanTwenty] = useState<boolean>(true);
 
@@ -62,6 +62,8 @@ export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ 
     try {
       const response = await filterChartData(filtersRequest);
 
+      console.log(response);
+
       const goodValues = [
         response?.grades.grade1?.good ?? 0,
         response?.grades.grade2?.good ?? 0,
@@ -84,28 +86,14 @@ export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ 
       setNeutral(neutralValues);
       setBad(badValues);
 
-      const meansArray = response.means || [];
+      const period1Means = response?.means.mean1;
 
-      const period1Means = meansArray[0] || {
-        mean: { mean: 0, quantity: 0 },
-        good_mean: { mean: 0, quantity: 0 },
-        neutral_mean: { mean: 0, quantity: 0 },
-        bad_mean: { mean: 0, quantity: 0 }
-      };
-      const period2Means = meansArray[1] || {
-        mean: { mean: 0, quantity: 0 },
-        good_mean: { mean: 0, quantity: 0 },
-        neutral_mean: { mean: 0, quantity: 0 },
-        bad_mean: { mean: 0, quantity: 0 }
-      };
-      const period3Means = meansArray[2] || {
-        mean: { mean: 0, quantity: 0 },
-        good_mean: { mean: 0, quantity: 0 },
-        neutral_mean: { mean: 0, quantity: 0 },
-        bad_mean: { mean: 0, quantity: 0 }
-      };
+      const period2Means = response?.means.mean2; 
 
-      setMeans([period1Means, period2Means, period3Means]);
+      const period3Means = response?.means.mean3;
+
+      setMeans({mean1: period1Means, mean2: period2Means, mean3: period3Means});
+
     } catch (error) {
       console.error('Failed to fetch chart data:', error);
     }

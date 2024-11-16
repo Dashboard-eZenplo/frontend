@@ -8,12 +8,11 @@ import {
   Title,
   Tooltip,
   Legend,
+  ChartEvent, 
   LegendItem,
-  ChartEvent,
-  LegendElement
 } from 'chart.js';
 import { useChartFilters } from '../../contexts/ChartFiltersContext';
-import { useRef } from 'react';
+import { useState } from 'react';
 
 Chart.register(CategoryScale, LinearScale, PointElement, BarElement, Title, Tooltip, Legend);
 
@@ -22,32 +21,24 @@ Chart.defaults.font.family = "'Inter', system-ui, 'Avenir', Helvetica, 'Arial', 
 
 export default function StackedBarChart() {
   const { good, neutral, bad, setLabels } = useChartFilters();
-  const chartRef = useRef<Chart<'bar'> | null>(null);
+  const [visibleLabels, setVisibleLabels] = useState(['Ruim', 'Razoável', 'Bom']); 
 
-  function handleLegendClick(this: LegendElement<'bar'>, _e: ChartEvent, legendItem: LegendItem) {
-    const chartInstance = chartRef.current;
-    const datasetIndex = legendItem.datasetIndex;
+  const handleLegendClick = (e: ChartEvent, legendItem: LegendItem) => {
+    const label = legendItem.text;
 
-    if (chartInstance && datasetIndex !== undefined) {
-      const meta = chartInstance.getDatasetMeta(datasetIndex);
-      meta.hidden = !meta.hidden;
-      chartInstance.update();
+    setVisibleLabels((prevLabels) => {
+      const updatedLabels = prevLabels.includes(label)
+        ? prevLabels.filter((item) => item !== label) 
+        : [...prevLabels, label]; 
 
-      setLabels((prev) => {
-        const label = legendItem.text;
-        return meta.hidden ? prev.filter((item) => item !== label) : [...prev, label];
-      });
-    }
-  }
+      setLabels(updatedLabels);
+      return updatedLabels;
+    });
+  };
 
   const stackedBarOptions = {
     responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        onClick: handleLegendClick
-      }
-    },
+    maintainAspectRatio: false, 
     scales: {
       x: {
         stacked: true
@@ -55,7 +46,12 @@ export default function StackedBarChart() {
       y: {
         stacked: true
       }
-    }
+    },
+    plugins: {
+      legend: {
+        onClick: handleLegendClick,
+      },
+    },
   };
 
   const stackedBarData = {
@@ -64,17 +60,20 @@ export default function StackedBarChart() {
       {
         label: 'Ruim',
         data: bad,
-        backgroundColor: '#ff5050'
+        backgroundColor: '#ff5050',
+        hidden: !visibleLabels.includes('Ruim'),
       },
       {
         label: 'Razoável',
         data: neutral,
-        backgroundColor: '#fdfa20'
+        backgroundColor: '#fdfa20',
+        hidden: !visibleLabels.includes('Razoável'), 
       },
       {
         label: 'Bom',
         data: good,
-        backgroundColor: '#3be07d'
+        backgroundColor: '#3be07d',
+        hidden: !visibleLabels.includes('Bom'),
       }
     ]
   };
