@@ -28,7 +28,7 @@ const getNumberOfDaysInPeriod = (period: Period) => {
 type Period = [Date, Date] | null;
 
 export default function Dashboard() {
-  const { applyFilters, fetchChartData, hasMoreThanTwenty } = useChartFilters();
+  const { applyFilters, fetchChartData, hasMoreThanTwenty, means, labels } = useChartFilters();
   const { setPossibleFilters } = usePossibleFilters();
   const navigate = useNavigate();
 
@@ -37,6 +37,8 @@ export default function Dashboard() {
   const [period3, setPeriod3] = useState<Period>(null);
 
   const hasAllPeriods = !!(period1 || period2 || period3);
+
+  const [averages, setAverages] = useState<number[]>([0, 0, 0]);
 
   const ranges: RangeType<DateRange>[] = [
     {
@@ -59,6 +61,41 @@ export default function Dashboard() {
       value: [dateFns.startOfDay(dateFns.subDays(new Date(), 29)), dateFns.endOfDay(new Date())]
     }
   ];
+
+  const calculateMeans = () => {
+    if (!labels || !means) return;
+
+    const periodAverages: number[] = [];
+
+    for (let i = 0; i < 3; i++) {
+      let totalMean = 0;
+      let totalQuantity = 0;
+
+      if (!means[i]) continue;
+
+      if (labels.includes('Bom')) {
+        totalMean += means[i].good_mean.mean;
+        totalQuantity += means[i].good_mean.quantity;
+      }
+
+      if (labels.includes('Razoável')) {
+        totalMean += means[i].neutral_mean.mean;
+        totalQuantity += means[i].neutral_mean.quantity;
+      }
+
+      if (labels.includes('Ruim')) {
+        totalMean += means[i].bad_mean.mean;
+        totalQuantity += means[i].bad_mean.quantity;
+      }
+
+      const periodAverage = totalQuantity > 0 ? totalMean / totalQuantity : 0;
+      const periodAverageRounded = parseFloat(periodAverage.toFixed(2));
+
+      periodAverages.push(periodAverageRounded);
+    }
+
+    setAverages(periodAverages);
+  };
 
   useEffect(() => {
     const formattedPeriods = {
@@ -108,6 +145,10 @@ export default function Dashboard() {
     fetchChartData();
   }, [fetchChartData]);
 
+  useEffect(() => {
+    calculateMeans();
+  }, [labels, means]);
+
   return (
     <main className="flex flex-col min-h-screen scrollbar">
       <Header headerOptions={defaultHeaderOptions.userHeaderOptions} />
@@ -115,7 +156,7 @@ export default function Dashboard() {
       <section className="px-6 flex flex-1 w-full max-w-[1440px] ml-auto mr-auto">
         <FilterSidebar />
         <div className="flex-1 flex flex-col p-4 overflow-x-hidden">
-          <div className="flex items-start justify-center gap-4 date-ranges h-14">
+        <div className="flex items-start justify-center gap-4 date-ranges h-14">
             {[period1, period2, period3].map((period, index) => (
               <div className="flex flex-col items-center" key={index}>
                 <DateRangePicker
@@ -146,7 +187,7 @@ export default function Dashboard() {
                 <StackedBarChart />
               </div>
               <div className="w-full flex justify-around ml-[3%] mt-8">
-                {[6.5, 7.1, 8.4].map((value, idx) => (
+                {[averages[0], averages[1], averages[2]].map((value, idx) => (
                   <div
                     key={idx}
                     className="text-black flex items-center justify-center w-24 h-10 border border-1 rounded-lg font-bold"

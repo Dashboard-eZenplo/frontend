@@ -28,6 +28,13 @@ interface IMean {
   quantity: number;
 }
 
+export interface IPeriodMean {
+  mean: IMean;
+  good_mean: IMean;
+  neutral_mean: IMean;
+  bad_mean: IMean;
+}
+
 export interface IFiltersResponse {
   grades: {
     grade1: IGrade | null;

@@ -7,9 +7,13 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  LegendItem,
+  ChartEvent,
+  LegendElement,
 } from 'chart.js';
 import { useChartFilters } from '../../contexts/ChartFiltersContext';
+import { useRef } from 'react';
 
 Chart.register(CategoryScale, LinearScale, PointElement, BarElement, Title, Tooltip, Legend);
 
@@ -17,11 +21,33 @@ Chart.defaults.color = '#333333';
 Chart.defaults.font.family = "'Inter', system-ui, 'Avenir', Helvetica, 'Arial', sans-serif";
 
 export default function StackedBarChart() {
-  const { good, neutral, bad } = useChartFilters();
+  const { good, neutral, bad, setLabels } = useChartFilters();
+  const chartRef = useRef<Chart<'bar'> | null>(null);
 
+  function handleLegendClick(this: LegendElement<'bar'>, e: ChartEvent, legendItem: LegendItem) {
+    const chartInstance = chartRef.current;
+    const datasetIndex = legendItem.datasetIndex;
+
+    if (chartInstance && datasetIndex !== undefined) {
+      const meta = chartInstance.getDatasetMeta(datasetIndex);
+      meta.hidden = !meta.hidden;
+      chartInstance.update();
+
+      setLabels((prev) => {
+        const label = legendItem.text;
+        return meta.hidden ? prev.filter((item) => item !== label) : [...prev, label];
+      });
+    }
+  }
+  
   const stackedBarOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        onClick: handleLegendClick
+      }
+    },
     scales: {
       x: {
         stacked: true
