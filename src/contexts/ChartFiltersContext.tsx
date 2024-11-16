@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import { IFiltersRequest, IGrade } from '../types/filtersData';
+import { IFiltersRequest } from '../types/filtersData';
 import { filterChartData } from '../services/filters/filtersService';
 
 interface ChartFiltersContextProps {
@@ -52,23 +52,33 @@ export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ 
     }));
   };
 
-  const ensureThreeValues = (arr: number[]): number[] => {
-    const defaultArray = [0, 0, 0];
-    return arr.length === 3 ? arr : [...arr, ...defaultArray].slice(0, 3);
-  };
-
   const fetchChartData = useCallback(async () => {
     try {
       const response = await filterChartData(filtersRequest);
-      const goodValues = response.grades.map((grade: IGrade) => grade.good);
-      const neutralValues = response.grades.map((grade: IGrade) => grade.neutral);
-      const badValues = response.grades.map((grade: IGrade) => grade.bad);
 
-      setGood(ensureThreeValues(goodValues));
-      setNeutral(ensureThreeValues(neutralValues));
-      setBad(ensureThreeValues(badValues));
+      const goodValues = [
+        response?.grades.grade1?.good ?? 0,
+        response?.grades.grade2?.good ?? 0,
+        response?.grades.grade3?.good ?? 0
+      ];
+
+      const neutralValues = [
+        response?.grades.grade1?.neutral ?? 0,
+        response?.grades.grade2?.neutral ?? 0,
+        response?.grades.grade3?.neutral ?? 0
+      ];
+
+      const badValues = [
+        response?.grades.grade1?.bad ?? 0,
+        response?.grades.grade2?.bad ?? 0,
+        response?.grades.grade3?.bad ?? 0
+      ];
+
+      setGood(goodValues);
+      setNeutral(neutralValues);
+      setBad(badValues);
     } catch (error) {
-      console.error(error);
+      console.error('Failed to fetch chart data:', error);
     }
   }, [filtersRequest]);
 

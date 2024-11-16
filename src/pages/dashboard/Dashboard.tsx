@@ -15,6 +15,16 @@ import { useNavigate } from 'react-router-dom';
 import StatisticsBar from '../../components/statisticsBar/StatisticsBar';
 import ChartModal from '../../components/ChartModal/ChartModal';
 
+const getNumberOfDaysInPeriod = (period: Period) => {
+  if (period && period[0] && period[1]) {
+    const [startDate, endDate] = period;
+    const diffTime = endDate.getTime() - startDate.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
+  return 0;
+};
+
 type Period = [Date, Date] | null;
 
 export default function Dashboard() {
@@ -107,17 +117,20 @@ export default function Dashboard() {
         <div className="flex-1 flex flex-col p-4 overflow-x-hidden">
           <div className="flex items-start justify-center gap-4 date-ranges h-14">
             {[period1, period2, period3].map((period, index) => (
-              <DateRangePicker
-                key={index}
-                value={period as DateRange | null}
-                onChange={index === 0 ? setPeriod1 : index === 1 ? setPeriod2 : setPeriod3}
-                placeholder={`Período ${index + 1}`}
-                size="md"
-                format="dd/MM/yy"
-                preventOverflow
-                ranges={ranges}
-                disabled={!hasMoreThanTwenty}
-              />
+              <div className="flex flex-col items-center" key={index}>
+                <DateRangePicker
+                  key={index}
+                  value={period as DateRange | null}
+                  onChange={index === 0 ? setPeriod1 : index === 1 ? setPeriod2 : setPeriod3}
+                  placeholder={`Período ${index + 1}`}
+                  size="md"
+                  format="dd/MM/yy"
+                  preventOverflow
+                  ranges={ranges}
+                  disabled={!hasMoreThanTwenty}
+                />
+                {period && <p className="text-black">{getNumberOfDaysInPeriod(period)} dias</p>}
+              </div>
             ))}
           </div>
           <div className="w-full flex-1 flex flex-col items-center justify-center max-h-[500px]">

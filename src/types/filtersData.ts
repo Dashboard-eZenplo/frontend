@@ -29,7 +29,11 @@ interface IMean {
 }
 
 export interface IFiltersResponse {
-  grades: IGrade[];
+  grades: {
+    grade1: IGrade | null;
+    grade2: IGrade | null;
+    grade3: IGrade | null;
+  };
   means: {
     mean: IMean;
     good_mean: IMean;
