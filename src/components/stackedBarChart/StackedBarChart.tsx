@@ -10,7 +10,7 @@ import {
   Legend,
   LegendItem,
   ChartEvent,
-  LegendElement,
+  LegendElement
 } from 'chart.js';
 import { useChartFilters } from '../../contexts/ChartFiltersContext';
 import { useRef } from 'react';
@@ -24,7 +24,7 @@ export default function StackedBarChart() {
   const { good, neutral, bad, setLabels } = useChartFilters();
   const chartRef = useRef<Chart<'bar'> | null>(null);
 
-  function handleLegendClick(this: LegendElement<'bar'>, e: ChartEvent, legendItem: LegendItem) {
+  function handleLegendClick(this: LegendElement<'bar'>, _e: ChartEvent, legendItem: LegendItem) {
     const chartInstance = chartRef.current;
     const datasetIndex = legendItem.datasetIndex;
 
@@ -39,7 +39,7 @@ export default function StackedBarChart() {
       });
     }
   }
-  
+
   const stackedBarOptions = {
     responsive: true,
     maintainAspectRatio: false,

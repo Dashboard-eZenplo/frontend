@@ -83,7 +83,7 @@ export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ 
       setGood(goodValues);
       setNeutral(neutralValues);
       setBad(badValues);
-      
+
       const meansArray = response.means || [];
 
       const period1Means = meansArray[0] || {

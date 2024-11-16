@@ -156,7 +156,7 @@ export default function Dashboard() {
       <section className="px-6 flex flex-1 w-full max-w-[1440px] ml-auto mr-auto">
         <FilterSidebar />
         <div className="flex-1 flex flex-col p-4 overflow-x-hidden">
-        <div className="flex items-start justify-center gap-4 date-ranges h-14">
+          <div className="flex items-start justify-center gap-4 date-ranges h-14">
             {[period1, period2, period3].map((period, index) => (
               <div className="flex flex-col items-center" key={index}>
                 <DateRangePicker
