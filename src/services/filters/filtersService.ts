@@ -3,7 +3,7 @@ import api from '../../utils/api';
 
 export const filterChartData = async (filtersData: IFiltersRequest) => {
   try {
-    const response = await api.post(`/dashboard/`, filtersData);
+    const response = await api.post(`/dashboard`, filtersData);
 
     return response.data;
   } catch (error) {
@@ -13,7 +13,7 @@ export const filterChartData = async (filtersData: IFiltersRequest) => {
 
 export const getPossibleFilters = async () => {
   try {
-    const response = await api.get(`/dashboard/`);
+    const response = await api.get(`/dashboard`);
 
     return response.data;
   } catch (error) {
