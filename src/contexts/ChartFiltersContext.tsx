@@ -38,7 +38,7 @@ export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [bad, setBad] = useState<number[]>([0, 0, 0]);
 
   const [labels, setLabels] = useState<string[]>(['Bom', 'Razoável', 'Ruim']);
-  const [means, setMeans] = useState<IMeans>({mean1: null, mean2: null, mean3: null});
+  const [means, setMeans] = useState<IMeans>({ mean1: null, mean2: null, mean3: null });
 
   const [hasMoreThanTwenty, setHasMoreThanTwenty] = useState<boolean>(true);
 
@@ -62,38 +62,37 @@ export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ 
     try {
       const response = await filterChartData(filtersRequest);
 
-      console.log(response);
+      if (!response.message) {
+        const goodValues = [
+          response?.grades.grade1?.good ?? 0,
+          response?.grades.grade2?.good ?? 0,
+          response?.grades.grade3?.good ?? 0
+        ];
 
-      const goodValues = [
-        response?.grades.grade1?.good ?? 0,
-        response?.grades.grade2?.good ?? 0,
-        response?.grades.grade3?.good ?? 0
-      ];
+        const neutralValues = [
+          response?.grades.grade1?.neutral ?? 0,
+          response?.grades.grade2?.neutral ?? 0,
+          response?.grades.grade3?.neutral ?? 0
+        ];
 
-      const neutralValues = [
-        response?.grades.grade1?.neutral ?? 0,
-        response?.grades.grade2?.neutral ?? 0,
-        response?.grades.grade3?.neutral ?? 0
-      ];
+        const badValues = [
+          response?.grades.grade1?.bad ?? 0,
+          response?.grades.grade2?.bad ?? 0,
+          response?.grades.grade3?.bad ?? 0
+        ];
 
-      const badValues = [
-        response?.grades.grade1?.bad ?? 0,
-        response?.grades.grade2?.bad ?? 0,
-        response?.grades.grade3?.bad ?? 0
-      ];
+        setGood(goodValues);
+        setNeutral(neutralValues);
+        setBad(badValues);
 
-      setGood(goodValues);
-      setNeutral(neutralValues);
-      setBad(badValues);
+        const period1Means = response?.means.mean1;
 
-      const period1Means = response?.means.mean1;
+        const period2Means = response?.means.mean2;
 
-      const period2Means = response?.means.mean2; 
+        const period3Means = response?.means.mean3;
 
-      const period3Means = response?.means.mean3;
-
-      setMeans({mean1: period1Means, mean2: period2Means, mean3: period3Means});
-
+        setMeans({ mean1: period1Means, mean2: period2Means, mean3: period3Means });
+      }
     } catch (error) {
       console.error('Failed to fetch chart data:', error);
     }
