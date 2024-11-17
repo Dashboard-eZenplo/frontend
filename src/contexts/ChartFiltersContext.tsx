@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import { IFiltersRequest, IGrade } from '../types/filtersData';
+import { IFiltersRequest, IMeans } from '../types/filtersData';
 import { filterChartData } from '../services/filters/filtersService';
 
 interface ChartFiltersContextProps {
@@ -8,6 +8,11 @@ interface ChartFiltersContextProps {
   good: number[];
   neutral: number[];
   bad: number[];
+  means: IMeans;
+  labels: string[];
+  setLabels: React.Dispatch<React.SetStateAction<string[]>>;
+  hasMoreThanTwenty: boolean;
+  setHasMoreThanTwentyEmployees: (value: boolean) => void;
   fetchChartData: () => Promise<void>;
 }
 
@@ -15,7 +20,11 @@ const ChartFiltersContext = createContext<ChartFiltersContextProps>({} as ChartF
 
 export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [filtersRequest, setFiltersRequest] = useState<IFiltersRequest>({
-    periods: [],
+    periods: {
+      period1: {},
+      period2: {},
+      period3: {}
+    },
     filters: {
       category: [],
       role: [],
@@ -27,6 +36,15 @@ export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [good, setGood] = useState<number[]>([0, 0, 0]);
   const [neutral, setNeutral] = useState<number[]>([0, 0, 0]);
   const [bad, setBad] = useState<number[]>([0, 0, 0]);
+
+  const [labels, setLabels] = useState<string[]>(['Bom', 'Razoável', 'Ruim']);
+  const [means, setMeans] = useState<IMeans>({ mean1: null, mean2: null, mean3: null });
+
+  const [hasMoreThanTwenty, setHasMoreThanTwenty] = useState<boolean>(true);
+
+  const setHasMoreThanTwentyEmployees = (value: boolean) => {
+    setHasMoreThanTwenty(value);
+  };
 
   const applyFilters = (newFilters: Partial<IFiltersRequest>) => {
     setFiltersRequest((prev) => ({
@@ -40,23 +58,43 @@ export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ 
     }));
   };
 
-  const ensureThreeValues = (arr: number[]): number[] => {
-    const defaultArray = [0, 0, 0];
-    return arr.length === 3 ? arr : [...arr, ...defaultArray].slice(0, 3);
-  };
-
   const fetchChartData = useCallback(async () => {
     try {
       const response = await filterChartData(filtersRequest);
-      const goodValues = response.grades.map((grade: IGrade) => grade.good);
-      const neutralValues = response.grades.map((grade: IGrade) => grade.neutral);
-      const badValues = response.grades.map((grade: IGrade) => grade.bad);
 
-      setGood(ensureThreeValues(goodValues));
-      setNeutral(ensureThreeValues(neutralValues));
-      setBad(ensureThreeValues(badValues));
+      if (!response.message) {
+        const goodValues = [
+          response?.grades.grade1?.good ?? 0,
+          response?.grades.grade2?.good ?? 0,
+          response?.grades.grade3?.good ?? 0
+        ];
+
+        const neutralValues = [
+          response?.grades.grade1?.neutral ?? 0,
+          response?.grades.grade2?.neutral ?? 0,
+          response?.grades.grade3?.neutral ?? 0
+        ];
+
+        const badValues = [
+          response?.grades.grade1?.bad ?? 0,
+          response?.grades.grade2?.bad ?? 0,
+          response?.grades.grade3?.bad ?? 0
+        ];
+
+        setGood(goodValues);
+        setNeutral(neutralValues);
+        setBad(badValues);
+
+        const period1Means = response?.means.mean1;
+
+        const period2Means = response?.means.mean2;
+
+        const period3Means = response?.means.mean3;
+
+        setMeans({ mean1: period1Means, mean2: period2Means, mean3: period3Means });
+      }
     } catch (error) {
-      console.error(error);
+      console.error('Failed to fetch chart data:', error);
     }
   }, [filtersRequest]);
 
@@ -68,6 +106,11 @@ export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ 
         good,
         neutral,
         bad,
+        means,
+        labels,
+        setLabels,
+        hasMoreThanTwenty,
+        setHasMoreThanTwentyEmployees,
         fetchChartData
       }}
     >

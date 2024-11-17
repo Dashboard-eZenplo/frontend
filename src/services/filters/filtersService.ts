@@ -6,8 +6,11 @@ export const filterChartData = async (filtersData: IFiltersRequest) => {
     const response = await api.post(`/dashboard`, filtersData);
 
     return response.data;
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    if (error.response?.status === 422) {
+      return { message: 'Número insuficiente de usuários cadastrados para exibir os dados.' };
+    }
+    throw error;
   }
 };
 
