@@ -11,7 +11,7 @@ export const uploadCsv = async (file: File): Promise<any> => {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await api.post('/csv/upload-csv/', formData);
+    const response = await api.post(`/csv/upload-csv`, formData);
     return response.data;
   } catch (error: unknown) {
     handleApiError(error, 'Falha ao fazer upload do arquivo CSV.');
@@ -20,7 +20,7 @@ export const uploadCsv = async (file: File): Promise<any> => {
 
 export const downloadCsvTemplate = async (): Promise<void> => {
   try {
-    const response = await api.get<Blob>('/csv/download-csv-template/', {
+    const response = await api.get<Blob>(`/csv/download-csv-template`, {
       responseType: 'blob'
     });
 

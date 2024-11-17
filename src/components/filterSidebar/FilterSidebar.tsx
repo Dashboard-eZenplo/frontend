@@ -121,7 +121,7 @@ export default function FilterSidebar() {
               }}
             >
               <FilterAlt className="text-zinc-700" />
-              <strong className="font-medium text-[0.9rem] text-zinc-700 ml-5">Categorias</strong>
+              <strong className="font-medium text-[0.9rem] text-zinc-700 ml-5">Dimensões</strong>
             </AccordionSummary>
             <AccordionDetails sx={{ padding: 0 }} className="overflow-y-scroll max-h-44 scrollbar">
               <List disablePadding>

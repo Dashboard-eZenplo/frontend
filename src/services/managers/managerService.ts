@@ -2,8 +2,7 @@ import api from '../../utils/api';
 
 export const getManagers = async () => {
   try {
-    const response = await api.get(`/user/list_managers/`);
-
+    const response = await api.get(`/user/list_managers`);
     return response.data;
   } catch (error: any) {
     if (error.response?.status === 404) {

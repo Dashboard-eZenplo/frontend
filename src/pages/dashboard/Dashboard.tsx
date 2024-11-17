@@ -1,6 +1,5 @@
 import FilterSidebar from '../../components/filterSidebar/FilterSidebar';
 import Header from '../../components/Header';
-import StatisticCard from '../../components/statisticCard/StatisticCard';
 import { defaultHeaderOptions } from '../../config/HeaderOptions';
 import StackedBarChart from '../../components/stackedBarChart/StackedBarChart';
 import DateRangePicker, { DateRange, RangeType } from 'rsuite/DateRangePicker';
@@ -9,16 +8,15 @@ import { useEffect, useState } from 'react';
 import * as dateFns from 'date-fns';
 import { useChartFilters } from '../../contexts/ChartFiltersContext';
 import { format } from 'date-fns';
-import { AccessTime, EditCalendar, People, StarBorder } from '@mui/icons-material';
 import { getPossibleFilters } from '../../services/filters/filtersService';
 import { usePossibleFilters } from '../../contexts/PossibleFiltersContext';
 import { getEmployees } from '../../services/employees/employeeService';
 import { useNavigate } from 'react-router-dom';
-
-type Period = [Date, Date];
+import StatisticsBar from '../../components/statisticsBar/StatisticsBar';
+import ChartModal from '../../components/ChartModal/ChartModal';
 
 const getNumberOfDaysInPeriod = (period: Period) => {
-  if (period) {
+  if (period && period[0] && period[1]) {
     const [startDate, endDate] = period;
     const diffTime = endDate.getTime() - startDate.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -27,37 +25,28 @@ const getNumberOfDaysInPeriod = (period: Period) => {
   return 0;
 };
 
-const statistics = [
-  {
-    title: 'Usuários Ativos',
-    value: '87 / 110',
-    icon: <People fontSize="large" />
-  },
-  {
-    title: 'Atividades Registradas',
-    value: '1.042',
-    icon: <EditCalendar fontSize="large" />
-  },
-  {
-    title: 'Horas Registradas',
-    value: '3.545',
-    icon: <AccessTime fontSize="large" />
-  },
-  {
-    title: 'Média Avaliação Atividades',
-    value: '7,5 / 10',
-    icon: <StarBorder fontSize="large" />
-  }
-];
+type Period = [Date, Date] | null;
 
 export default function Dashboard() {
-  const { applyFilters, fetchChartData } = useChartFilters();
+  const { applyFilters, fetchChartData, hasMoreThanTwenty, means, labels } = useChartFilters();
   const { setPossibleFilters } = usePossibleFilters();
   const navigate = useNavigate();
 
-  const [period1, setPeriod1] = useState<Period | null>(null);
-  const [period2, setPeriod2] = useState<Period | null>(null);
-  const [period3, setPeriod3] = useState<Period | null>(null);
+  const [period1, setPeriod1] = useState<Period>(null);
+  const [period2, setPeriod2] = useState<Period>(null);
+  const [period3, setPeriod3] = useState<Period>(null);
+
+  const hasAllPeriods = !!(period1 || period2 || period3);
+
+  const [averages, setAverages] = useState<{
+    average1: number;
+    average2: number;
+    average3: number;
+  }>({
+    average1: 0,
+    average2: 0,
+    average3: 0
+  });
 
   const ranges: RangeType<DateRange>[] = [
     {
@@ -81,15 +70,135 @@ export default function Dashboard() {
     }
   ];
 
-  useEffect(() => {
-    const periods = [period1, period2, period3]
-      .filter((p): p is Period => p !== null)
-      .map(([startDate, endDate]) => ({
-        initial_date: format(startDate, 'yyyy-MM-dd'),
-        final_date: format(endDate, 'yyyy-MM-dd')
-      }));
+  const calculateMeans = () => {
+    if (!labels || !means) return;
 
-    applyFilters({ periods });
+    if (means.mean1 !== null && means.mean1 !== undefined) {
+      let totalMean = 0;
+      let totalQuantity = 0;
+
+      if (labels.includes('Bom') && means.mean1.good_mean) {
+        totalMean += means.mean1.good_mean.mean;
+        totalQuantity += means.mean1.good_mean.quantity;
+      }
+
+      if (labels.includes('Razoável') && means.mean1.neutral_mean) {
+        totalMean += means.mean1.neutral_mean.mean;
+        totalQuantity += means.mean1.neutral_mean.quantity;
+      }
+
+      if (labels.includes('Ruim') && means.mean1.bad_mean) {
+        totalMean += means.mean1.bad_mean.mean;
+        totalQuantity += means.mean1.bad_mean.quantity;
+      }
+
+      const periodAverage = totalQuantity > 0 ? totalMean / totalQuantity : 0;
+      const periodAverageRounded = parseFloat(periodAverage.toFixed(2));
+
+      setAverages((prevAverages) => ({
+        ...prevAverages,
+        average1: periodAverageRounded
+      }));
+    } else {
+      setAverages((prevAverages) => ({
+        ...prevAverages,
+        average1: 0
+      }));
+    }
+
+    if (means.mean2 !== null && means.mean2 !== undefined) {
+      let totalMean = 0;
+      let totalQuantity = 0;
+
+      if (labels.includes('Bom') && means.mean2.good_mean) {
+        totalMean += means.mean2.good_mean.mean;
+        totalQuantity += means.mean2.good_mean.quantity;
+      }
+
+      if (labels.includes('Razoável') && means.mean2.neutral_mean) {
+        totalMean += means.mean2.neutral_mean.mean;
+        totalQuantity += means.mean2.neutral_mean.quantity;
+      }
+
+      if (labels.includes('Ruim') && means.mean2.bad_mean) {
+        totalMean += means.mean2.bad_mean.mean;
+        totalQuantity += means.mean2.bad_mean.quantity;
+      }
+
+      const periodAverage = totalQuantity > 0 ? totalMean / totalQuantity : 0;
+      const periodAverageRounded = parseFloat(periodAverage.toFixed(2));
+
+      setAverages((prevAverages) => ({
+        ...prevAverages,
+        average2: periodAverageRounded
+      }));
+    } else {
+      setAverages((prevAverages) => ({
+        ...prevAverages,
+        average2: 0
+      }));
+    }
+
+    if (means.mean3 !== null && means.mean3 !== undefined) {
+      let totalMean = 0;
+      let totalQuantity = 0;
+
+      if (labels.includes('Bom') && means.mean3.good_mean) {
+        totalMean += means.mean3.good_mean.mean;
+        totalQuantity += means.mean3.good_mean.quantity;
+      }
+
+      if (labels.includes('Razoável') && means.mean3.neutral_mean) {
+        totalMean += means.mean3.neutral_mean.mean;
+        totalQuantity += means.mean3.neutral_mean.quantity;
+      }
+
+      if (labels.includes('Ruim') && means.mean3.bad_mean) {
+        totalMean += means.mean3.bad_mean.mean;
+        totalQuantity += means.mean3.bad_mean.quantity;
+      }
+
+      const periodAverage = totalQuantity > 0 ? totalMean / totalQuantity : 0;
+      const periodAverageRounded = parseFloat(periodAverage.toFixed(2));
+
+      setAverages((prevAverages) => ({
+        ...prevAverages,
+        average3: periodAverageRounded
+      }));
+    } else {
+      setAverages((prevAverages) => ({
+        ...prevAverages,
+        average3: 0
+      }));
+    }
+  };
+
+  useEffect(() => {
+    const formattedPeriods = {
+      period1:
+        period1 && dateFns.isValid(period1[0]) && dateFns.isValid(period1[1])
+          ? {
+              initial_date: format(period1[0], 'yyyy-MM-dd'),
+              final_date: format(period1[1], 'yyyy-MM-dd')
+            }
+          : {},
+      period2:
+        period2 && dateFns.isValid(period2[0]) && dateFns.isValid(period2[1])
+          ? {
+              initial_date: format(period2[0], 'yyyy-MM-dd'),
+              final_date: format(period2[1], 'yyyy-MM-dd')
+            }
+          : {},
+      period3:
+        period3 && dateFns.isValid(period3[0]) && dateFns.isValid(period3[1])
+          ? {
+              initial_date: format(period3[0], 'yyyy-MM-dd'),
+              final_date: format(period3[1], 'yyyy-MM-dd')
+            }
+          : {}
+    };
+
+    applyFilters({ periods: formattedPeriods });
   }, [period1, period2, period3]);
 
   useEffect(() => {
@@ -112,74 +221,56 @@ export default function Dashboard() {
     fetchChartData();
   }, [fetchChartData]);
 
+  useEffect(() => {
+    calculateMeans();
+  }, [labels, means]);
+
   return (
     <main className="flex flex-col min-h-screen scrollbar">
       <Header headerOptions={defaultHeaderOptions.userHeaderOptions} />
-
-      <section className="flex justify-center w-full bg-gradient-to-t from-secondary to-primary">
-        <div className="w-full max-w-[1440px] h-full py-5 px-6 flex items-center justify-between gap-8">
-          {statistics &&
-            statistics.map((statistic, index) => <StatisticCard key={index} data={statistic} />)}
-        </div>
-      </section>
-
+      <StatisticsBar />
       <section className="px-6 flex flex-1 w-full max-w-[1440px] ml-auto mr-auto">
         <FilterSidebar />
         <div className="flex-1 flex flex-col p-4 overflow-x-hidden">
           <div className="flex items-start justify-center gap-4 date-ranges h-14">
-            <div className="flex flex-col items-center">
-              <DateRangePicker
-                value={period1}
-                onChange={setPeriod1}
-                placeholder="Período 1"
-                size="md"
-                format="dd/MM/yy"
-                preventOverflow
-                ranges={ranges}
-              />
-              {period1 && <p className="text-black">{getNumberOfDaysInPeriod(period1)} dias</p>}
-            </div>
-            <div className="flex flex-col items-center">
-              <DateRangePicker
-                value={period2}
-                onChange={setPeriod2}
-                placeholder="Período 2"
-                size="md"
-                format="dd/MM/yy"
-                preventOverflow
-                ranges={ranges}
-              />
-              {period2 && <p className="text-black">{getNumberOfDaysInPeriod(period2)} dias</p>}
-            </div>
-            <div className="flex flex-col items-center">
-              <DateRangePicker
-                value={period3}
-                onChange={setPeriod3}
-                placeholder="Período 3"
-                size="md"
-                format="dd/MM/yy"
-                preventOverflow
-                ranges={ranges}
-              />
-              {period3 && <p className="text-black">{getNumberOfDaysInPeriod(period3)} dias</p>}
-            </div>
+            {[period1, period2, period3].map((period, index) => (
+              <div className="flex flex-col items-center" key={index}>
+                <DateRangePicker
+                  key={index}
+                  value={period as DateRange | null}
+                  onChange={index === 0 ? setPeriod1 : index === 1 ? setPeriod2 : setPeriod3}
+                  placeholder={`Período ${index + 1}`}
+                  size="md"
+                  format="dd/MM/yy"
+                  preventOverflow
+                  ranges={ranges}
+                  disabled={!hasMoreThanTwenty}
+                />
+                {period && <p className="text-black">{getNumberOfDaysInPeriod(period)} dias</p>}
+              </div>
+            ))}
           </div>
-
           <div className="w-full flex-1 flex flex-col items-center justify-center max-h-[500px]">
             <div className="w-[80%] 2xl:w-[70%] flex-1 max-h-[380px]">
-              <div className=" h-full max-h-[300px]">
+              <div className="h-full max-h-[300px] relative flex justify-center items-center">
+                {hasMoreThanTwenty ? (
+                  !hasAllPeriods && (
+                    <ChartModal text="Adicione um período para poder visualizar o gráfico." />
+                  )
+                ) : (
+                  <ChartModal text="É necessário ter 20 ou mais funcionários para realizar o filtro." />
+                )}
                 <StackedBarChart />
               </div>
-              <div className="w-full flex justify-around  ml-[3%] mt-8">
-                <div className="text-black flex items-center justify-center w-24 h-10 border border-1 rounded-lg font-bold">
-                  6,5
-                </div>
-                <div className="text-black flex items-center justify-center w-24 h-10 border border-1 rounded-lg font-bold">
-                  7,1
-                </div>
-                <div className="text-black flex items-center justify-center w-24 h-10 border border-1 rounded-lg font-bold">
-                  8,4
-                </div>
+              <div className="w-full flex justify-around ml-[3%] mt-8">
+                {[averages.average1, averages.average2, averages.average3].map((value, idx) => (
+                  <div
+                    key={idx}
+                    className="text-black flex items-center justify-center w-24 h-10 border border-1 rounded-lg font-bold"
+                  >
+                    {value}
+                  </div>
+                ))}
               </div>
             </div>
           </div>

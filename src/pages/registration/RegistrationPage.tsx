@@ -30,7 +30,7 @@ export default function RegistrationPage() {
       reset();
     } catch (e) {
       toast.error('Erro ao cadastrar usuário.');
-      console.log(e);
+      console.error(e);
     }
   };
 

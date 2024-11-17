@@ -1,14 +1,8 @@
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_BASE_URL;
+import api from '../../utils/api';
 
 export const getEmployees = async () => {
   try {
-    const response = await axios.get(`${API_URL}/employee/`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-      }
-    });
+    const response = await api.get(`/employee`);
 
     return response.data;
   } catch (error: any) {
@@ -21,11 +15,7 @@ export const getEmployees = async () => {
 
 export const deleteEmployee = async (id: number) => {
   try {
-    await axios.delete(`${API_URL}/employee/${id}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-      }
-    });
+    await api.delete(`/employee/${id}`);
   } catch (error: any) {
     throw new Error(error.response?.data?.message || 'Error deleting employee');
   }
