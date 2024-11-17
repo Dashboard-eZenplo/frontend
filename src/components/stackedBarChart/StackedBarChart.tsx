@@ -8,8 +8,8 @@ import {
   Title,
   Tooltip,
   Legend,
-  ChartEvent, 
-  LegendItem,
+  ChartEvent,
+  LegendItem
 } from 'chart.js';
 import { useChartFilters } from '../../contexts/ChartFiltersContext';
 import { useState } from 'react';
@@ -21,15 +21,15 @@ Chart.defaults.font.family = "'Inter', system-ui, 'Avenir', Helvetica, 'Arial', 
 
 export default function StackedBarChart() {
   const { good, neutral, bad, setLabels } = useChartFilters();
-  const [visibleLabels, setVisibleLabels] = useState(['Ruim', 'Razoável', 'Bom']); 
+  const [visibleLabels, setVisibleLabels] = useState(['Ruim', 'Razoável', 'Bom']);
 
-  const handleLegendClick = (e: ChartEvent, legendItem: LegendItem) => {
+  const handleLegendClick = (_e: ChartEvent, legendItem: LegendItem) => {
     const label = legendItem.text;
 
     setVisibleLabels((prevLabels) => {
       const updatedLabels = prevLabels.includes(label)
-        ? prevLabels.filter((item) => item !== label) 
-        : [...prevLabels, label]; 
+        ? prevLabels.filter((item) => item !== label)
+        : [...prevLabels, label];
 
       setLabels(updatedLabels);
       return updatedLabels;
@@ -38,7 +38,7 @@ export default function StackedBarChart() {
 
   const stackedBarOptions = {
     responsive: true,
-    maintainAspectRatio: false, 
+    maintainAspectRatio: false,
     scales: {
       x: {
         stacked: true
@@ -49,9 +49,9 @@ export default function StackedBarChart() {
     },
     plugins: {
       legend: {
-        onClick: handleLegendClick,
-      },
-    },
+        onClick: handleLegendClick
+      }
+    }
   };
 
   const stackedBarData = {
@@ -61,19 +61,19 @@ export default function StackedBarChart() {
         label: 'Ruim',
         data: bad,
         backgroundColor: '#ff5050',
-        hidden: !visibleLabels.includes('Ruim'),
+        hidden: !visibleLabels.includes('Ruim')
       },
       {
         label: 'Razoável',
         data: neutral,
         backgroundColor: '#fdfa20',
-        hidden: !visibleLabels.includes('Razoável'), 
+        hidden: !visibleLabels.includes('Razoável')
       },
       {
         label: 'Bom',
         data: good,
         backgroundColor: '#3be07d',
-        hidden: !visibleLabels.includes('Bom'),
+        hidden: !visibleLabels.includes('Bom')
       }
     ]
   };
