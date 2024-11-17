@@ -37,7 +37,7 @@ export const ChartFiltersProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [neutral, setNeutral] = useState<number[]>([0, 0, 0]);
   const [bad, setBad] = useState<number[]>([0, 0, 0]);
 
-  const [labels, setLabels] = useState<string[]>(['Bom', 'Razoável', 'Ruim']);
+  const [labels, setLabels] = useState<string[]>(['Muito bom', 'Quase lá', 'Pode melhorar']);
   const [means, setMeans] = useState<IMeans>({ mean1: null, mean2: null, mean3: null });
 
   const [hasMoreThanTwenty, setHasMoreThanTwenty] = useState<boolean>(true);
