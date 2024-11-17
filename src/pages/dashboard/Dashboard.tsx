@@ -77,17 +77,17 @@ export default function Dashboard() {
       let totalMean = 0;
       let totalQuantity = 0;
 
-      if (labels.includes('Bom') && means.mean1.good_mean) {
+      if (labels.includes('Muito bom') && means.mean1.good_mean) {
         totalMean += means.mean1.good_mean.mean;
         totalQuantity += means.mean1.good_mean.quantity;
       }
 
-      if (labels.includes('Razoável') && means.mean1.neutral_mean) {
+      if (labels.includes('Quase lá') && means.mean1.neutral_mean) {
         totalMean += means.mean1.neutral_mean.mean;
         totalQuantity += means.mean1.neutral_mean.quantity;
       }
 
-      if (labels.includes('Ruim') && means.mean1.bad_mean) {
+      if (labels.includes('Pode melhorar') && means.mean1.bad_mean) {
         totalMean += means.mean1.bad_mean.mean;
         totalQuantity += means.mean1.bad_mean.quantity;
       }
@@ -110,17 +110,17 @@ export default function Dashboard() {
       let totalMean = 0;
       let totalQuantity = 0;
 
-      if (labels.includes('Bom') && means.mean2.good_mean) {
+      if (labels.includes('Muito bom') && means.mean2.good_mean) {
         totalMean += means.mean2.good_mean.mean;
         totalQuantity += means.mean2.good_mean.quantity;
       }
 
-      if (labels.includes('Razoável') && means.mean2.neutral_mean) {
+      if (labels.includes('Quase lá') && means.mean2.neutral_mean) {
         totalMean += means.mean2.neutral_mean.mean;
         totalQuantity += means.mean2.neutral_mean.quantity;
       }
 
-      if (labels.includes('Ruim') && means.mean2.bad_mean) {
+      if (labels.includes('Pode melhorar') && means.mean2.bad_mean) {
         totalMean += means.mean2.bad_mean.mean;
         totalQuantity += means.mean2.bad_mean.quantity;
       }
@@ -143,17 +143,17 @@ export default function Dashboard() {
       let totalMean = 0;
       let totalQuantity = 0;
 
-      if (labels.includes('Bom') && means.mean3.good_mean) {
+      if (labels.includes('Muito bom') && means.mean3.good_mean) {
         totalMean += means.mean3.good_mean.mean;
         totalQuantity += means.mean3.good_mean.quantity;
       }
 
-      if (labels.includes('Razoável') && means.mean3.neutral_mean) {
+      if (labels.includes('Quase lá') && means.mean3.neutral_mean) {
         totalMean += means.mean3.neutral_mean.mean;
         totalQuantity += means.mean3.neutral_mean.quantity;
       }
 
-      if (labels.includes('Ruim') && means.mean3.bad_mean) {
+      if (labels.includes('Pode melhorar') && means.mean3.bad_mean) {
         totalMean += means.mean3.bad_mean.mean;
         totalQuantity += means.mean3.bad_mean.quantity;
       }

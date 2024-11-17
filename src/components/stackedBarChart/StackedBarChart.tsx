@@ -21,7 +21,7 @@ Chart.defaults.font.family = "'Inter', system-ui, 'Avenir', Helvetica, 'Arial', 
 
 export default function StackedBarChart() {
   const { good, neutral, bad, setLabels } = useChartFilters();
-  const [visibleLabels, setVisibleLabels] = useState(['Ruim', 'Razoável', 'Bom']);
+  const [visibleLabels, setVisibleLabels] = useState(['Pode melhorar', 'Quase lá', 'Muito bom']);
 
   const handleLegendClick = (_e: ChartEvent, legendItem: LegendItem) => {
     const label = legendItem.text;
@@ -61,19 +61,19 @@ export default function StackedBarChart() {
         label: 'Pode melhorar',
         data: bad,
         backgroundColor: '#ff5050',
-        hidden: !visibleLabels.includes('Ruim')
+        hidden: !visibleLabels.includes('Pode melhorar')
       },
       {
         label: 'Quase lá',
         data: neutral,
         backgroundColor: '#fdfa20',
-        hidden: !visibleLabels.includes('Razoável')
+        hidden: !visibleLabels.includes('Quase lá')
       },
       {
         label: 'Muito bom',
         data: good,
         backgroundColor: '#3be07d',
-        hidden: !visibleLabels.includes('Bom')
+        hidden: !visibleLabels.includes('Muito bom')
       }
     ]
   };

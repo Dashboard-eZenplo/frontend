@@ -43,7 +43,7 @@ export const refreshAccessToken = async () => {
       throw new Error('No refresh token available');
     }
 
-    const response = await axios.post(`${API_URL}/auth/refresh/`, { refresh_token: refreshToken });
+    const response = await axios.post(`${API_URL}/auth/refresh`, { refresh_token: refreshToken });
 
     const newAccessToken = response.data.access_token;
 
