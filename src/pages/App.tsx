@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import RegistrationPage from './registration/RegistrationPage';
 import LoginPage from './login/LoginPage';
 import UploadDownloadPage from './uploadDownload/UploadDownloadPage';
@@ -14,8 +14,7 @@ const App: React.FC = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage />} />
 
         <Route
           path="/cadastro"
@@ -61,7 +60,6 @@ const App: React.FC = () => {
         />
 
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
-
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
