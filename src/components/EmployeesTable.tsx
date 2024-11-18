@@ -81,7 +81,7 @@ export default function EmployeesTable() {
       editable: false
     },
     {
-      field: 'cargo',
+      field: 'role',
       headerName: 'Cargo',
       width: 150,
       headerAlign: 'center',
@@ -89,7 +89,7 @@ export default function EmployeesTable() {
       editable: false
     },
     {
-      field: 'departamento',
+      field: 'department',
       headerName: 'Departamento',
       width: 150,
       headerAlign: 'center',
@@ -97,7 +97,7 @@ export default function EmployeesTable() {
       editable: false
     },
     {
-      field: 'dataDeAdmissao',
+      field: 'admissionDate',
       headerName: 'Data de admissão',
       width: 150,
       headerAlign: 'center',
@@ -105,7 +105,7 @@ export default function EmployeesTable() {
       editable: false
     },
     {
-      field: 'dataDeAniversario',
+      field: 'birthDate',
       headerName: 'Data de aniversário',
       width: 150,
       headerAlign: 'center',
