@@ -14,6 +14,7 @@ import { getEmployees } from '../../services/employees/employeeService';
 import { useNavigate } from 'react-router-dom';
 import StatisticsBar from '../../components/statisticsBar/StatisticsBar';
 import ChartModal from '../../components/ChartModal/ChartModal';
+import { Snackbar, Alert } from '@mui/material';
 
 const getNumberOfDaysInPeriod = (period: Period) => {
   if (period && period[0] && period[1]) {
@@ -31,6 +32,9 @@ export default function Dashboard() {
   const { applyFilters, fetchChartData, hasMoreThanTwenty, means, labels } = useChartFilters();
   const { setPossibleFilters } = usePossibleFilters();
   const navigate = useNavigate();
+
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const [period1, setPeriod1] = useState<Period>(null);
   const [period2, setPeriod2] = useState<Period>(null);
@@ -218,7 +222,16 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    fetchChartData();
+    const fetchData = async () => {
+      try {
+        await fetchChartData();
+      } catch (error: any) {
+        setSnackbarMessage(error.message || 'Erro ao carregar os dados do filtro.');
+        setShowSnackbar(true);
+      }
+    };
+
+    fetchData();
   }, [fetchChartData]);
 
   useEffect(() => {
@@ -276,6 +289,16 @@ export default function Dashboard() {
           </div>
         </div>
       </section>
+      <Snackbar
+        open={showSnackbar}
+        onClose={() => setShowSnackbar(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        autoHideDuration={3000}
+      >
+        <Alert onClose={() => setShowSnackbar(false)} severity="warning" sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </main>
   );
 }
