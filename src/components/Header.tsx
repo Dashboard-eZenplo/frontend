@@ -48,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({ headerOptions }) => {
   const handleLogout = () => {
     try {
       signOut();
-      navigate('/login');
+      navigate('/');
     } catch (error) {
       console.error('Error during logout:', error);
     }
